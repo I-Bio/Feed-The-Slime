@@ -16,7 +16,7 @@
                 },
                 {
                     "name": "Touch",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "4d000ca8-9996-48bb-aef7-b9028fae599e",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -47,28 +47,6 @@
                 },
                 {
                     "name": "",
-                    "id": "7630d8ed-b0a0-43f0-9356-d334726e6721",
-                    "path": "<Touchscreen>/primaryTouch/press",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Touch",
-                    "action": "Touch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5c40878d-e94b-41a5-bb5b-743b5e22b2da",
-                    "path": "<Mouse>/press",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Desktop",
-                    "action": "Touch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "046f7a40-8b10-4f75-b7c1-c601ac4ea8cc",
                     "path": "<Touchscreen>/position",
                     "interactions": "",
@@ -86,6 +64,28 @@
                     "processors": "",
                     "groups": "Desktop",
                     "action": "ScreenPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7630d8ed-b0a0-43f0-9356-d334726e6721",
+                    "path": "<Touchscreen>/primaryTouch/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "Touch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5c40878d-e94b-41a5-bb5b-743b5e22b2da",
+                    "path": "<Mouse>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Desktop",
+                    "action": "Touch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
