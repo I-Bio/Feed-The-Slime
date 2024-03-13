@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Joystick : MonoBehaviour
@@ -10,6 +11,8 @@ public class Joystick : MonoBehaviour
     [SerializeField] private GameObject _holder;
         
     private Coroutine _coroutine;
+
+    public event Action Released;
 
     private void Start()
     {
@@ -33,6 +36,7 @@ public class Joystick : MonoBehaviour
 
     private void Release()
     {
+        Released?.Invoke();
         _holder.SetActive(false);
     }
 
