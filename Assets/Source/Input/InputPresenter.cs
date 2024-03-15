@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace Input
 {
-    public class InputPresenter : Presenter
+    public class InputPresenter : IPresenter
     {
         private readonly PlayerInput _model;
         private readonly Joystick _joystick;
@@ -16,7 +16,7 @@ namespace Input
             _player = player;
         }
 
-        public override void Enable()
+        public void Enable()
         {
             _model.Player.Move.performed += OnMove;
             _model.Player.Touch.performed += OnTouch;
@@ -25,7 +25,7 @@ namespace Input
             _model.Enable();
         }
 
-        public override void Disable()
+        public void Disable()
         {
             _model.Player.Move.performed -= OnMove;
             _model.Player.Touch.performed -= OnTouch;

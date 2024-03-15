@@ -1,6 +1,6 @@
 ﻿namespace Foods
 {
-    public class FoodPresenter : Presenter
+    public class FoodPresenter : IPresenter
     {
         private readonly Food _model;
         private readonly EdiblePart _ediblePart;
@@ -13,7 +13,7 @@
             _highlighter = highlighter;
         }
 
-        public override void Enable()
+        public void Enable()
         {
             _model.Highlighted += OnHighlighted;
             _model.Allowed += OnAllowed;
@@ -21,7 +21,7 @@
             _highlighter.GoingSelect += OnGoingSelect;
         }
 
-        public override void Disable()
+        public void Disable()
         {
             _model.Highlighted -= OnHighlighted;
             _model.Allowed -= OnAllowed;
@@ -31,7 +31,7 @@
 
         private void OnHighlighted()
         {
-            _highlighter.Select();
+            _highlighter.SetSelection();
         }
 
         private void OnAllowed()
