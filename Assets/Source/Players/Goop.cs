@@ -18,6 +18,8 @@ namespace Players
             _scoreScaler = scoreScaler;
             _maxScore = maxScore;
             _levelsPerStage = levelsPerStage;
+            
+            IncreaseScore(_score);
         }
 
         public event Action<float, float> ScoreChanged;
