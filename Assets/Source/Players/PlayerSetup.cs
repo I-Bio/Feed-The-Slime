@@ -35,6 +35,7 @@ namespace Players
             
             _scanner.SetSatiety(_startStage);
             _sizeScaler.Initialize(_transform, _scaleFactor);
+            _model.IncreaseScore(0f);
         }
 
         private void OnEnable()
