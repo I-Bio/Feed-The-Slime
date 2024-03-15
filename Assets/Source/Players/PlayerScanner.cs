@@ -5,7 +5,7 @@ namespace Players
 {
     public class PlayerScanner : MonoBehaviour
     {
-        private List<ISelectable> _selectables;
+        private readonly List<ISelectable> _selectables = new List<ISelectable>();
 
         private Coroutine _routine;
         private SatietyStage _stage;

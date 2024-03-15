@@ -14,8 +14,8 @@ namespace Players
         public void SetScore(float score, float maxScore)
         {
             _slider.value = score / maxScore;
-            _currentScore.SetText(Mathf.CeilToInt(score).ToString());
-            _maxScore.SetText(Mathf.CeilToInt(maxScore).ToString());
+            _currentScore.SetText(Mathf.FloorToInt(score).ToString());
+            _maxScore.SetText(Mathf.FloorToInt(maxScore).ToString());
         }
 
         public void SetLevel(int levelPoint)

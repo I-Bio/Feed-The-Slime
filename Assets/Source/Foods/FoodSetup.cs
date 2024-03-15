@@ -1,11 +1,9 @@
-﻿using System;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Foods
 {
     [RequireComponent(typeof(EdiblePart))]
-    [RequireComponent(typeof(Highlighter))]
+    [RequireComponent(typeof(ObjectHighlighter))]
     public class FoodSetup : MonoBehaviour
     {
         [SerializeField] private Material _standard;
