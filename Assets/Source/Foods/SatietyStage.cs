@@ -1,6 +1,6 @@
 ﻿public enum SatietyStage
 {
-    Exhaustion,
+    Exhaustion = 1,
     Hunger,
     Full,
     Overeat,

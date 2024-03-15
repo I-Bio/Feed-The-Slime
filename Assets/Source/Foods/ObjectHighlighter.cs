@@ -19,7 +19,7 @@ namespace Foods
 
         public event Action<SatietyStage> GoingSelect;
 
-        public void AskToSelect(SatietyStage playerStage)
+        public void Select(SatietyStage playerStage)
         {
             if (_isSelect == true)
                 return;
@@ -27,7 +27,7 @@ namespace Foods
             GoingSelect?.Invoke(playerStage);
         }
 
-        public void Select()
+        public void SetSelection()
         {
             _isSelect = true;
             _meshRenderer.material = _highlighted;

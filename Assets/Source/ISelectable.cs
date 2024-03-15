@@ -1,4 +1,5 @@
 ﻿public interface ISelectable
 {
-    public void AskToSelect(SatietyStage playerStage);
+    public void Select(SatietyStage playerStage);
+    public void Deselect();
 }
