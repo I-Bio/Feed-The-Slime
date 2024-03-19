@@ -9,7 +9,7 @@ namespace Foods
         [SerializeField] private Material _standard;
         [SerializeField] private Material _highlighted;
         [SerializeField] private MeshRenderer _meshRenderer;
-        [SerializeField] private float _scorePerEat = 0.6f;
+        [SerializeField] private float _scorePerEat;
         [SerializeField] private SatietyStage _stage;
 
         private EdiblePart _ediblePart;
@@ -18,7 +18,7 @@ namespace Foods
         private Food _model;
         private FoodPresenter _presenter;
         
-        public void Initialize()
+        private void Awake()
         {
             _ediblePart = GetComponent<EdiblePart>();
             _highlighter = GetComponent<ObjectHighlighter>();
