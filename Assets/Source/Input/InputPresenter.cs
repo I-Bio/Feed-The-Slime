@@ -7,9 +7,9 @@ namespace Input
     {
         private readonly PlayerInput _model;
         private readonly Joystick _joystick;
-        private readonly Mover _player;
+        private readonly IReadable _player;
 
-        public InputPresenter(PlayerInput model, Joystick joystick, Mover player)
+        public InputPresenter(PlayerInput model, Joystick joystick, IReadable player)
         {
             _model = model;
             _joystick = joystick;
@@ -36,8 +36,7 @@ namespace Input
 
         private void OnMove(InputAction.CallbackContext context)
         {
-            Vector2 input = context.ReadValue<Vector2>();
-            _player.ReadInput(input);
+            _player.ReadInput(context.ReadValue<Vector2>());
         }
 
         private void OnTouch(InputAction.CallbackContext context)
