@@ -1,4 +1,6 @@
-﻿namespace Players
+﻿using Boosters;
+
+namespace Players
 {
     public class PlayerPresenter : IPresenter
     {
@@ -8,9 +10,10 @@
         private readonly SizeScaler _sizeScaler;
         private readonly LevelBar _levelBar;
         private readonly StageBar _stageBar;
+        private readonly IInsertable _boosterService;
         
         public PlayerPresenter(Goop model, PlayerCollisionDetector collisionDetector, PlayerScanner scanner,
-            SizeScaler sizeScaler, LevelBar levelBar, StageBar stageBar)
+            SizeScaler sizeScaler, LevelBar levelBar, StageBar stageBar, IInsertable boosterService)
         {
             _model = model;
             _collisionDetector = collisionDetector;
@@ -18,6 +21,7 @@
             _sizeScaler = sizeScaler;
             _levelBar = levelBar;
             _stageBar = stageBar;
+            _boosterService = boosterService;
         }
         
         public void Enable()
@@ -28,6 +32,7 @@
             _model.Winning += OnWinning;
 
             _collisionDetector.ScoreGained += OnScoreGained;
+            _collisionDetector.BoosterEntered += OnBoosterEntered;
         }
 
         public void Disable()
@@ -38,6 +43,7 @@
             _model.Winning -= OnWinning;
             
             _collisionDetector.ScoreGained -= OnScoreGained;
+            _collisionDetector.BoosterEntered -= OnBoosterEntered;
         }
 
         private void OnScoreChanged(float score, float maxScore)
@@ -64,6 +70,11 @@
         private void OnScoreGained(float value)
         {
             _model.IncreaseScore(value);
+        }
+
+        private void OnBoosterEntered(IBooster booster)
+        {
+            _boosterService.TryInsert(booster);
         }
     }
 }
