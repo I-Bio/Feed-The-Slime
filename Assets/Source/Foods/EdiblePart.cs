@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using Spawners;
 
 namespace Foods
 {
-    public class EdiblePart : MonoBehaviour, IEatable
+    public class EdiblePart : SpawnableObject, IEatable
     {
         private float _scorePerEat;
         private bool _isAllowed;
@@ -25,7 +25,7 @@ namespace Foods
                 return false;
 
             score = _scorePerEat;
-            Destroy(gameObject);
+            Push();
             return true;
         }
         
