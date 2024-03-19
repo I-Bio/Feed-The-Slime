@@ -1,25 +1,32 @@
+using Boosters;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Mover : MonoBehaviour
+public class Mover : MonoBehaviour, ISettable, IReadable
 {
-    [SerializeField] private float _speed;
-    [SerializeField] private Transform _rotationPoint;
-
     private Rigidbody _rigidbody;
+    private IMovable _movable;
+    private Transform _rotationPoint;
     private Vector2 _input;
     private Vector3 _forward;
-
-    private void Awake()
-    {
-        _rigidbody = GetComponent<Rigidbody>();
-        _forward = transform.forward;
-    }
 
     private void FixedUpdate()
     {
         Move();
         RotateAlongMove();
+    }
+
+    public void Initialize(IMovable movable, Transform rotationPoint, Vector3 forward)
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+        _forward = forward;
+        _movable = movable;
+        _rotationPoint = rotationPoint;
+    }
+    
+    public void SetBoost(IStatBuffer boost)
+    {
+        _movable = boost as IMovable;
     }
 
     public void ReadInput(Vector2 input)
@@ -32,7 +39,7 @@ public class Mover : MonoBehaviour
         if (_rigidbody.velocity == Vector3.zero && _input == Vector2.zero)
             return;
 
-        _rigidbody.velocity = new Vector3(_input.x, 0f, _input.y) * _speed;
+        _rigidbody.velocity = new Vector3(_input.x, 0f, _input.y) * _movable.GetSpeed();
     }
 
     private void RotateAlongMove()
