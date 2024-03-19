@@ -1,4 +1,5 @@
 ﻿using System;
+using Boosters;
 using UnityEngine;
 
 namespace Players
@@ -6,6 +7,7 @@ namespace Players
     public class PlayerCollisionDetector : MonoBehaviour
     {
         public event Action<float> ScoreGained;
+        public event Action<IBooster> BoosterEntered;
 
         private void OnCollisionEnter(Collision collision)
         {
@@ -16,6 +18,14 @@ namespace Players
                 return;
             
             ScoreGained?.Invoke(score);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out IBooster booster) == false)
+                return;
+            
+            BoosterEntered?.Invoke(booster);
         }
     }
 }
