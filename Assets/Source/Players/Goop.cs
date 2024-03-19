@@ -1,12 +1,14 @@
 ﻿using System;
+using Boosters;
 
 namespace Players
 {
-    public class Goop
+    public class Goop : ISettable
     {
         private readonly float _scoreScaler;
         private readonly int _levelsPerStage;
 
+        private ICalculableScore _calculableScore;
         private SatietyStage _stage;
         private float _maxScore;
         private float _score;
@@ -25,9 +27,14 @@ namespace Players
         public event Action<int> LevelIncreased;
         public event Action Winning;
 
+        public void SetBoost(IStatBuffer boost)
+        {
+            _calculableScore = boost as ICalculableScore;
+        }
+        
         public void IncreaseScore(float value)
         {
-            _score += value;
+            _score += _calculableScore.CalculateScore(value);
             
             if (_score >= _maxScore)
                 RaiseLevel();
