@@ -10,8 +10,6 @@ namespace Players
     [RequireComponent(typeof(BoosterVisualizer))]
     public class PlayerSetup : MonoBehaviour
     {
-        private const float Zero = 0f;
-        
         [Header("UI")] 
         [SerializeField] private LevelBar _levelBar;
         [SerializeField] private StageBar _stageBar;
@@ -26,7 +24,6 @@ namespace Players
 
         [Space, Header("Move Options")] 
         [SerializeField] private Transform _rotationPoint;
-        [SerializeField] private float _startSpeed;
 
         [Space, Header("Booster Effects")] 
         [SerializeField] private float _updateDelay;
@@ -48,16 +45,13 @@ namespace Players
         private PlayerPresenter _playerPresenter;
         private BoosterPresenter _boosterPresenter;
 
-        private void Awake()
+        public void Initialize(IMovable movable, ICalculableScore calculableScore)
         {
             _collisionDetector = GetComponent<PlayerCollisionDetector>();
             _scanner = GetComponent<PlayerScanner>();
             _sizeScaler = GetComponent<SizeScaler>();
             _mover = GetComponent<Mover>();
             _transform = transform;
-
-            IMovable movable = new Speed(_startSpeed, Zero);
-            ICalculableScore calculableScore = new Score(Zero);
 
             _model = new Goop(_startStage, _scoreScaler, _startMaxScore, _levelsPerStage);
             _injector = new BoosterInjector();
@@ -82,7 +76,7 @@ namespace Players
 
         private void Start()
         {
-            _model.IncreaseScore(Zero);
+            _model.IncreaseScore();
         }
 
         private void OnDisable()
