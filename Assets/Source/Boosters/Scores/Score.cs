@@ -2,7 +2,7 @@
 {
     public class Score : ICalculableScore
     {
-        public Score(float lifeTime)
+        public Score(float lifeTime = 0f)
         {
             LifeTime = lifeTime;
         }

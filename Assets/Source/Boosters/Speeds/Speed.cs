@@ -4,7 +4,7 @@
     {
         private readonly float _value;
 
-        public Speed(float value, float lifeTime)
+        public Speed(float value, float lifeTime = 0f)
         {
             _value = value;
             LifeTime = lifeTime;
