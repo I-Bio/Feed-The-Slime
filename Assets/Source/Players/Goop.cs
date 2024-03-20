@@ -42,6 +42,11 @@ namespace Players
             ScoreChanged?.Invoke(_score, _maxScore);
         }
 
+        public void IncreaseScore()
+        {
+            ScoreChanged?.Invoke(_score, _maxScore);
+        }
+
         private void RaiseLevel()
         {
             _maxScore *= _scoreScaler;
