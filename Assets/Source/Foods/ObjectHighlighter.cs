@@ -3,18 +3,20 @@ using UnityEngine;
 
 namespace Foods
 {
+    [RequireComponent(typeof(Outline))]
     public class ObjectHighlighter : MonoBehaviour, ISelectable
     {
         private MeshRenderer _meshRenderer;
-        private Material _standard;
-        private Material _highlighted;
+        private Material[] _standard;
+        private Material[] _highlighted;
         private bool _isSelect;
         
-        public void Initialize(MeshRenderer meshRenderer, Material standard, Material highlighted)
+        public void Initialize(MeshRenderer meshRenderer, Material[] standard, Material[] highlighted)
         {
             _meshRenderer = meshRenderer;
             _standard = standard;
             _highlighted = highlighted;
+            Deselect();
         }
 
         public event Action<SatietyStage> GoingSelect;
@@ -30,13 +32,13 @@ namespace Foods
         public void SetSelection()
         {
             _isSelect = true;
-            _meshRenderer.material = _highlighted;
+            _meshRenderer.materials = _highlighted;
         }
 
         public void Deselect()
         {
             _isSelect = false;
-            _meshRenderer.material = _standard;
+            _meshRenderer.materials = _standard;
         }
     }
 }
