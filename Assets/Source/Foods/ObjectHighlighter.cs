@@ -16,7 +16,6 @@ namespace Foods
             _meshRenderer = meshRenderer;
             _standard = standard;
             _highlighted = highlighted;
-            Deselect();
         }
 
         public event Action<SatietyStage> GoingSelect;
