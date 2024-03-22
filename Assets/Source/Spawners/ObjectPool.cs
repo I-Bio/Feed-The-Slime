@@ -12,12 +12,17 @@ namespace Spawners
         public T Pull<T>(Vector3 position) where T: class
         {
             if (_spawnQueue.Count == 0)
-                Instantiate(_spawnableObject, position, Quaternion.identity).Initialize(this).Push();
+                PushOnInitialize(Instantiate(_spawnableObject, position, Quaternion.identity).Initialize(this));
             
             return _spawnQueue.Dequeue().Pull<T>(position);
         }
 
         public virtual void Push(SpawnableObject spawnableObject)
+        {
+            PushOnInitialize(spawnableObject);
+        }
+
+        private void PushOnInitialize(SpawnableObject spawnableObject)
         {
             spawnableObject.SetActive(false);
             _spawnQueue.Enqueue(spawnableObject);
