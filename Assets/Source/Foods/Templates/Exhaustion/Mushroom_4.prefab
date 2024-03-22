@@ -110,7 +110,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 2438ae06d11849c478e54d80b0c39ffa, type: 2}
   - {fileID: 2100000, guid: be5bb5211164fcd43a514a0b322a2044, type: 2}
   _scorePerEat: 0.6
-  _stage: 1
+  _stage: 0
 --- !u!65 &7511739461969043073
 BoxCollider:
   m_ObjectHideFlags: 0

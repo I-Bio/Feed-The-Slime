@@ -107,7 +107,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 2438ae06d11849c478e54d80b0c39ffa, type: 2}
   - {fileID: 2100000, guid: be5bb5211164fcd43a514a0b322a2044, type: 2}
   _scorePerEat: 2.8
-  _stage: 2
+  _stage: 1
 --- !u!114 &8803207476199554655
 MonoBehaviour:
   m_ObjectHideFlags: 0
