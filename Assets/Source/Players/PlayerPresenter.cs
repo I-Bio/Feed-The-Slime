@@ -58,6 +58,7 @@ namespace Players
 
         private void OnSizeIncreased(SatietyStage stage)
         {
+            _scanner.SetSatiety(stage);
             _sizeScaler.Scale(stage);
             _scanner.Rescan();
         }
