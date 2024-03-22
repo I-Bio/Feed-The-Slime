@@ -14,8 +14,10 @@ namespace Players
         private float _score;
         private int _currentLevel;
 
-        public Goop(SatietyStage stage,float scoreScaler, float maxScore, int levelsPerStage)
+        public Goop(ICalculableScore calculableScore, SatietyStage stage, float scoreScaler, float maxScore,
+            int levelsPerStage)
         {
+            _calculableScore = calculableScore;
             _stage = stage;
             _scoreScaler = scoreScaler;
             _maxScore = maxScore;
@@ -31,14 +33,14 @@ namespace Players
         {
             _calculableScore = boost as ICalculableScore;
         }
-        
+
         public void IncreaseScore(float value)
         {
             _score += _calculableScore.CalculateScore(value);
-            
+
             if (_score >= _maxScore)
                 RaiseLevel();
-            
+
             ScoreChanged?.Invoke(_score, _maxScore);
         }
 
@@ -60,7 +62,7 @@ namespace Players
         private void RaiseStage()
         {
             int satiety = (int)_stage++;
-            
+
             if (Enum.GetValues(typeof(SatietyStage)).Length - 1 >= satiety)
             {
                 _stage = (SatietyStage)satiety;
