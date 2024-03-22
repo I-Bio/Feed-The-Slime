@@ -11,6 +11,8 @@ namespace Spawners
         private readonly List<Transform> _spawnPoints = new List<Transform>();
         
         [SerializeField] private Transform _pointsHolder;
+        [SerializeField] private Sprite _speedIcon;
+        [SerializeField] private Sprite _scoreIcon;
         [SerializeField] private Vector3 _offSet;
         [SerializeField] private float _waitTime;
         [SerializeField] private float _maxLifeTime;
@@ -24,7 +26,7 @@ namespace Spawners
 
         public void Initialize(IMovable movable, ICalculableScore calculableScore)
         {
-            _fabric = new BoosterFabric(movable, calculableScore, _scaleValues, _additionalValues);
+            _fabric = new BoosterFabric(movable, calculableScore, _scaleValues, _additionalValues, _speedIcon, _scoreIcon);
             
             CollectPoints();
             RequestBooster();

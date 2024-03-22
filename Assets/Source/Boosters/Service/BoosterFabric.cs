@@ -20,12 +20,14 @@ namespace Boosters
         private readonly float[] _additionalValues;
 
         public BoosterFabric(IMovable playerSpeed, ICalculableScore playerScore, float[] scaleValues,
-            float[] additionalValues)
+            float[] additionalValues, Sprite speedIcon, Sprite scoreIcon)
         {
             _playerSpeed = playerSpeed;
             _playerScore = playerScore;
             _scaleValues = scaleValues;
             _additionalValues = additionalValues;
+            _speedIcon = speedIcon;
+            _scoreIcon = scoreIcon;
         }
 
         public KeyValuePair<IStatBuffer, KeyValuePair<string, Sprite>> CreateBoost(BoosterType type, float lifeTime)
