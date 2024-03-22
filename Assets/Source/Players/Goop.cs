@@ -1,17 +1,18 @@
 ﻿using System;
 using Boosters;
+using UnityEngine;
 
 namespace Players
 {
     public class Goop : ISettable
     {
         private readonly float _scoreScaler;
-        private readonly int _levelsPerStage;
 
         private ICalculableScore _calculableScore;
         private SatietyStage _stage;
         private float _maxScore;
         private float _score;
+        private int _levelsPerStage;
         private int _currentLevel;
 
         public Goop(ICalculableScore calculableScore, SatietyStage stage, float scoreScaler, float maxScore,
@@ -61,11 +62,11 @@ namespace Players
 
         private void RaiseStage()
         {
-            int satiety = (int)_stage++;
-
-            if (Enum.GetValues(typeof(SatietyStage)).Length - 1 >= satiety)
+            _levelsPerStage += _levelsPerStage;
+            
+            if (Enum.GetValues(typeof(SatietyStage)).Length - 1 >= (int)_stage + 1)
             {
-                _stage = (SatietyStage)satiety;
+                _stage++;
                 SizeIncreased?.Invoke(_stage);
             }
             else
