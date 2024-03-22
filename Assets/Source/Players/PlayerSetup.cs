@@ -51,9 +51,10 @@ namespace Players
             _scanner = GetComponent<PlayerScanner>();
             _sizeScaler = GetComponent<SizeScaler>();
             _mover = GetComponent<Mover>();
+            _effectsVisualizer = GetComponent<BoosterVisualizer>();
             _transform = transform;
 
-            _model = new Goop(_startStage, _scoreScaler, _startMaxScore, _levelsPerStage);
+            _model = new Goop(calculableScore, _startStage, _scoreScaler, _startMaxScore, _levelsPerStage);
             _injector = new BoosterInjector();
             _ejector = new BoosterEjector(calculableScore, movable);
             _service = new BoosterService();
