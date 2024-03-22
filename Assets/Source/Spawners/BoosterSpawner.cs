@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Boosters;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Spawners
 {
@@ -10,6 +12,7 @@ namespace Spawners
         private readonly List<Transform> _spawnPoints = new List<Transform>();
         
         [SerializeField] private Transform _pointsHolder;
+        [SerializeField] private Vector3 _offSet;
         [SerializeField] private float _waitTime;
         [SerializeField] private float _maxLifeTime;
         [SerializeField] private float _minLifeTime;
@@ -42,12 +45,11 @@ namespace Spawners
         
         private void Spawn()
         {
-            Vector3 position = _spawnPoints.GetRandom().position;
+            Vector3 position = _spawnPoints.GetRandom().position + _offSet;
             BoosterType type = _boosterTypes.GetRandom();
             float lifeTime = Random.Range(_minLifeTime, _maxLifeTime);
-            IStatBuffer boost = _fabric.CreateBoost(type, lifeTime);
-            
-            Pull<Booster>(position).Initialize(boost);
+
+            Pull<Booster>(position).Initialize(_fabric.CreateBoost(type, lifeTime));
         }
 
         private IEnumerator SpawnRoutine()
