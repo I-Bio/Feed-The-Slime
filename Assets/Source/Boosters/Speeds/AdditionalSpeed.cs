@@ -13,7 +13,11 @@
         }
         
         public float LifeTime { get; set; }
-        
+        public void Accept(IBoosterVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
+
         public float GetSpeed()
         {
             return _movable.GetSpeed() + _additionValue;
