@@ -43,7 +43,7 @@ namespace Boosters
         {
             IStatBuffer boost = booster.GetBoost();
             
-            Visit(boost);
+            boost.Accept(this);
 
             if (_isAllowBoost == false)
                 return;
@@ -53,11 +53,6 @@ namespace Boosters
             booster.Use();
             _currentBoosters.Add(boost);
             Injected?.Invoke(boost);
-        }
-        
-        public void Visit(IStatBuffer boost)
-        {
-            Visit(boost as dynamic);
         }
 
         public void Visit(IMovable movable)

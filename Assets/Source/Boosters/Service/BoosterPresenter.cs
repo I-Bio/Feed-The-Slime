@@ -50,12 +50,12 @@
 
         private void OnGoingInject(IStatBuffer boost)
         {
-            _injector.Visit(boost);
+            boost.Accept(_injector);
         }
 
         private void OnGoingEject(IStatBuffer boost)
         {
-            _ejector.Visit(boost);
+            boost.Accept(_ejector);
         }
 
         private void OnScoreGained(ICalculableScore calculableScore)
