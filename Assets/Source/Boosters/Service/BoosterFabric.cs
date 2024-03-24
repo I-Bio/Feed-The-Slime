@@ -8,7 +8,6 @@ namespace Boosters
     {
         private const string Plus = "+";
         private const string Multiplication = "*";
-        private const float Zero = 0f;
         
         private readonly IMovable _playerSpeed;
         private readonly ICalculableScore _playerScore;
