@@ -16,11 +16,6 @@ namespace Boosters
         public event Action<IMovable> SpeedEnded;
         public event Action<ICalculableScore> ScoreEnded;
 
-        public void Visit(IStatBuffer boost)
-        {
-            Visit(boost as dynamic);
-        }
-
         public void Visit(IMovable movable)
         {
             SpeedEnded?.Invoke(_standardSpeed);

@@ -21,11 +21,6 @@ namespace Boosters
             
             _routine = StartCoroutine(UpdateRoutine());
         }
-        
-        public void Visit(IStatBuffer boost)
-        {
-            Visit(boost as dynamic);
-        }
 
         public void Visit(IMovable movable)
         {
