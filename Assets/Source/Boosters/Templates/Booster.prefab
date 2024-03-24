@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7323065471999313672}
   - component: {fileID: 5283985142509098976}
   - component: {fileID: 3060440933410227792}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Booster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 4472893106704019649}
   - component: {fileID: 4409096271957179995}
   - component: {fileID: 5187783239716745624}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -326,7 +326,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4178882296012255128}
   - component: {fileID: 1252035240164623135}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -408,9 +408,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2871288893520967641}
     m_Modifications:
+    - target: {fileID: 100436, guid: add31a167134c4f4095d6610013a701f, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 107158, guid: add31a167134c4f4095d6610013a701f, type: 3}
       propertyPath: m_Name
       value: StarFogFlowBlue
+      objectReference: {fileID: 0}
+    - target: {fileID: 107158, guid: add31a167134c4f4095d6610013a701f, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 171286, guid: add31a167134c4f4095d6610013a701f, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 426230, guid: add31a167134c4f4095d6610013a701f, type: 3}
       propertyPath: m_LocalScale.x
