@@ -1,4 +1,5 @@
 ﻿using Boosters;
+using Cinemachine;
 using UnityEngine;
 
 namespace Players
@@ -13,9 +14,11 @@ namespace Players
         [Header("UI")] 
         [SerializeField] private LevelBar _levelBar;
         [SerializeField] private StageBar _stageBar;
-
+        
         [Space, Header("Player Options")] 
+        [SerializeField] private CinemachineVirtualCamera _virtualCamera;
         [SerializeField] private float _scaleFactor;
+        [SerializeField] private float _cameraScale;
 
         [SerializeField] private float _scoreScaler;
         [SerializeField] private float _startMaxScore;
@@ -64,7 +67,7 @@ namespace Players
             _boosterPresenter = new BoosterPresenter(_model, _mover, _injector, _ejector, _service, _effectsVisualizer);
 
             _scanner.SetSatiety(_startStage);
-            _sizeScaler.Initialize(_transform, _scaleFactor);
+            _sizeScaler.Initialize(_transform, _virtualCamera, _scaleFactor, _cameraScale);
             _mover.Initialize(movable, _rotationPoint, _transform.forward);
             _effectsVisualizer.Initialize(_updateDelay, _speedEffect, _scoreEffect);
         }
