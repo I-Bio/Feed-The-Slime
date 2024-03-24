@@ -25,11 +25,11 @@
             _service.Injected += OnGoingInject;
             _service.Ejected += OnGoingEject;
             
-            _injector.ScoreBoosterGained += OnScoreBoosterChanged;
-            _injector.SpeedBoosterGained += OnSpeedBoosterChanged;
+            _injector.ScoreBoosterGained += OnScoreGained;
+            _injector.SpeedBoosterGained += OnSpeedGained;
 
-            _ejector.ScoreEnded += OnScoreBoosterChanged;
-            _ejector.SpeedEnded += OnSpeedBoosterChanged;
+            _ejector.ScoreEnded += OnScoreReset;
+            _ejector.SpeedEnded += OnSpeedReset;
             
             _visualizer.Updated += OnUpdated;
         }
@@ -39,11 +39,11 @@
             _service.Injected -= OnGoingInject;
             _service.Ejected -= OnGoingEject;
             
-            _injector.ScoreBoosterGained -= OnScoreBoosterChanged;
-            _injector.SpeedBoosterGained -= OnSpeedBoosterChanged;
+            _injector.ScoreBoosterGained -= OnScoreGained;
+            _injector.SpeedBoosterGained -= OnSpeedGained;
 
-            _ejector.ScoreEnded -= OnScoreBoosterChanged;
-            _ejector.SpeedEnded -= OnSpeedBoosterChanged;
+            _ejector.ScoreEnded -= OnScoreReset;
+            _ejector.SpeedEnded -= OnSpeedReset;
 
             _visualizer.Updated -= OnUpdated;
         }
@@ -58,16 +58,26 @@
             _ejector.Visit(boost);
         }
 
-        private void OnScoreBoosterChanged(ICalculableScore calculableScore)
+        private void OnScoreGained(ICalculableScore calculableScore)
         {
             _scoreHolder.SetBoost(calculableScore);
             _visualizer.Visit(calculableScore);
         }
+        
+        private void OnScoreReset(ICalculableScore calculableScore)
+        {
+            _scoreHolder.SetBoost(calculableScore);
+        }
 
-        private void OnSpeedBoosterChanged(IMovable movable)
+        private void OnSpeedGained(IMovable movable)
         {
             _speedHolder.SetBoost(movable);
             _visualizer.Visit(movable);
+        }
+        
+        private void OnSpeedReset(IMovable movable)
+        {
+            _speedHolder.SetBoost(movable);
         }
 
         private void OnUpdated(float delay)
