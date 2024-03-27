@@ -1,4 +1,5 @@
-﻿using Boosters;
+﻿using Abilities;
+using Boosters;
 using Cinemachine;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ namespace Players
     [RequireComponent(typeof(SizeScaler))]
     [RequireComponent(typeof(Mover))]
     [RequireComponent(typeof(BoosterVisualizer))]
+    [RequireComponent(typeof(PlayerAnimation))]
+    [RequireComponent(typeof(AbilityCaster))]
     public class PlayerSetup : MonoBehaviour
     {
         [Header("UI")] 
@@ -33,10 +36,18 @@ namespace Players
         [SerializeField] private ParticleSystem _speedEffect;
         [SerializeField] private ParticleSystem _scoreEffect;
 
+        [Space, Header("Animation")] 
+        [SerializeField] private Animator _animator;
+        [SerializeField] private string _eat;
+        [SerializeField] private string _idle;
+        [SerializeField] private string _hide;
+
         private PlayerCollisionDetector _collisionDetector;
         private PlayerScanner _scanner;
         private SizeScaler _sizeScaler;
         private Mover _mover;
+        private PlayerAnimation _animation;
+        private AbilityCaster _abilityCaster;
         private Transform _transform;
 
         private Goop _model;
@@ -47,6 +58,7 @@ namespace Players
 
         private PlayerPresenter _playerPresenter;
         private BoosterPresenter _boosterPresenter;
+        private AbilityPresenter _abilityPresenter;
 
         public void Initialize(IMovable movable, ICalculableScore calculableScore)
         {
@@ -55,6 +67,8 @@ namespace Players
             _sizeScaler = GetComponent<SizeScaler>();
             _mover = GetComponent<Mover>();
             _effectsVisualizer = GetComponent<BoosterVisualizer>();
+            _animation = GetComponent<PlayerAnimation>();
+            _abilityCaster = GetComponent<AbilityCaster>();
             _transform = transform;
 
             _model = new Goop(calculableScore, _startStage, _scoreScaler, _startMaxScore, _levelsPerStage);
@@ -63,19 +77,23 @@ namespace Players
             _service = new BoosterService();
 
             _playerPresenter = new PlayerPresenter(_model, _collisionDetector, _scanner, _sizeScaler, _levelBar,
-                _stageBar, _service);
+                _stageBar, _service, _animation, _abilityCaster);
             _boosterPresenter = new BoosterPresenter(_model, _mover, _injector, _ejector, _service, _effectsVisualizer);
+            _abilityPresenter = new AbilityPresenter(_abilityCaster, _animation, _mover);
 
-            _scanner.SetSatiety(_startStage);
+            _scanner.SetStage(_startStage);
             _sizeScaler.Initialize(_transform, _virtualCamera, _scaleFactor, _cameraScale);
             _mover.Initialize(movable, _rotationPoint, _transform.forward);
             _effectsVisualizer.Initialize(_updateDelay, _speedEffect, _scoreEffect);
+            _animation.Initialize(_animator, _eat, _idle, _hide);
+            _abilityCaster.Initialize(_transform, _startStage);
         }
 
         private void OnEnable()
         {
             _playerPresenter.Enable();
             _boosterPresenter.Enable();
+            _abilityPresenter.Enable();
         }
 
         private void Start()
@@ -86,7 +104,8 @@ namespace Players
         private void OnDisable()
         {
             _playerPresenter.Disable();
-            _boosterPresenter.Enable();
+            _boosterPresenter.Disable();
+            _abilityPresenter.Disable();
         }
     }
 }
