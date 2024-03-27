@@ -1,5 +1,4 @@
-﻿using System;
-using Boosters;
+﻿using Boosters;
 using Players;
 using UnityEngine;
 
@@ -11,7 +10,7 @@ namespace Spawners
         [SerializeField] private PlayerSetup _player;
         [SerializeField] private float _startSpeed;
         [SerializeField] private Transform[] _zonePoints;
-        [SerializeField] private FoodPreparer[] _zoneTemplates;
+        [SerializeField] private ThemePreparer[] _zoneTemplates;
 
         private void Awake()
         {
@@ -22,7 +21,7 @@ namespace Spawners
             _boosterSpawner.Initialize(movable, calculableScore);
             
             foreach (Transform zonePoint in _zonePoints)
-                Instantiate(_zoneTemplates.GetRandom(), zonePoint).Initialize();
+                Instantiate(_zoneTemplates.GetRandom(), zonePoint).Initialize(_player.GetComponent<IHidden>());
         }
     }
 }
