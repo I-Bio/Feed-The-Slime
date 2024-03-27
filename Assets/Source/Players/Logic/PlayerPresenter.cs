@@ -11,9 +11,11 @@ namespace Players
         private readonly LevelBar _levelBar;
         private readonly StageBar _stageBar;
         private readonly IInsertable _boosterService;
+        private readonly PlayerAnimation _animation;
+        private readonly IStageSettable _caster;
         
         public PlayerPresenter(Goop model, PlayerCollisionDetector collisionDetector, PlayerScanner scanner,
-            SizeScaler sizeScaler, LevelBar levelBar, StageBar stageBar, IInsertable boosterService)
+            SizeScaler sizeScaler, LevelBar levelBar, StageBar stageBar, IInsertable boosterService, PlayerAnimation animation, IStageSettable caster)
         {
             _model = model;
             _collisionDetector = collisionDetector;
@@ -22,6 +24,8 @@ namespace Players
             _levelBar = levelBar;
             _stageBar = stageBar;
             _boosterService = boosterService;
+            _animation = animation;
+            _caster = caster;
         }
         
         public void Enable()
@@ -58,7 +62,8 @@ namespace Players
 
         private void OnSizeIncreased(SatietyStage stage)
         {
-            _scanner.SetSatiety(stage);
+            _caster.SetStage(stage);
+            _scanner.SetStage(stage);
             _scanner.Rescan();
             _sizeScaler.Scale(stage);
         }
@@ -70,6 +75,7 @@ namespace Players
 
         private void OnScoreGained(float value)
         {
+            _animation.PlayAttack();
             _model.IncreaseScore(value);
         }
 
