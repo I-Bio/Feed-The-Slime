@@ -19,7 +19,7 @@ namespace Foods
         private Food _model;
         private FoodPresenter _presenter;
         
-        private void Awake()
+        public void Initialize()
         {
             _ediblePart = GetComponent<EdiblePart>();
             _highlighter = GetComponent<ObjectHighlighter>();
@@ -30,21 +30,18 @@ namespace Foods
             
             _ediblePart.Initialize(_scorePerEat);
             _highlighter.Initialize(_meshRenderer, _standard, _highlighted);
-        }
-        
-        private void OnEnable()
-        {
+            
             _presenter.Enable();
         }
-
-        private void OnDisable()
-        {
-            _presenter.Disable();
-        }
-
-        public void Initialize()
+        
+        private void Start()
         {
             _highlighter.Deselect();
+        }
+
+        private void OnDestroy()
+        {
+            _presenter.Disable();
         }
     }
 }
