@@ -42,6 +42,8 @@ namespace Players
         {
             _canMove = true;
         }
+
+        public void ProhibitMove()
         {
             _canMove = false;   
         }
