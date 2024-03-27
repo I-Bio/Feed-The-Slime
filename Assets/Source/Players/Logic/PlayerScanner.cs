@@ -10,7 +10,7 @@ namespace Players
         private Coroutine _routine;
         private SatietyStage _stage;
         
-        public void SetSatiety(SatietyStage stage)
+        public void SetStage(SatietyStage stage)
         {
             _stage = stage;
         }
