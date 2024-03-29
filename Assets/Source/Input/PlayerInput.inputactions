@@ -16,7 +16,7 @@
                 },
                 {
                     "name": "Touch",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "4d000ca8-9996-48bb-aef7-b9028fae599e",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -30,6 +30,15 @@
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Hide",
+                    "type": "Button",
+                    "id": "eda9ffe5-2b61-4e8c-96c0-9ae09c1fe8cc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)",
                     "initialStateCheck": true
                 }
             ],
@@ -86,6 +95,17 @@
                     "processors": "",
                     "groups": "Desktop",
                     "action": "Touch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f9fb4111-c09b-4258-acaf-24529018f8af",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch;Desktop",
+                    "action": "Hide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
