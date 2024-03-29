@@ -195,6 +195,7 @@ MonoBehaviour:
   - {fileID: 4655764175799599284}
   - {fileID: 5665391651221385764}
   - {fileID: 8199008306693722614}
+  _enemies: []
 --- !u!1001 &40583729052127327
 PrefabInstance:
   m_ObjectHideFlags: 0
