@@ -6,14 +6,14 @@ namespace Foods
     [RequireComponent(typeof(Outline))]
     public class ObjectHighlighter : MonoBehaviour, ISelectable
     {
-        private MeshRenderer _meshRenderer;
+        private Renderer _renderer;
         private Material[] _standard;
         private Material[] _highlighted;
         private bool _isSelect;
         
-        public void Initialize(MeshRenderer meshRenderer, Material[] standard, Material[] highlighted)
+        public void Initialize(Renderer renderer, Material[] standard, Material[] highlighted)
         {
-            _meshRenderer = meshRenderer;
+            _renderer = renderer;
             _standard = standard;
             _highlighted = highlighted;
         }
@@ -31,13 +31,13 @@ namespace Foods
         public void SetSelection()
         {
             _isSelect = true;
-            _meshRenderer.materials = _highlighted;
+            _renderer.materials = _highlighted;
         }
 
         public void Deselect()
         {
             _isSelect = false;
-            _meshRenderer.materials = _standard;
+            _renderer.materials = _standard;
         }
     }
 }
