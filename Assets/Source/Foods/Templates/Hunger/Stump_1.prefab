@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6632842796689665130}
   - component: {fileID: 9041570587021769070}
   - component: {fileID: -3528556175578298367}
+  - component: {fileID: -6524526316103494541}
   m_Layer: 0
   m_Name: Stump_1
   m_TagString: Untagged
@@ -108,6 +109,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: be5bb5211164fcd43a514a0b322a2044, type: 2}
   _scorePerEat: 2.8
   _stage: 1
+  _renderer: {fileID: 7415154899741804937}
 --- !u!114 &8125300334688666433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,3 +173,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.64708936, y: 0.8126262, z: 0.55212176}
   m_Center: {x: -0.04216495, y: 0.4063131, z: 0.00079646707}
+--- !u!208 &-6524526316103494541
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 687264877204877356}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.324, y: 0.40600002, z: 0.27600002}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.042000003, y: 0.40600002, z: 0.001}
+  m_TimeToStationary: 0.5

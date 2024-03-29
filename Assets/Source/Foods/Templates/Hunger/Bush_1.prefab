@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8392639199793092576}
   - component: {fileID: 2392905073383074244}
   - component: {fileID: -4201312297118361295}
+  - component: {fileID: 6602379003374389678}
   m_Layer: 0
   m_Name: Bush_1
   m_TagString: Untagged
@@ -120,6 +121,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: be5bb5211164fcd43a514a0b322a2044, type: 2}
   _scorePerEat: 3.4
   _stage: 1
+  _renderer: {fileID: 4679791385674121221}
 --- !u!114 &8392639199793092576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,3 +173,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.79905903, y: 0.82053787, z: 0.82628477}
   m_Center: {x: 0.028796747, y: 0.39365986, z: -0.042423353}
+--- !u!208 &6602379003374389678
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5112594511968285236}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.4, y: 0.41000003, z: 0.41300002}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.029000001, y: 0.39400002, z: -0.042000003}
+  m_TimeToStationary: 0.5

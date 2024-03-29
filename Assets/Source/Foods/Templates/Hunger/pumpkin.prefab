@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8872267262310478981}
   - component: {fileID: 4940725114731228927}
   - component: {fileID: -3204828188444753141}
+  - component: {fileID: 4424938265591280617}
   m_Layer: 0
   m_Name: Pumpkin
   m_TagString: Untagged
@@ -114,6 +115,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: be5bb5211164fcd43a514a0b322a2044, type: 2}
   _scorePerEat: 8
   _stage: 1
+  _renderer: {fileID: 2613215216758619799}
 --- !u!114 &2609640008062276247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,3 +179,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.838656, y: 6.3, z: 7.8966}
   m_Center: {x: 0, y: 3.15, z: 0}
+--- !u!208 &4424938265591280617
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6207372339102117362}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 3.4190001, y: 3.15, z: 3.9480002}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 3.15, z: 0}
+  m_TimeToStationary: 0.5

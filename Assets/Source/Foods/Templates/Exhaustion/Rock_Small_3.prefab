@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1342438631350344445}
   - component: {fileID: 2603557908420549219}
   - component: {fileID: 238640336553148793}
+  - component: {fileID: 2576764349270158201}
   m_Layer: 0
   m_Name: Rock_Small_3
   m_TagString: Untagged
@@ -108,6 +109,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: be5bb5211164fcd43a514a0b322a2044, type: 2}
   _scorePerEat: 0.6
   _stage: 0
+  _renderer: {fileID: 7815426640436510803}
 --- !u!65 &7740177497729180170
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -171,3 +173,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f379dd332d54aff9358d4df5cc4d953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!208 &2576764349270158201
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504915773367656301}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.087000005, y: 0.047000002, z: 0.082}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.001, y: 0, z: 0.002}
+  m_TimeToStationary: 0.5

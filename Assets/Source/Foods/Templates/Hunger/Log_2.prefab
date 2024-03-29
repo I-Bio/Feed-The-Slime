@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5419201943718978417}
   - component: {fileID: 1562033611487131980}
   - component: {fileID: 1538530144439205359}
+  - component: {fileID: 6536347148209715829}
   m_Layer: 0
   m_Name: Log_2
   m_TagString: Untagged
@@ -111,6 +112,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: be5bb5211164fcd43a514a0b322a2044, type: 2}
   _scorePerEat: 2.8
   _stage: 1
+  _renderer: {fileID: 4038267323305153609}
 --- !u!114 &3392335265822020630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,3 +176,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.33961, y: 1.732051, z: 7.1}
   m_Center: {x: 0, y: 0.8660255, z: 0}
+--- !u!208 &6536347148209715829
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7791871050739167385}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.1700001, y: 0.86600006, z: 3.5500002}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.86600006, z: 0}
+  m_TimeToStationary: 0.5

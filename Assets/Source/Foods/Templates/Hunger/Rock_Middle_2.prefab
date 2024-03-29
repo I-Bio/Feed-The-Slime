@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 163906769352877276}
   - component: {fileID: 447492200683638737}
   - component: {fileID: -4385551067229594685}
+  - component: {fileID: -5685747793740227237}
   m_Layer: 0
   m_Name: Rock_Middle_2
   m_TagString: Untagged
@@ -108,6 +109,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: be5bb5211164fcd43a514a0b322a2044, type: 2}
   _scorePerEat: 2.8
   _stage: 1
+  _renderer: {fileID: 1395253575342924880}
 --- !u!114 &6852305979235002161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,3 +173,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.8555658, y: 0.53457344, z: 0.87340814}
   m_Center: {x: -0.016977249, y: 0.028850524, z: 0.0040054615}
+--- !u!208 &-5685747793740227237
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980901928136898326}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.42800003, y: 0.26700002, z: 0.437}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.017, y: 0.029000001, z: 0.004}
+  m_TimeToStationary: 0.5

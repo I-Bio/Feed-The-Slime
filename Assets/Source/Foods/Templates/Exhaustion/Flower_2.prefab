@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2668849004400637980}
   - component: {fileID: 6385307101339237051}
   - component: {fileID: 4448265122480018108}
+  - component: {fileID: 8661112809135989031}
   m_Layer: 0
   m_Name: Flower_2
   m_TagString: Untagged
@@ -108,6 +109,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: be5bb5211164fcd43a514a0b322a2044, type: 2}
   _scorePerEat: 0.6
   _stage: 0
+  _renderer: {fileID: 8883011320975790548}
 --- !u!65 &4034585183083563331
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -171,3 +173,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f379dd332d54aff9358d4df5cc4d953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!208 &8661112809135989031
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3046152644092641297}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.15100001, y: 0.18100001, z: 0.120000005}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.009000001, y: 0.172, z: -0.014}
+  m_TimeToStationary: 0.5

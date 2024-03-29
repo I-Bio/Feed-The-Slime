@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5805288833515834150}
   - component: {fileID: 4116878250802313337}
   - component: {fileID: 3379163971990770875}
+  - component: {fileID: -3790525912982547962}
   m_Layer: 0
   m_Name: Grass_1
   m_TagString: Untagged
@@ -108,6 +109,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: be5bb5211164fcd43a514a0b322a2044, type: 2}
   _scorePerEat: 0.6
   _stage: 0
+  _renderer: {fileID: 5812529408220636947}
 --- !u!65 &5748938374591994411
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -171,3 +173,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f379dd332d54aff9358d4df5cc4d953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!208 &-3790525912982547962
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7235044858405554900}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.127, y: 0.19000001, z: 0.128}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.044000003, y: 0.18200001, z: 0.016}
+  m_TimeToStationary: 0.5
