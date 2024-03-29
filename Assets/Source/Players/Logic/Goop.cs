@@ -1,6 +1,5 @@
 ﻿using System;
 using Boosters;
-using UnityEngine;
 
 namespace Players
 {
