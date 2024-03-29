@@ -12,14 +12,13 @@ namespace Enemies
         private readonly Vector3 _startPosition;
         private readonly float _followDistance;
 
-        private bool _isIdled;
-        
-        public Enemy(Transform transform, IHidden player, IEnemyPolicy policy, Vector3 startPosition, float followDistance)
+        public Enemy(Transform transform, IHidden player, IEnemyPolicy policy, SatietyStage stage, float followDistance)
         {
             _transform = transform;
             _player = player;
             _policy = policy;
-            _startPosition = startPosition;
+            _stage = stage;
+            _startPosition = _transform.position;
             _followDistance = followDistance;
         }
 
@@ -39,17 +38,13 @@ namespace Enemies
                 if (_player.Stage < _stage)
                     Moved?.Invoke(_player.Position);
                 else
-                    Moved?.Invoke(-_player.Position.normalized * distance);
+                    Moved?.Invoke(_transform.position + -_player.Position.normalized * distance);
                 
-                _isIdled = false;
-            }
-            
-            if (_isIdled == true)
                 return;
-            
+            }
+
             if (currentPosition == _startPosition)
             {
-                _isIdled = true;
                 Idled?.Invoke();
                 return;
             }
