@@ -23,6 +23,9 @@ namespace Input
 
         public void Activate(Vector2 position)
         {
+            if (RectTransformUtility.RectangleContainsScreenPoint(_parent, position, _camera) == false)
+                return;
+            
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(_parent, position, _camera,
                     out Vector2 localPosition) == false)
                 return;
