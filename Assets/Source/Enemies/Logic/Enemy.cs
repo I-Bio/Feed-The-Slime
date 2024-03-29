@@ -12,6 +12,8 @@ namespace Enemies
         private readonly Vector3 _startPosition;
         private readonly float _followDistance;
 
+        private bool _isIdled;
+
         public Enemy(Transform transform, IHidden player, IEnemyPolicy policy, SatietyStage stage, float followDistance)
         {
             _transform = transform;
@@ -20,6 +22,7 @@ namespace Enemies
             _stage = stage;
             _startPosition = _transform.position;
             _followDistance = followDistance;
+            _isIdled = true;
         }
 
         public event Action<Vector3> Moved;
@@ -27,28 +30,32 @@ namespace Enemies
 
         public void CompareDistance()
         {
-            if (_policy.CanMove(_player.IsHidden) == false)
-                return;
-            
-            Vector3 currentPosition = _transform.position;
-            float distance = Vector3.Distance(currentPosition, _player.Position);
-            
-            if (distance <= _followDistance)
+            if (_policy.CanMove(_player.IsHidden) == true)
             {
-                if (_player.Stage < _stage)
-                    Moved?.Invoke(_player.Position);
-                else
-                    Moved?.Invoke(_transform.position + -_player.Position.normalized * distance);
-                
+                float distance = Vector3.Distance(_transform.position, _player.Position);
+
+                if (distance <= _followDistance)
+                {
+                    if (_player.Stage < _stage)
+                        Moved?.Invoke(_player.Position);
+                    else
+                        Moved?.Invoke(-_player.Position);
+
+                    _isIdled = false;
+                    return;
+                }
+            }
+
+            if (_isIdled == true)
+                return;
+
+            if (_transform.position == _startPosition)
+            {
+                Idled?.Invoke();
+                _isIdled = true;
                 return;
             }
 
-            if (currentPosition == _startPosition)
-            {
-                Idled?.Invoke();
-                return;
-            }
-            
             Moved?.Invoke(_startPosition);
         }
     }
