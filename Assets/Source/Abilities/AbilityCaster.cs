@@ -41,7 +41,7 @@ namespace Abilities
 
         public void Show()
         {
-            IsHidden = true;
+            IsHidden = false;
             Showed?.Invoke();
         }
 
