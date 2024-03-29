@@ -4,7 +4,7 @@
     {
         public bool CanMove(bool isHidden)
         {
-            return isHidden;
+            return isHidden == false;
         }
     }
 }
