@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Abilities;
+using Players;
+using UnityEngine;
 
 namespace Input
 {
@@ -6,6 +8,7 @@ namespace Input
     {
         [SerializeField] private Joystick _joystick;
         [SerializeField] private Mover _player;
+        [SerializeField] private AbilityCaster _caster;
 
         private PlayerInput _model;
         private InputPresenter _presenter;
@@ -13,7 +16,7 @@ namespace Input
         private void Awake()
         {
             _model = new PlayerInput();
-            _presenter = new InputPresenter(_model, _joystick, _player);
+            _presenter = new InputPresenter(_model, _joystick, _player, _caster);
         }
 
         private void OnEnable()
