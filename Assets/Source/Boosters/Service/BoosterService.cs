@@ -39,20 +39,21 @@ namespace Boosters
             _toDeleteBoosters.Clear();
         }
 
-        public void TryInsert(IBooster booster)
+        public bool TryInsert(IBooster booster)
         {
             IStatBuffer boost = booster.GetBoost();
             
             boost.Accept(this);
 
             if (_isAllowBoost == false)
-                return;
+                return false;
             
             _isAllowBoost = false;
             
             booster.Use();
             _currentBoosters.Add(boost);
             Injected?.Invoke(boost);
+            return true;
         }
 
         public void Visit(IMovable movable)

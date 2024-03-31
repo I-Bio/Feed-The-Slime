@@ -2,6 +2,6 @@
 {
     public interface IInsertable
     {
-        public void TryInsert(IBooster booster);
+        public bool TryInsert(IBooster booster);
     }
 }
