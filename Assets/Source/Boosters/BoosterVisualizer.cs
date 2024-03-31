@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using Players;
+using Players.Effects;
 using UnityEngine;
 
 namespace Boosters
@@ -7,29 +9,26 @@ namespace Boosters
     public class BoosterVisualizer : MonoBehaviour, IBoosterVisitor
     {
         private float _delay;
-        private ParticleSystem _speed;
-        private ParticleSystem _score;
+        private EffectReproducer _effectReproducer;
         private Coroutine _routine;
 
         public event Action<float> Updated;
 
-        public void Initialize(float delay, ParticleSystem speed, ParticleSystem score)
+        public void Initialize(float delay, EffectReproducer effectReproducer)
         {
             _delay = delay;
-            _speed = speed;
-            _score = score;
-            
+            _effectReproducer = effectReproducer;
             _routine = StartCoroutine(UpdateRoutine());
         }
 
         public void Visit(IMovable movable)
         {
-            _speed.Play();
+            _effectReproducer.PlayEffect(EffectType.SpeedBoost);
         }
 
         public void Visit(ICalculableScore calculableScore)
         {
-            _score.Play();
+            _effectReproducer.PlayEffect(EffectType.ScoreBoost);
         }
         
         private IEnumerator UpdateRoutine()
