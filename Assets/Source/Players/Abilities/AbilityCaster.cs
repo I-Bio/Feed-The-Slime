@@ -1,5 +1,4 @@
 ﻿using System;
-using Abilities;
 using Spawners;
 using UnityEngine;
 
@@ -8,12 +7,10 @@ namespace Players
     [RequireComponent(typeof(LineRenderer))]
     public class AbilityCaster : ObjectPool, IHidden, ICaster
     {
-        private const float GravityDivider = 2f;
-        
         [SerializeField] private int _pointsCount;
-        [SerializeField] private float _stepBetweenPoints;
         [SerializeField] private float _castStrength;
         [SerializeField] private Vector3 _castOffset;
+        [SerializeField] private EatableSpawner _spawner;
         
         private Transform _transform;
         private LineRenderer _line;
@@ -29,6 +26,7 @@ namespace Players
         public void Initialize(Transform transform, SatietyStage stage)
         {
             _line = GetComponent<LineRenderer>();
+            _line.positionCount = _pointsCount;
             _transform = transform;
             Stage = stage;
             IsHidden = false;
@@ -54,28 +52,20 @@ namespace Players
         public void DrawCastTrajectory()
         {
             _line.enabled = true;
-            _line.positionCount = Mathf.CeilToInt(_pointsCount / _stepBetweenPoints) + 1;
 
             Vector3 start = _transform.position + _castOffset;
-            Vector3 startVelocity = _castStrength * (_transform.forward + Vector3.up);
-            int id = 0;
-            
-            _line.SetPosition(id, start);
+            Vector3 startVelocity = _castStrength * _transform.forward;
 
-            for (float time = 0; time < _pointsCount; time +=_stepBetweenPoints)
+            for (int id = 0; id < _pointsCount; id++)
             {
-                Vector3 position = start + time * startVelocity;
-                position.y = start.y + startVelocity.y * time + (Physics.gravity.y / GravityDivider * time * time);
-                id++;
-                
-                _line.SetPosition(id, position);
+                _line.SetPosition(id, start + id * startVelocity);
             }
         }
 
         public void CastSpit()
         {
             _line.enabled = false;
-            Pull<Projectile>(_transform.position + _castOffset).Initialize(_castStrength * (_transform.forward + Vector3.up));
+            Pull<Projectile>(_transform.position + _castOffset).Initialize(_castStrength * _transform.forward, _spawner);
             SpitCasted?.Invoke();
         }
     }
