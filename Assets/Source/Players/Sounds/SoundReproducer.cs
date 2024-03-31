@@ -1,15 +1,14 @@
-﻿using Players.Sounds;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Players
 {
     public class SoundReproducer : MonoBehaviour
     {
-        [SerializeField] private AudioSource[] _clips;
+        [SerializeField] private AudioSource[] _sources;
 
         public void PlayClip(SoundType sound)
         {
-            _clips[(int)sound].Play();
+            _sources[(int)sound].Play();
         }
     }
 }
