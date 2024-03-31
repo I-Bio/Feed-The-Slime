@@ -8,13 +8,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PlayerTrigger
   - Water
   - UI
   - Player
   - Triggers
   - Food
-  - 
+  - Projectile
   - 
   - 
   - 
