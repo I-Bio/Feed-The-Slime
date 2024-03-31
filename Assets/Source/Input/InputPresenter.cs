@@ -24,6 +24,8 @@ namespace Input
             _model.Player.Touch.performed += OnTouch;
             _model.Player.Hide.started += OnHide;
             _model.Player.Hide.performed += OnShow;
+            _model.Player.Spit.started += OnStartCast;
+            _model.Player.Spit.performed += OnPerformCast;
             _joystick.Released += OnJoystickReleased;
 
             _model.Enable();
@@ -35,6 +37,8 @@ namespace Input
             _model.Player.Touch.performed -= OnTouch;
             _model.Player.Hide.started -= OnHide;
             _model.Player.Hide.performed -= OnTouch;
+            _model.Player.Spit.started -= OnStartCast;
+            _model.Player.Spit.performed -= OnPerformCast;
             _joystick.Released -= OnJoystickReleased;
 
             _model.Disable();
@@ -75,7 +79,7 @@ namespace Input
             _caster.DrawCastTrajectory();
         }
         
-        private void OnPerformCast()
+        private void OnPerformCast(InputAction.CallbackContext context)
         {
             _caster.CastSpit();
         }
