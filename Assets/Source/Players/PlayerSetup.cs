@@ -1,5 +1,4 @@
-﻿using Abilities;
-using Boosters;
+﻿using Boosters;
 using Cinemachine;
 using UnityEngine;
 
@@ -12,6 +11,8 @@ namespace Players
     [RequireComponent(typeof(BoosterVisualizer))]
     [RequireComponent(typeof(PlayerAnimation))]
     [RequireComponent(typeof(AbilityCaster))]
+    [RequireComponent(typeof(EffectReproducer))]
+    [RequireComponent(typeof(SoundReproducer))]
     public class PlayerSetup : MonoBehaviour
     {
         [Header("UI")] 
@@ -22,7 +23,6 @@ namespace Players
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
         [SerializeField] private float _scaleFactor;
         [SerializeField] private float _cameraScale;
-
         [SerializeField] private float _scoreScaler;
         [SerializeField] private float _startMaxScore;
         [SerializeField] private int _levelsPerStage;
@@ -48,17 +48,18 @@ namespace Players
         private Mover _mover;
         private PlayerAnimation _animation;
         private AbilityCaster _abilityCaster;
+        private EffectReproducer _effectReproducer;
+        private SoundReproducer _soundReproducer;
         private Transform _transform;
 
         private Goop _model;
         private BoosterInjector _injector;
         private BoosterEjector _ejector;
         private BoosterService _service;
-        private BoosterVisualizer _effectsVisualizer;
+        private BoosterVisualizer _boosterVisualizer;
 
         private PlayerPresenter _playerPresenter;
         private BoosterPresenter _boosterPresenter;
-        private AbilityPresenter _abilityPresenter;
 
         public void Initialize(IMovable movable, ICalculableScore calculableScore)
         {
@@ -66,9 +67,11 @@ namespace Players
             _scanner = GetComponent<PlayerScanner>();
             _sizeScaler = GetComponent<SizeScaler>();
             _mover = GetComponent<Mover>();
-            _effectsVisualizer = GetComponent<BoosterVisualizer>();
+            _boosterVisualizer = GetComponent<BoosterVisualizer>();
             _animation = GetComponent<PlayerAnimation>();
             _abilityCaster = GetComponent<AbilityCaster>();
+            _effectReproducer = GetComponent<EffectReproducer>();
+            _soundReproducer = GetComponent<SoundReproducer>();
             _transform = transform;
 
             _model = new Goop(calculableScore, _startStage, _scoreScaler, _startMaxScore, _levelsPerStage);
@@ -77,23 +80,21 @@ namespace Players
             _service = new BoosterService();
 
             _playerPresenter = new PlayerPresenter(_model, _collisionDetector, _scanner, _sizeScaler, _levelBar,
-                _stageBar, _service, _animation, _abilityCaster);
-            _boosterPresenter = new BoosterPresenter(_model, _mover, _injector, _ejector, _service, _effectsVisualizer);
-            _abilityPresenter = new AbilityPresenter(_abilityCaster, _animation, _mover);
+                _stageBar, _service, _animation, _abilityCaster, _mover, _effectReproducer, _soundReproducer);
+            _boosterPresenter = new BoosterPresenter(_model, _mover, _injector, _ejector, _service, _boosterVisualizer);
 
             _scanner.SetStage(_startStage);
             _sizeScaler.Initialize(_transform, _virtualCamera, _scaleFactor, _cameraScale);
             _mover.Initialize(movable, _rotationPoint, _transform.forward);
-            _effectsVisualizer.Initialize(_updateDelay, _speedEffect, _scoreEffect);
+            _boosterVisualizer.Initialize(_updateDelay, _effectReproducer);
             _animation.Initialize(_animator, _eat, _idle, _hide);
-            _abilityCaster.Initialize(_transform, _startStage);
+            _abilityCaster.Initialize(_rotationPoint, _startStage);
         }
 
         private void OnEnable()
         {
             _playerPresenter.Enable();
             _boosterPresenter.Enable();
-            _abilityPresenter.Enable();
         }
 
         private void Start()
@@ -105,7 +106,6 @@ namespace Players
         {
             _playerPresenter.Disable();
             _boosterPresenter.Disable();
-            _abilityPresenter.Disable();
         }
     }
 }
