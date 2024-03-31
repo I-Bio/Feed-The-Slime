@@ -39,7 +39,7 @@ namespace Enemies
                     if (_player.Stage < _stage)
                         Moved?.Invoke(_player.Position);
                     else
-                        Moved?.Invoke(-_player.Position);
+                        Moved?.Invoke(_transform.position - (_player.Position - _transform.position));
 
                     _isIdled = false;
                     return;
