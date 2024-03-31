@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Spawners;
+using UnityEngine;
 
 namespace Foods
 {
     [RequireComponent(typeof(EdiblePart))]
     [RequireComponent(typeof(ObjectHighlighter))]
-    public class FoodSetup : MonoBehaviour
+    public class FoodSetup : SpawnableObject
     {
         [SerializeField] private Material[] _standard;
         [SerializeField] private Material[] _highlighted;
@@ -20,15 +21,15 @@ namespace Foods
 
         public SatietyStage Stage => _stage;
         
-        public void Initialize()
+        public void Initialize(float scorePerEat)
         {
             _ediblePart = GetComponent<EdiblePart>();
             _highlighter = GetComponent<ObjectHighlighter>();
-            
+
             _model = new Food(_stage);
             _presenter = new FoodPresenter(_model, _ediblePart, _highlighter);
             
-            _ediblePart.Initialize(_scorePerEat);
+            _ediblePart.Initialize(float.IsNaN(scorePerEat) ? _scorePerEat : scorePerEat);
             _highlighter.Initialize(_renderer, _standard, _highlighted);
             
             _presenter.Enable();
