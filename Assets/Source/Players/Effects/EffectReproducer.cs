@@ -1,5 +1,4 @@
-﻿using Players.Effects;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Players
 {

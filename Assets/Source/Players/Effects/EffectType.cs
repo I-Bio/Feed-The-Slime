@@ -1,4 +1,4 @@
-﻿namespace Players.Effects
+﻿namespace Players
 {
     public enum EffectType
     {

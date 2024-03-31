@@ -1,6 +1,4 @@
 ﻿using Boosters;
-using Players.Effects;
-using Players.Sounds;
 
 namespace Players
 {

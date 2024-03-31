@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using Players;
-using Players.Effects;
 using UnityEngine;
 
 namespace Boosters
