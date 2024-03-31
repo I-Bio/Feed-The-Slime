@@ -34,7 +34,7 @@ namespace Enemies
             
             _mover.Initialize(_thinkDelay);
             _animation.Initialize(_animator, _idle, _move);
-            _foodPart.Initialize();
+            _foodPart.Initialize(float.NaN);
             
             _presenter.Enable();
         }

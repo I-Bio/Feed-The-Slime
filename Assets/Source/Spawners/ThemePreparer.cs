@@ -12,7 +12,7 @@ namespace Spawners
         public void Initialize(IHidden player)
         {
             foreach (FoodSetup food in _foods)
-                food.Initialize();
+                food.Initialize(float.NaN);
             
             foreach (EnemySetup enemy in _enemies)
                 enemy.Initialize(player, new NormalEnemyPolicy());
