@@ -1,4 +1,4 @@
-﻿namespace Players.Sounds
+﻿namespace Players
 {
     public enum SoundType
     {
@@ -6,6 +6,7 @@
         ScoreGain,
         LevelUp,
         StageUp,
-        Hide
+        Hide,
+        Boost
     }
 }
