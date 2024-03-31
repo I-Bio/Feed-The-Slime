@@ -1,5 +1,4 @@
-﻿using Spawners;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Foods
 {
@@ -8,7 +7,7 @@ namespace Foods
         private float _scorePerEat;
         private bool _isAllowed;
         
-        public void Initialize(float scorePerEat)
+        public virtual void Initialize(float scorePerEat)
         {
             _scorePerEat = scorePerEat;
         }
@@ -26,9 +25,13 @@ namespace Foods
                 return false;
 
             score = _scorePerEat;
-            Destroy(gameObject);
+            OnEat();
             return true;
         }
-        
+
+        protected virtual void OnEat()
+        {
+            Destroy(gameObject);
+        }
     }
 }
