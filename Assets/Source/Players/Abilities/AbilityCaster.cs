@@ -1,17 +1,22 @@
 ﻿using System;
+using Abilities;
+using Spawners;
 using UnityEngine;
 
-namespace Abilities
+namespace Players
 {
-    public class AbilityCaster : MonoBehaviour, IHidden, IStageSettable, ICaster
+    [RequireComponent(typeof(LineRenderer))]
+    public class AbilityCaster : ObjectPool, IHidden, ICaster
     {
         private const float GravityDivider = 2f;
         
+        [SerializeField] private int _pointsCount;
+        [SerializeField] private float _stepBetweenPoints;
+        [SerializeField] private float _castStrength;
+        [SerializeField] private Vector3 _castOffset;
+        
         private Transform _transform;
         private LineRenderer _line;
-        private int _pointsCount;
-        private int _stepBetweenPoints;
-        private float _castStrength;
 
         public bool IsHidden { get; private set; }
         public Vector3 Position => _transform.position;
@@ -23,6 +28,7 @@ namespace Abilities
 
         public void Initialize(Transform transform, SatietyStage stage)
         {
+            _line = GetComponent<LineRenderer>();
             _transform = transform;
             Stage = stage;
             IsHidden = false;
@@ -48,15 +54,15 @@ namespace Abilities
         public void DrawCastTrajectory()
         {
             _line.enabled = true;
-            _line.positionCount = Mathf.CeilToInt(_pointsCount / _stepBetweenPoints);
+            _line.positionCount = Mathf.CeilToInt(_pointsCount / _stepBetweenPoints) + 1;
 
-            Vector3 start = _transform.position;
-            Vector3 startVelocity = _castStrength * _transform.forward;
+            Vector3 start = _transform.position + _castOffset;
+            Vector3 startVelocity = _castStrength * (_transform.forward + Vector3.up);
             int id = 0;
             
             _line.SetPosition(id, start);
 
-            for (int time = 0; time < _pointsCount; time++)
+            for (float time = 0; time < _pointsCount; time +=_stepBetweenPoints)
             {
                 Vector3 position = start + time * startVelocity;
                 position.y = start.y + startVelocity.y * time + (Physics.gravity.y / GravityDivider * time * time);
@@ -64,12 +70,12 @@ namespace Abilities
                 
                 _line.SetPosition(id, position);
             }
-
         }
 
         public void CastSpit()
         {
             _line.enabled = false;
+            Pull<Projectile>(_transform.position + _castOffset).Initialize(_castStrength * (_transform.forward + Vector3.up));
             SpitCasted?.Invoke();
         }
     }
