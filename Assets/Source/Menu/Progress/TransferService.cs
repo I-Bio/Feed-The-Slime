@@ -17,9 +17,7 @@ namespace Menu
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
-                
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
+                return;
             }
             
             Instance = this;
