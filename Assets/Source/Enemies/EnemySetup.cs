@@ -12,7 +12,8 @@ namespace Enemies
         [SerializeField] private string _idle;
         [SerializeField] private string _move;
         [SerializeField] private float _thinkDelay;
-
+        
+        [SerializeField] private EnemyCollisionDetector _detector;
         [SerializeField] private FoodSetup _foodPart;
         
         private EnemyMover _mover;
@@ -30,7 +31,7 @@ namespace Enemies
             _animation = GetComponent<EnemyAnimation>();
 
             _model = new Enemy(_transform, player, policy, _foodPart.Stage, _followDistance);
-            _presenter = new EnemyPresenter(_model, _mover, _animation);
+            _presenter = new EnemyPresenter(_model, _mover, _animation, _detector);
             
             _mover.Initialize(_thinkDelay);
             _animation.Initialize(_animator, _idle, _move);

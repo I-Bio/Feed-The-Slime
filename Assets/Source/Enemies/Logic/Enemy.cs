@@ -26,6 +26,7 @@ namespace Enemies
         }
 
         public event Action<Vector3> Moved;
+        public event Action<Vector3> RunningAway;
         public event Action Idled;
 
         public void CompareDistance()
@@ -39,7 +40,7 @@ namespace Enemies
                     if (_player.Stage < _stage)
                         Moved?.Invoke(_player.Position);
                     else
-                        Moved?.Invoke(_transform.position - (_player.Position - _transform.position));
+                        RunningAway?.Invoke(_transform.position - (_player.Position - _transform.position));
 
                     _isIdled = false;
                     return;
