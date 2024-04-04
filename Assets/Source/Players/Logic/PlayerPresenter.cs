@@ -1,4 +1,5 @@
 ﻿using Boosters;
+using Menu;
 
 namespace Players
 {
@@ -16,11 +17,12 @@ namespace Players
         private readonly SoundReproducer _soundReproducer;
         private readonly IInsertable _boosterService;
         private readonly IMover _mover;
+        private readonly IGame _game;
 
         public PlayerPresenter(Goop model, PlayerCollisionDetector collisionDetector, PlayerScanner scanner,
             SizeScaler sizeScaler, LevelBar levelBar, StageBar stageBar, IInsertable boosterService,
             PlayerAnimation animation, AbilityCaster caster, IMover mover, EffectReproducer effectReproducer,
-            SoundReproducer soundReproducer)
+            SoundReproducer soundReproducer, IGame game)
         {
             _model = model;
             _collisionDetector = collisionDetector;
@@ -34,6 +36,7 @@ namespace Players
             _mover = mover;
             _effectReproducer = effectReproducer;
             _soundReproducer = soundReproducer;
+            _game = game;
         }
 
         public void Enable()
@@ -45,6 +48,7 @@ namespace Players
 
             _collisionDetector.ScoreGained += OnScoreGained;
             _collisionDetector.BoosterEntered += OnBoosterEntered;
+            _collisionDetector.EnemyContacted += OnEnemyContacted;
             _caster.Hid += OnHid;
             _caster.Showed += OnShowed;
             _caster.SpitCasted += OnSpitCasted;
@@ -59,6 +63,7 @@ namespace Players
 
             _collisionDetector.ScoreGained -= OnScoreGained;
             _collisionDetector.BoosterEntered -= OnBoosterEntered;
+            _collisionDetector.EnemyContacted -= OnEnemyContacted;
             _caster.Hid -= OnHid;
             _caster.Showed -= OnShowed;
             _caster.SpitCasted -= OnSpitCasted;
@@ -88,6 +93,12 @@ namespace Players
 
         private void OnWinning()
         {
+            _game.ChangeWindow(GameWindows.Win);
+        }
+
+        private void OnEnemyContacted()
+        {
+            _game.ChangeWindow(GameWindows.Lose);
         }
 
         private void OnScoreGained(float value)

@@ -1,5 +1,6 @@
 ﻿using Boosters;
 using Cinemachine;
+using Menu;
 using UnityEngine;
 
 namespace Players
@@ -33,8 +34,6 @@ namespace Players
 
         [Space, Header("Booster Effects")] 
         [SerializeField] private float _updateDelay;
-        [SerializeField] private ParticleSystem _speedEffect;
-        [SerializeField] private ParticleSystem _scoreEffect;
 
         [Space, Header("Animation")] 
         [SerializeField] private Animator _animator;
@@ -61,7 +60,7 @@ namespace Players
         private PlayerPresenter _playerPresenter;
         private BoosterPresenter _boosterPresenter;
 
-        public void Initialize(IMovable movable, ICalculableScore calculableScore)
+        public void Initialize(IMovable movable, ICalculableScore calculableScore, IGame game)
         {
             _collisionDetector = GetComponent<PlayerCollisionDetector>();
             _scanner = GetComponent<PlayerScanner>();
@@ -80,7 +79,7 @@ namespace Players
             _service = new BoosterService();
 
             _playerPresenter = new PlayerPresenter(_model, _collisionDetector, _scanner, _sizeScaler, _levelBar,
-                _stageBar, _service, _animation, _abilityCaster, _mover, _effectReproducer, _soundReproducer);
+                _stageBar, _service, _animation, _abilityCaster, _mover, _effectReproducer, _soundReproducer, game);
             _boosterPresenter = new BoosterPresenter(_model, _mover, _injector, _ejector, _service, _boosterVisualizer);
 
             _scanner.SetStage(_startStage);

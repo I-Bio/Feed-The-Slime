@@ -8,7 +8,13 @@ namespace Players
     {
         public event Action<float> ScoreGained;
         public event Action<IBooster> BoosterEntered;
+        public event Action EnemyContacted;
 
+        public void ContactEnemy()
+        {
+            EnemyContacted?.Invoke();
+        }
+        
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.collider.TryGetComponent(out IEatable eatable) == false)
