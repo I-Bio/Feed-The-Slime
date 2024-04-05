@@ -16,6 +16,14 @@ namespace Spawners
             
             return _spawnQueue.Dequeue().Pull<T>(position);
         }
+        
+        public T PullAndSetParent<T>(Vector3 position, Transform parent) where T: class
+        {
+            if (_spawnQueue.Count == 0)
+                PushOnInitialize(Instantiate(_spawnableObject, position, Quaternion.identity, parent).Initialize(this));
+            
+            return _spawnQueue.Dequeue().Pull<T>(position);
+        }
 
         public virtual void Push(SpawnableObject spawnableObject)
         {
