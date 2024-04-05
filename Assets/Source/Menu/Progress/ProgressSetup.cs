@@ -36,34 +36,19 @@ namespace Menu
             _presenter = new ProgressPresenter(_model, _bars, _play, _level, _crystals);
             
             _switcher.Hide();
-#if UNITY_WEBGL && !UNITY_EDITOR
-            YandexGamesSdk.GameReady();
-#endif
         }
 
         private void OnEnable()
         {
             _presenter.Enable();
-        }
-
-        private void Start()
-        {
-            _model.CompleteLoad();
-            
-            if (TransferService.Instance.TryGetReward(out int value) == false)
-                return;
-            
-            _model.RewardReceive(value);
+#if UNITY_WEBGL && !UNITY_EDITOR
+            _model.Load();
+#endif
         }
 
         private void OnDisable()
         {
             _presenter.Disable();
-        }
-
-        private void OnDestroy()
-        {
-            _model.Save();
         }
     }
 }

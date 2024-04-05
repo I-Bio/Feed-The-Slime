@@ -54,12 +54,20 @@ namespace Menu
             _bars[(int)PurchaseNames.Life].Initialize(characteristics.LifeCount);
             _bars[(int)PurchaseNames.Spit].Initialize(characteristics.SpitObtained);
             
-            OnCrystalsChanged(characteristics.CrystalsCount);
             OnLevelsIncreased(characteristics.CompletedLevels);
+            OnCrystalsChanged(characteristics.CrystalsCount);
+            
+            if (TransferService.Instance.TryGetReward(out int value) == false)
+                return;
+            
+            _model.RewardReceive(value);
         }
 
         private void OnCrystalsChanged(int crystalsCount)
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            _model.Save();
+#endif
             _crystals.SetText(crystalsCount.ToString());
             
             foreach (IProgressionBar bar in _bars)
@@ -68,8 +76,8 @@ namespace Menu
 
         private void OnRewardReceived(int value)
         {
-            _model.ChangeCrystals(value);
             _model.IncreaseLevels();
+            _model.ChangeCrystals(value);
         }
 
         private void OnLevelsIncreased(int value)

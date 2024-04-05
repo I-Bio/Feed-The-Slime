@@ -16,9 +16,6 @@ namespace Menu
         {
             _characteristics = startCharacteristics;
             _rewardSteps = rewardSteps;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            PlayerAccount.GetCloudSaveData(Load);
-#endif
         }
 
         public event Action<IReadOnlyCharacteristics> Loaded;
@@ -73,21 +70,29 @@ namespace Menu
             SceneManager.LoadScene((int)SceneNames.Game);
         }
 
+#if UNITY_WEBGL && !UNITY_EDITOR
         public void Save()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
+            Debug.Log("TO SAVE " + JsonUtility.ToJson(_characteristics));
             PlayerAccount.SetCloudSaveData(JsonUtility.ToJson(_characteristics));
-#endif
         }
 
-        public void CompleteLoad()
+        public void Load()
         {
+            PlayerAccount.GetCloudSaveData(OnLoaded);
+        }
+
+        private void OnLoaded(string jsonData)
+        {
+            PlayerCharacteristics characteristics = JsonUtility.FromJson<PlayerCharacteristics>(jsonData);
+            
+            if (characteristics != null && characteristics.Speed != 0f)
+                _characteristics = characteristics;
+            
+            Debug.Log("PRINT AFTER LOAD " + JsonUtility.ToJson(_characteristics));
+            
             Loaded?.Invoke(_characteristics);
         }
-
-        private void Load(string jsonData)
-        {
-            _characteristics = JsonUtility.FromJson<PlayerCharacteristics>(jsonData);
-        }
+#endif
     }
 }
