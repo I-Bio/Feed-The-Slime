@@ -25,7 +25,8 @@ namespace Players
         [SerializeField] private float _scaleFactor;
         [SerializeField] private float _cameraScale;
         [SerializeField] private float _scoreScaler;
-        [SerializeField] private float _startMaxScore;
+        [SerializeField] private float _startScore = 0f;
+        [SerializeField] private int _startMaxScore;
         [SerializeField] private int _levelsPerStage;
         [SerializeField] private SatietyStage _startStage;
 
@@ -82,6 +83,8 @@ namespace Players
                 _stageBar, _service, _animation, _abilityCaster, _mover, _effectReproducer, _soundReproducer, game);
             _boosterPresenter = new BoosterPresenter(_model, _mover, _injector, _ejector, _service, _boosterVisualizer);
 
+            _levelBar.Initialize(_startScore, _startMaxScore);
+            _stageBar.Initialize(_startMaxScore, _levelsPerStage, _scoreScaler);
             _scanner.SetStage(_startStage);
             _sizeScaler.Initialize(_transform, _virtualCamera, _scaleFactor, _cameraScale);
             _mover.Initialize(movable, _rotationPoint, _transform.forward);
@@ -94,11 +97,6 @@ namespace Players
         {
             _playerPresenter.Enable();
             _boosterPresenter.Enable();
-        }
-
-        private void Start()
-        {
-            _model.IncreaseScore();
         }
 
         private void OnDisable()
