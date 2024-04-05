@@ -22,8 +22,6 @@ namespace Menu
 
         public event Action<int, PurchaseNames, object> Bought;
 
-        private string CurrentProgress => $"{_stage}{_slash}{_purchases.Length}";
-
         private void OnEnable()
         {
             _buyButton.onClick.AddListener(Buy);
@@ -92,7 +90,7 @@ namespace Menu
         {
             _slider.fillAmount = _stage / (float)_purchases.Length;
             _price.SetText(_stage < _purchases.Length ? _purchases[_stage].Key.ToString() : _maxText);
-            _currentCount.SetText(_stage < _purchases.Length ? CurrentProgress : _maxText);
+            _currentCount.SetText(_stage < _purchases.Length ? $"{_stage}{_slash}{_purchases.Length}" : _maxText);
         }
     }
 }
