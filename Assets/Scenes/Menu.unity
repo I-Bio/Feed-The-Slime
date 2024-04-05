@@ -1127,8 +1127,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 437.52002, y: -802.2777}
-  m_SizeDelta: {x: 700, y: 320.91107}
+  m_AnchoredPosition: {x: 396.5498, y: -885.16626}
+  m_SizeDelta: {x: 700, y: 354.0665}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &270099295
 MonoBehaviour:
@@ -11750,8 +11750,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 437.52002, y: -160.45554}
-  m_SizeDelta: {x: 700, y: 320.91107}
+  m_AnchoredPosition: {x: 396.5498, y: -177.03325}
+  m_SizeDelta: {x: 700, y: 354.0665}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &508364563
 MonoBehaviour:
@@ -11979,7 +11979,7 @@ MonoBehaviour:
   m_margin: {x: 17.226357, y: 13.024841, z: 17.22638, w: 24.369038}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &592178391
@@ -12277,7 +12277,7 @@ MonoBehaviour:
   m_margin: {x: 17.226357, y: 13.024841, z: 17.22638, w: 24.369038}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &694019036
@@ -12951,8 +12951,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 437.52002, y: -481.3666}
-  m_SizeDelta: {x: 700, y: 320.91107}
+  m_AnchoredPosition: {x: 396.5498, y: -531.09973}
+  m_SizeDelta: {x: 700, y: 354.0665}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &983814396
 MonoBehaviour:
@@ -17935,8 +17935,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 437.52002, y: -1123.1887}
-  m_SizeDelta: {x: 700, y: 320.91107}
+  m_AnchoredPosition: {x: 396.5498, y: -1239.2327}
+  m_SizeDelta: {x: 700, y: 354.0665}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1050532142
 MonoBehaviour:
@@ -18235,7 +18235,7 @@ MonoBehaviour:
   m_margin: {x: 17.226357, y: 13.024841, z: 17.22638, w: 24.369038}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1141881300
@@ -23330,7 +23330,7 @@ MonoBehaviour:
   m_margin: {x: 4.0160675, y: 30.474358, z: 276.42004, w: 37.555515}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1325774081
@@ -23464,7 +23464,7 @@ MonoBehaviour:
   m_margin: {x: 4.0160675, y: 30.474358, z: 276.42004, w: 37.555515}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1342175079
@@ -24025,7 +24025,7 @@ MonoBehaviour:
   m_margin: {x: 17.226357, y: 13.024841, z: 17.22638, w: 24.369038}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1560395520
@@ -24089,12 +24089,12 @@ MonoBehaviour:
   _lifeBar: {fileID: 270099295}
   _spitBar: {fileID: 1050532142}
   _startCharacteristics:
-    _speed: 5
-    _scorePerEat: 0
-    _lifeCount: 0
-    _crystalsCount: 0
-    _completedLevels: 0
-    _spitObtained: 0
+    <Speed>k__BackingField: 5
+    <ScorePerEat>k__BackingField: 0
+    <LifeCount>k__BackingField: 0
+    <CrystalsCount>k__BackingField: 0
+    <CompletedLevels>k__BackingField: 0
+    <SpitObtained>k__BackingField: 0
   _rewardSteps:
   - Key: 0
     Value: 10
@@ -24309,7 +24309,7 @@ MonoBehaviour:
   m_margin: {x: 4.0160675, y: 30.474358, z: 276.42004, w: 37.555515}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1610434877
@@ -24654,7 +24654,7 @@ MonoBehaviour:
   m_margin: {x: 4.0160675, y: 30.474358, z: 276.42004, w: 37.555515}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1678177686
@@ -25459,7 +25459,7 @@ MonoBehaviour:
   m_margin: {x: 1.0917969, y: -0.9264677, z: 0.14922327, w: 1.5563736}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1953862502
@@ -25775,7 +25775,7 @@ MonoBehaviour:
   m_margin: {x: 1.0917969, y: -0.9264677, z: 0.14922327, w: 1.5563736}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &2004885934
@@ -25954,7 +25954,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 447279336752791039, guid: 8140575651e0c47789992b38086312c7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -253.63382
+      value: -253.63379
       objectReference: {fileID: 0}
     - target: {fileID: 447279336752791039, guid: 8140575651e0c47789992b38086312c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -26131,7 +26131,7 @@ MonoBehaviour:
   m_margin: {x: 1.0917969, y: -0.9264677, z: 0.14922327, w: 1.5563736}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &2069015883
