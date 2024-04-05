@@ -38,8 +38,8 @@ namespace Menu
         {
             int id = 0;
 
-            for (int i = 0; i < _purchases.Length - 1; i++)
-                if (_purchases[i].Value.Equals(value))
+            for (int i = 1; i <= _purchases.Length; i++)
+                if (_purchases[i - 1].Value.Equals(value))
                     id = i;
             
             Load(id);
@@ -73,10 +73,8 @@ namespace Menu
         private void Buy()
         {
             Bought?.Invoke(_purchases[_stage].Key, _name, _purchases[_stage].Value);
-            _slider.fillAmount = _stage / _purchases.Length;
             _stage++;
-            _price.SetText(_stage < _purchases.Length ? _purchases[_stage].ToString() : _maxText);
-            _currentCount.SetText(_stage < _purchases.Length ? CurrentProgress : _maxText);
+            Display();
             
             if (_purchases.Length != _stage) 
                 return;
@@ -87,10 +85,14 @@ namespace Menu
         private void Load(int id)
         {
             _stage = id;
-            _slider.fillAmount = _stage / _purchases.Length;
-            
-            _price.SetText(_purchases[_stage].Key.ToString());
-            _currentCount.SetText(CurrentProgress);
+            Display();
+        }
+
+        private void Display()
+        {
+            _slider.fillAmount = _stage / (float)_purchases.Length;
+            _price.SetText(_stage < _purchases.Length ? _purchases[_stage].Key.ToString() : _maxText);
+            _currentCount.SetText(_stage < _purchases.Length ? CurrentProgress : _maxText);
         }
     }
 }
