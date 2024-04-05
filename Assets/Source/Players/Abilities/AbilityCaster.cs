@@ -11,6 +11,7 @@ namespace Players
         [SerializeField] private float _castStrength;
         [SerializeField] private Vector3 _castOffset;
         [SerializeField] private EatableSpawner _spawner;
+        [SerializeField] private AbilityButton _spit;
         
         private Transform _transform;
         private LineRenderer _line;
@@ -52,6 +53,9 @@ namespace Players
 
         public void DrawCastTrajectory()
         {
+            if (_spit.CanUse == false)
+                return;
+            
             _line.enabled = true;
 
             Vector3 start = _transform.position + _castOffset;
@@ -63,7 +67,11 @@ namespace Players
 
         public void CastSpit()
         {
+            if (_spit.CanUse == false)
+                return;
+            
             _line.enabled = false;
+            _spit.Use();
             Pull<Projectile>(_transform.position + _castOffset).Initialize(_castStrength * _transform.forward, _spawner);
             SpitCasted?.Invoke();
         }
