@@ -27,6 +27,7 @@ namespace Players
         {
             _line = GetComponent<LineRenderer>();
             _line.positionCount = _pointsCount;
+            _line.enabled = false;
             _transform = transform;
             Stage = stage;
             IsHidden = false;
@@ -57,9 +58,7 @@ namespace Players
             Vector3 startVelocity = _castStrength * _transform.forward;
 
             for (int id = 0; id < _pointsCount; id++)
-            {
                 _line.SetPosition(id, start + id * startVelocity);
-            }
         }
 
         public void CastSpit()
