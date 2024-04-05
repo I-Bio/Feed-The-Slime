@@ -38,7 +38,7 @@ namespace Menu
         {
             _stopper.Pause();
             _backGround.alpha = 1f;
-            _screen.SetWindow((int)GameWindows.Pause);
+            _screen.SetWindow((int)window);
         }
         
         private void OnEnable()
