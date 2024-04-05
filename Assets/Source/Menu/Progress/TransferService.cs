@@ -32,7 +32,7 @@ namespace Menu
 
         public void AllowReceive()
         {
-            _canReceive = false;
+            _canReceive = true;
         }
 
         public void MultiplyIt(float value)
