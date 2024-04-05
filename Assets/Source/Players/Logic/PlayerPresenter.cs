@@ -69,16 +69,18 @@ namespace Players
             _caster.SpitCasted -= OnSpitCasted;
         }
 
-        private void OnScoreChanged(float score, float maxScore)
+        private void OnScoreChanged(float score, int maxScore, float value)
         {
             _soundReproducer.PlayClip(SoundType.ScoreGain);
-            _levelBar.SetScore(score, maxScore);
+            _levelBar.SetScore(score, maxScore, value);
+            _stageBar.ChangeValue(score);
         }
 
         private void OnLevelIncreased(int level)
         {
             _soundReproducer.PlayClip(SoundType.LevelUp);
             _levelBar.SetLevel(level);
+            _stageBar.DecreaseStep();
         }
 
         private void OnSizeIncreased(SatietyStage stage)
@@ -87,6 +89,7 @@ namespace Players
             _effectReproducer.PlayEffect(EffectType.StageUp);
             _caster.SetStage(stage);
             _scanner.SetStage(stage);
+            _stageBar.Increase();
             _scanner.Rescan();
             _sizeScaler.Scale(stage);
         }
