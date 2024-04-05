@@ -1,5 +1,6 @@
 ﻿using System;
 using Boosters;
+using UnityEngine;
 
 namespace Players
 {
@@ -9,12 +10,12 @@ namespace Players
 
         private ICalculableScore _calculableScore;
         private SatietyStage _stage;
-        private float _maxScore;
+        private int _maxScore;
         private float _score;
         private int _levelsPerStage;
         private int _currentLevel;
 
-        public Goop(ICalculableScore calculableScore, SatietyStage stage, float scoreScaler, float maxScore,
+        public Goop(ICalculableScore calculableScore, SatietyStage stage, float scoreScaler, int maxScore,
             int levelsPerStage)
         {
             _calculableScore = calculableScore;
@@ -24,7 +25,7 @@ namespace Players
             _levelsPerStage = levelsPerStage;
         }
 
-        public event Action<float, float> ScoreChanged;
+        public event Action<float, int, float> ScoreChanged;
         public event Action<SatietyStage> SizeIncreased;
         public event Action<int> LevelIncreased;
         public event Action Winning;
@@ -41,17 +42,12 @@ namespace Players
             if (_score >= _maxScore)
                 RaiseLevel();
 
-            ScoreChanged?.Invoke(_score, _maxScore);
-        }
-
-        public void IncreaseScore()
-        {
-            ScoreChanged?.Invoke(_score, _maxScore);
+            ScoreChanged?.Invoke(_score, _maxScore, value);
         }
 
         private void RaiseLevel()
         {
-            _maxScore *= _scoreScaler;
+            _maxScore = Mathf.FloorToInt(_maxScore * _scoreScaler);
             _currentLevel++;
             LevelIncreased?.Invoke(_currentLevel);
 
