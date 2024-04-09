@@ -1,0 +1,46 @@
+﻿using System;
+using Agava.YandexGames;
+using Lean.Localization;
+using UnityEngine;
+
+namespace Menu
+{
+    public class Localization : MonoBehaviour
+    {
+        private const string EnglishCode = "English";
+        private const string RussianCode = "Russian";
+        private const string TurkishCode = "Turkish";
+        private const string English = "en";
+        private const string Russian = "ru";
+        private const string Turkish = "re";
+
+        [SerializeField] private LeanLocalization _localization;
+
+        private void Awake()
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            ChangeLanguage();
+#endif
+        }
+
+        private void ChangeLanguage()
+        {
+            string languageCode = YandexGamesSdk.Environment.i18n.lang;
+
+            switch (languageCode)
+            {
+                case English:
+                    _localization.SetCurrentLanguage(EnglishCode);
+                    break;
+                
+                case Russian:
+                    _localization.SetCurrentLanguage(RussianCode);
+                    break;
+                
+                case Turkish:
+                    _localization.SetCurrentLanguage(TurkishCode);
+                    break;
+            }
+        }
+    }
+}
