@@ -11,7 +11,8 @@ namespace Menu
         private bool _canReceive;
 
         public IReadOnlyCharacteristics Characteristics => _characteristics;
-        
+        public int Reward => _rewardCount;
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
