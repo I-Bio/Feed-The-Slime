@@ -8,7 +8,7 @@ namespace Spawners
 {
     public class BoosterSpawner : ObjectPool
     {
-        private readonly List<Transform> _spawnPoints = new List<Transform>();
+        private readonly List<Transform> _spawnPoints = new();
         
         [SerializeField] private Transform _pointsHolder;
         [SerializeField] private Sprite _speedIcon;
@@ -53,15 +53,15 @@ namespace Spawners
             Pull<Booster>(position).Initialize(_fabric.CreateBoost(type, lifeTime));
         }
 
+        private void RequestBooster()
+        {
+            StartCoroutine(SpawnRoutine());
+        }
+        
         private IEnumerator SpawnRoutine()
         {
             yield return new WaitForSeconds(_waitTime);
             Spawn();
-        }
-        
-        private void RequestBooster()
-        {
-            StartCoroutine(SpawnRoutine());
         }
     }
 }
