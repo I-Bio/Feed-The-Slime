@@ -12,11 +12,11 @@ namespace Boosters
         
         private IStatBuffer _boost;
 
-        public void Initialize(KeyValuePair<IStatBuffer, KeyValuePair<string, Sprite>> boostValues)
+        public void Initialize(KeyValuePair<IStatBuffer, string> boostPair)
         {
-            _boost = boostValues.Key;
-            _text.SetText(boostValues.Value.Key);
-            _renderer.sprite = boostValues.Value.Value;
+            _boost = boostPair.Key;
+            _text.SetText(boostPair.Value);
+            _renderer.sprite = boostPair.Key.Icon;
         }
 
         public void Use()
