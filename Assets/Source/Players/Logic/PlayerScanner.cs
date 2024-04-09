@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Players
 {
-    public class PlayerScanner : MonoBehaviour
+    public class PlayerScanner : MonoBehaviour, IStageSettable
     {
         private readonly List<ISelectable> _selectables = new List<ISelectable>();
 
