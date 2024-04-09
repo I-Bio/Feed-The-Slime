@@ -1,4 +1,5 @@
 ﻿using System;
+using QuickOutline;
 using UnityEngine;
 
 namespace Foods
