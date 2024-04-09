@@ -1,50 +1,44 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace Players
 {
     public class StageBar : MonoBehaviour
     {
-        [SerializeField] private Slider _slider;
+        [SerializeField] private Slider[] _sliders;
         [SerializeField] private Color _pass;
         [SerializeField] private Image[] _stages;
 
-        private int _pointer;
+        private int _pointer = -1;
         private int _maxScore;
-        private int _maxStage;
-        private int _levelStep;
         private int _levelsPerStage;
+        private float _scaler;
 
         public void Initialize(int startMax, int levelsPerStage, float scaler)
         {
             _maxScore = startMax;
             _levelsPerStage = levelsPerStage;
-            _maxStage = Enum.GetValues(typeof(SatietyStage)).Length - 1;
-            _levelStep = _levelsPerStage * _maxStage;
-
-            for (int i = 1; i < _levelStep; i++)
-                _maxScore = Mathf.FloorToInt(_maxScore * scaler);
-
-            ChangeValue(_pointer);
+            _scaler = scaler;
+            
             Increase();
+            _levelsPerStage++;
         }
 
-        public void DecreaseStep()
-        {
-            _levelStep--;
-        }
-        
         public void ChangeValue(float score)
         {
-            _slider.value = score * _maxStage * _levelStep / _maxScore;
+            if (_pointer >= _sliders.Length)
+                return;
+            
+            _sliders[_pointer].value = score / _maxScore;
         }
 
         public void Increase()
         {
-            _maxStage -= _pointer;
-            _stages[_pointer].color = _pass;
+            for (int i = 1; i < _levelsPerStage; i++)
+                _maxScore = Mathf.FloorToInt(_maxScore * _scaler);
+            
             _pointer++;
+            _stages[_pointer].color = _pass;
         }
     }
 }
