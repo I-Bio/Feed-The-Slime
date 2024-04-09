@@ -17,12 +17,12 @@ namespace Players
         private readonly SoundReproducer _soundReproducer;
         private readonly IInsertable _boosterService;
         private readonly IMover _mover;
-        private readonly IGame _game;
+        private readonly Game _game;
 
         public PlayerPresenter(Goop model, PlayerCollisionDetector collisionDetector, PlayerScanner scanner,
             SizeScaler sizeScaler, LevelBar levelBar, StageBar stageBar, IInsertable boosterService,
             PlayerAnimation animation, AbilityCaster caster, IMover mover, EffectReproducer effectReproducer,
-            SoundReproducer soundReproducer, IGame game)
+            SoundReproducer soundReproducer, Game game)
         {
             _model = model;
             _collisionDetector = collisionDetector;
@@ -80,7 +80,6 @@ namespace Players
         {
             _soundReproducer.PlayClip(SoundType.LevelUp);
             _levelBar.SetLevel(level);
-            _stageBar.DecreaseStep();
         }
 
         private void OnSizeIncreased(SatietyStage stage)
@@ -89,6 +88,7 @@ namespace Players
             _effectReproducer.PlayEffect(EffectType.StageUp);
             _caster.SetStage(stage);
             _scanner.SetStage(stage);
+            _game.SetStage(stage);
             _stageBar.Increase();
             _scanner.Rescan();
             _sizeScaler.Scale(stage);
