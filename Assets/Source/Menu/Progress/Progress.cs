@@ -8,14 +8,17 @@ namespace Menu
 {
     public class Progress
     {
-        private readonly SerializedPair<int>[] _rewardSteps;
+        private readonly SerializedPair<int, int>[] _rewardSteps;
+        private readonly int _advertAccumulationStep;
 
         private PlayerCharacteristics _characteristics;
 
-        public Progress(PlayerCharacteristics startCharacteristics, SerializedPair<int>[] rewardSteps)
+        public Progress(PlayerCharacteristics startCharacteristics, SerializedPair<int, int>[] rewardSteps,
+            int advertAccumulationStep)
         {
             _characteristics = startCharacteristics;
             _rewardSteps = rewardSteps;
+            _advertAccumulationStep = advertAccumulationStep;
         }
 
         public event Action<IReadOnlyCharacteristics> Loaded;
@@ -46,6 +49,14 @@ namespace Menu
         public void IncreaseLevels()
         {
             _characteristics.CompletedLevels++;
+            _characteristics.AdvertAccumulation++;
+
+            if (_characteristics.AdvertAccumulation == _advertAccumulationStep)
+            {
+                _characteristics.AdvertAccumulation = 0;
+                _characteristics.IsAllowedShowInter = true;
+            }
+
             LevelsIncreased?.Invoke(_characteristics.CompletedLevels);
         }
 
