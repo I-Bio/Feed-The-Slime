@@ -8,7 +8,7 @@ namespace Boosters
     {
         private const string Plus = "+";
         private const string Multiplication = "*";
-        
+
         private readonly IMovable _playerSpeed;
         private readonly ICalculableScore _playerScore;
 
@@ -29,7 +29,7 @@ namespace Boosters
             _scoreIcon = scoreIcon;
         }
 
-        public KeyValuePair<IStatBuffer, KeyValuePair<string, Sprite>> CreateBoost(BoosterType type, float lifeTime)
+        public KeyValuePair<IStatBuffer, string> CreateBoost(BoosterType type, float lifeTime)
         {
             return type switch
             {
@@ -41,36 +41,36 @@ namespace Boosters
             };
         }
 
-        public KeyValuePair<IStatBuffer, KeyValuePair<string, Sprite>> Visit(AdditionalSpeed type, float lifeTime)
+        public KeyValuePair<IStatBuffer, string> Visit(AdditionalSpeed type, float lifeTime)
         {
             float value = _additionalValues.GetRandom();
-            return new KeyValuePair<IStatBuffer, KeyValuePair<string, Sprite>>(
-                new AdditionalSpeed(_playerSpeed, value, lifeTime),
-                new KeyValuePair<string, Sprite>($"{Plus}{value}", _speedIcon));
+            return new KeyValuePair<IStatBuffer, string>(
+                new AdditionalSpeed(_playerSpeed, value, lifeTime, _speedIcon),
+                $"{Plus}{value}");
         }
 
-        public KeyValuePair<IStatBuffer, KeyValuePair<string, Sprite>> Visit(MultipleSpeed type, float lifeTime)
+        public KeyValuePair<IStatBuffer, string> Visit(MultipleSpeed type, float lifeTime)
         {
             float value = _scaleValues.GetRandom();
-            return new KeyValuePair<IStatBuffer, KeyValuePair<string, Sprite>>(
-                new MultipleSpeed(_playerSpeed, value, lifeTime),
-                new KeyValuePair<string, Sprite>($"{Multiplication}{value}", _speedIcon));
+            return new KeyValuePair<IStatBuffer, string>(
+                new MultipleSpeed(_playerSpeed, value, lifeTime, _speedIcon),
+                $"{Multiplication}{value}");
         }
 
-        public KeyValuePair<IStatBuffer, KeyValuePair<string, Sprite>> Visit(AdditionalScore type, float lifeTime)
+        public KeyValuePair<IStatBuffer, string> Visit(AdditionalScore type, float lifeTime)
         {
             float value = _additionalValues.GetRandom();
-            return new KeyValuePair<IStatBuffer, KeyValuePair<string, Sprite>>(
-                new AdditionalScore(_playerScore, value, lifeTime),
-                new KeyValuePair<string, Sprite>($"{Plus}{value}", _scoreIcon));
+            return new KeyValuePair<IStatBuffer, string>(
+                new AdditionalScore(_playerScore, value, lifeTime, _scoreIcon),
+                $"{Plus}{value}");
         }
 
-        public KeyValuePair<IStatBuffer, KeyValuePair<string, Sprite>> Visit(MultipleScore type, float lifeTime)
+        public KeyValuePair<IStatBuffer, string> Visit(MultipleScore type, float lifeTime)
         {
             float value = _scaleValues.GetRandom();
-            return new KeyValuePair<IStatBuffer, KeyValuePair<string, Sprite>>(
-                new MultipleScore(_playerScore, value, lifeTime),
-                new KeyValuePair<string, Sprite>($"{Multiplication}{value}", _scoreIcon));
+            return new KeyValuePair<IStatBuffer, string>(
+                new MultipleScore(_playerScore, value, lifeTime, _scoreIcon),
+                $"{Multiplication}{value}");
         }
     }
 }
