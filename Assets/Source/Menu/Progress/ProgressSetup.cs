@@ -13,11 +13,14 @@ namespace Menu
         [SerializeField] private ProgressionBar<int> _lifeBar;
         [SerializeField] private ProgressionBar<bool> _spitBar;
         [SerializeField] private PlayerCharacteristics _startCharacteristics;
-        [SerializeField] private SerializedPair<int>[] _rewardSteps;
+        [SerializeField] private int _advertStep;
+        [SerializeField] private SerializedPair<int, int>[] _rewardSteps;
         [SerializeField] private Button _play;
         [SerializeField] private TextMeshProUGUI _level;
         [SerializeField] private TextMeshProUGUI _crystals;
+        [SerializeField] private RewardReproducer _reward;
         [SerializeField] private WindowSwitcher _switcher;
+        [SerializeField] private YandexLeaderboard _leaderboard;
 
         private IProgressionBar[] _bars;
 
@@ -32,10 +35,8 @@ namespace Menu
             _bars[(int)PurchaseNames.Life] = _lifeBar;
             _bars[(int)PurchaseNames.Spit] = _spitBar;
 
-            _model = new Progress(_startCharacteristics, _rewardSteps);
-            _presenter = new ProgressPresenter(_model, _bars, _play, _level, _crystals);
-            
-            _switcher.Hide();
+            _model = new Progress(_startCharacteristics, _rewardSteps, _advertStep);
+            _presenter = new ProgressPresenter(_model, _bars, _play, _level, _crystals, _reward, _switcher, _leaderboard);
         }
 
         private void OnEnable()
