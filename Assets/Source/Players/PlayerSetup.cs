@@ -19,16 +19,11 @@ namespace Players
         [Header("UI")] 
         [SerializeField] private LevelBar _levelBar;
         [SerializeField] private StageBar _stageBar;
-        
+
         [Space, Header("Player Options")] 
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
-        [SerializeField] private float _scaleFactor;
-        [SerializeField] private float _cameraScale;
-        [SerializeField] private float _scoreScaler;
-        [SerializeField] private float _startScore = 0f;
-        [SerializeField] private int _startMaxScore;
-        [SerializeField] private int _levelsPerStage;
-        [SerializeField] private SatietyStage _startStage;
+
+        [SerializeField] private LevelConfig _levelConfig;
 
         [Space, Header("Move Options")] 
         [SerializeField] private Transform _rotationPoint;
@@ -53,7 +48,6 @@ namespace Players
         private Transform _transform;
 
         private Goop _model;
-        private BoosterInjector _injector;
         private BoosterEjector _ejector;
         private BoosterService _service;
         private BoosterVisualizer _boosterVisualizer;
@@ -61,7 +55,7 @@ namespace Players
         private PlayerPresenter _playerPresenter;
         private BoosterPresenter _boosterPresenter;
 
-        public void Initialize(IMovable movable, ICalculableScore calculableScore, IGame game)
+        public void Initialize(IMovable movable, ICalculableScore calculableScore, Game game)
         {
             _collisionDetector = GetComponent<PlayerCollisionDetector>();
             _scanner = GetComponent<PlayerScanner>();
@@ -74,23 +68,23 @@ namespace Players
             _soundReproducer = GetComponent<SoundReproducer>();
             _transform = transform;
 
-            _model = new Goop(calculableScore, _startStage, _scoreScaler, _startMaxScore, _levelsPerStage);
-            _injector = new BoosterInjector();
-            _ejector = new BoosterEjector(calculableScore, movable);
+            _model = new Goop(calculableScore, _levelConfig.StartStage, _levelConfig.ScoreScaler,
+                _levelConfig.StartMaxScore, _levelConfig.LevelsPerStage);
+            _ejector = new BoosterEjector(movable, calculableScore);
             _service = new BoosterService();
 
             _playerPresenter = new PlayerPresenter(_model, _collisionDetector, _scanner, _sizeScaler, _levelBar,
                 _stageBar, _service, _animation, _abilityCaster, _mover, _effectReproducer, _soundReproducer, game);
-            _boosterPresenter = new BoosterPresenter(_model, _mover, _injector, _ejector, _service, _boosterVisualizer);
+            _boosterPresenter = new BoosterPresenter(_model, _mover, _service, _boosterVisualizer, _ejector);
 
-            _levelBar.Initialize(_startScore, _startMaxScore);
-            _stageBar.Initialize(_startMaxScore, _levelsPerStage, _scoreScaler);
-            _scanner.SetStage(_startStage);
-            _sizeScaler.Initialize(_transform, _virtualCamera, _scaleFactor, _cameraScale);
+            _levelBar.Initialize(_levelConfig.StartScore, _levelConfig.StartMaxScore);
+            _stageBar.Initialize(_levelConfig.StartMaxScore, _levelConfig.LevelsPerStage, _levelConfig.ScoreScaler);
+            _scanner.SetStage(_levelConfig.StartStage);
+            _sizeScaler.Initialize(_transform, _virtualCamera, _levelConfig.ScaleFactor, _levelConfig.CameraScale);
             _mover.Initialize(movable, _rotationPoint, _transform.forward);
             _boosterVisualizer.Initialize(_updateDelay, _effectReproducer);
             _animation.Initialize(_animator, _eat, _idle, _hide);
-            _abilityCaster.Initialize(_rotationPoint, _startStage);
+            _abilityCaster.Initialize(_rotationPoint, _levelConfig.StartStage);
         }
 
         private void OnEnable()
