@@ -1,24 +1,34 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using Spawners;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Players
 {
-    public class AbilityButton : MonoBehaviour
+    [RequireComponent(typeof(LocalizedText))]
+    public class AbilityButton : SpawnableObject
     {
-        [SerializeField] private float _coolDown;
         [SerializeField] private float _coolDownUpdateStep;
-        [SerializeField] private string _defaultName;
         [SerializeField] private Button _button;
         [SerializeField] private TextMeshProUGUI _text;
 
+        [SerializeField] protected float CoolDown;
+
+        private LocalizedText _localized;
+        
         public bool CanUse { get; private set; } = true;
 
-        public void Use()
+        private void Start()
+        {
+            _localized = GetComponent<LocalizedText>();
+            _text.SetText(_localized.Label);
+        }
+
+        public AbilityButton Use()
         {
             StartCoroutine(CoolDownRoutine());
+            return this;
         }
         
         private IEnumerator CoolDownRoutine()
@@ -29,14 +39,14 @@ namespace Players
             var wait = new WaitForSeconds(_coolDownUpdateStep);
             float time = 0f;
             
-            while (time <= _coolDown)
+            while (time <= CoolDown)
             {
                 yield return wait;
                 time += _coolDownUpdateStep;
-                _text.SetText(Mathf.FloorToInt(_coolDown - time).ToString());
+                _text.SetText(Mathf.FloorToInt(CoolDown - time).ToString());
             }
             
-            _text.SetText(_defaultName);
+            _text.SetText(_localized.Label);
             CanUse = true;
             _button.interactable = true;
         }
