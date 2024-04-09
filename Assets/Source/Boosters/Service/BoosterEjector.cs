@@ -4,26 +4,25 @@ namespace Boosters
 {
     public class BoosterEjector : IBoosterVisitor
     {
-        private readonly ICalculableScore _standardScore;
         private readonly IMovable _standardSpeed;
+        private readonly ICalculableScore _standardScore;
 
-        public BoosterEjector(ICalculableScore standardScore, IMovable standardSpeed)
+        public BoosterEjector(IMovable standardSpeed, ICalculableScore standardScore)
         {
-            _standardScore = standardScore;
             _standardSpeed = standardSpeed;
+            _standardScore = standardScore;
         }
         
-        public event Action<IMovable> SpeedEnded;
-        public event Action<ICalculableScore> ScoreEnded;
+        public event Action<IStatBuffer> Completed;
 
         public void Visit(IMovable movable)
         {
-            SpeedEnded?.Invoke(_standardSpeed);
+            Completed?.Invoke(_standardSpeed);
         }
 
         public void Visit(ICalculableScore calculableScore)
         {
-            ScoreEnded?.Invoke(_standardScore);
+            Completed?.Invoke(_standardScore);
         }
     }
 }
