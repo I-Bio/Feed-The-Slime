@@ -8,23 +8,24 @@ namespace Players
     public class LevelBar : ObjectPool
     {
         [SerializeField] private Slider _slider;
-        [SerializeField] private Transform _popUpPoint;
+        [SerializeField] private RectTransform _targetPoint;
         [SerializeField] private Transform _container;
         [SerializeField] private string _slash;
         [SerializeField] private TextMeshProUGUI _score;
         [SerializeField] private TextMeshProUGUI _level;
-
-        private Vector3 _popUpPosition;
+        
+        private Vector2 _targetPosition;
         
         public void Initialize(float score, int maxScore)
         {
             ChangeScore(score, maxScore);
-            _popUpPosition = _popUpPoint.position;
+            SetLevel((int)score);
+            _targetPosition = _targetPoint.anchoredPosition;
         }
         
         public void SetScore(float score, int maxScore, float value)
         {
-            PullAndSetParent<PopUpText>(_popUpPosition, _container).Initialize(value);
+            PullAndSetParent<PopUpText>(_container).Initialize(value, _targetPosition);
             ChangeScore(score, maxScore);
         }
 
