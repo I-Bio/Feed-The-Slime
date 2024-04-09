@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Players
 {
     [RequireComponent(typeof(LineRenderer))]
-    public class AbilityCaster : ObjectPool, IHidden, ICaster
+    public class AbilityCaster : ObjectPool, IHidden, ICaster, IStageSettable
     {
         [SerializeField] private int _pointsCount;
         [SerializeField] private float _castStrength;
