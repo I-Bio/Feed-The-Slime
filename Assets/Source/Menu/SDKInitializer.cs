@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace Menu
 {
-    public class Authorizer : MonoBehaviour
+    public class SDKInitializer : MonoBehaviour
     {
         private void Awake()
         {
