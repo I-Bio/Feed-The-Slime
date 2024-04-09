@@ -7,6 +7,8 @@
         public int LifeCount{ get; }
         public int CrystalsCount{ get; }
         public int CompletedLevels{ get; }
+        public int AdvertAccumulation { get; }
         public bool SpitObtained{ get; }
+        public bool IsAllowedShowInter { get; }
     }
 }
