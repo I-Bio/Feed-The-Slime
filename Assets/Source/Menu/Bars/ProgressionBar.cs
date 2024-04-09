@@ -1,11 +1,12 @@
 ﻿using System;
+using Lean.Localization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Menu
 {
-    public class ProgressionBar<T> : MonoBehaviour, IProgressionBar
+    public class ProgressionBar<T> : LeanLocalizedBehaviour, IProgressionBar
     {
         
         [SerializeField] private Button _buyButton;
@@ -15,19 +16,30 @@ namespace Menu
         [SerializeField] private string _slash = "/";
         [SerializeField] private PurchaseNames _name;
         [SerializeField] private Image _slider;
-        [SerializeField] private SerializedPair<T>[] _purchases;
+        [SerializeField] private SerializedPair<int, T>[] _purchases;
         
         private int _stage;
         private bool _isMax;
 
         public event Action<int, PurchaseNames, object> Bought;
 
-        private void OnEnable()
+        public override void UpdateTranslation(LeanTranslation translation)
+        {
+            if (translation == null)
+                return;
+            
+            if (translation.Data is string == false)
+                return;
+            
+            _maxText = translation.Data as string;
+        }
+
+        private new void OnEnable()
         {
             _buyButton.onClick.AddListener(Buy);
         }
 
-        private void OnDisable()
+        private new void OnDisable()
         {
             _buyButton.onClick.RemoveListener(Buy);
         }
