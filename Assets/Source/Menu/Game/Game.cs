@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,29 +8,33 @@ namespace Menu
 {
     [RequireComponent(typeof(Stopper))]
     [RequireComponent(typeof(Screen))]
-    public class Game : MonoBehaviour, IGame
+    public class Game : MonoBehaviour, IStageSettable
     {
         [SerializeField] private float _double = 2f;
         [SerializeField] private Button _winAdvert;
         [SerializeField] private Button _loseAdvert;
         [SerializeField] private Button[] _mainMenuButtons;
+        [SerializeField] private TextMeshProUGUI[] _rewards;
         [SerializeField] private Button _pause;
         [SerializeField] private Button _resume;
         [SerializeField] private CanvasGroup _backGround;
-        [SerializeField] private HideOption _option;
 
         private Screen _screen;
 
-        private ITransferService _rewardService;
+        private ITransferService _transferService;
         private Transform _player;
         private Stopper _stopper;
         private Vector3 _playerStart;
+        private int _stage;
+        private float _maxStage;
 
-        public void Initialize(ITransferService rewardService, Transform player)
+        public void Initialize(ITransferService transferService, Transform player)
         {
-            _rewardService = rewardService;
+            _transferService = transferService;
             _player = player;
             _playerStart = _player.position;
+            _maxStage = Enum.GetValues(typeof(SatietyStage)).Length - 1;
+            SetStage(SatietyStage.Exhaustion);
             _stopper = GetComponent<Stopper>();
             _screen = GetComponent<Screen>();
         }
@@ -39,8 +44,22 @@ namespace Menu
             _stopper.Pause();
             _backGround.alpha = 1f;
             _screen.SetWindow((int)window);
+            
+            if(window == GameWindows.Pause)
+                return;
+
+            if (_transferService.Characteristics.IsAllowedShowInter == true)
+                Agava.YandexGames.InterstitialAd.Show();
         }
-        
+
+        public void SetStage(SatietyStage stage)
+        {
+            _stage = (int)stage;
+
+            foreach (TextMeshProUGUI reward in _rewards)
+                reward.SetText(Mathf.CeilToInt(_transferService.Reward * (_stage / _maxStage)).ToString());
+        }
+
         private void OnEnable()
         {
             _winAdvert.onClick.AddListener(ShowWinAdvert);
@@ -58,22 +77,22 @@ namespace Menu
             _loseAdvert.onClick.RemoveListener(ShowLoseAdvert);
             _pause.onClick.RemoveListener(OnScreenPause);
             _resume.onClick.RemoveListener(OnScreenResume);
-            
+
             foreach (Button button in _mainMenuButtons)
                 button.onClick.RemoveListener(Load);
         }
 
         private void ShowWinAdvert()
         {
-            Show(DoubleReward);
+            ShowRewardAdvert(DoubleReward);
         }
-        
+
         private void ShowLoseAdvert()
         {
-            Show(Respawn);
+            ShowRewardAdvert(Respawn);
         }
-        
-        private void Show(Action onReward)
+
+        private void ShowRewardAdvert(Action onReward)
         {
             Agava.YandexGames.VideoAd.Show(_stopper.Pause, onReward, _stopper.Release);
         }
@@ -86,13 +105,14 @@ namespace Menu
 
         private void DoubleReward()
         {
-            _rewardService.MultiplyIt(_double);
+            _transferService.MultiplyIt(_double);
         }
 
         private void Load()
         {
             _stopper.Release();
-            _rewardService.AllowReceive();
+            _transferService.MultiplyIt(_stage / _maxStage);
+            _transferService.AllowReceive();
             SceneManager.LoadScene((int)SceneNames.Menu);
         }
 
@@ -100,11 +120,11 @@ namespace Menu
         {
             ChangeWindow(GameWindows.Pause);
         }
-        
+
         private void OnScreenResume()
         {
             _backGround.alpha = 0f;
-            _screen.HideWindow(_option);
+            _screen.Hide();
             _stopper.Release();
         }
     }
