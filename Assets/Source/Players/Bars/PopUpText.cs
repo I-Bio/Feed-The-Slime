@@ -1,4 +1,6 @@
-﻿using Spawners;
+﻿using System;
+using DG.Tweening;
+using Spawners;
 using TMPro;
 using UnityEngine;
 
@@ -6,14 +8,25 @@ namespace Players
 {
     public class PopUpText : SpawnableObject
     {
-        [SerializeField] private string _trigger;
+        [SerializeField] private string _plus;
+        [SerializeField] private float _duration;
         [SerializeField] private TextMeshProUGUI _text;
-        [SerializeField] private Animator _animator;
+
+        private RectTransform _rectTransform;
         
-        public void Initialize(float value)
+        private void Awake()
         {
-            _text.SetText(value.ToString());
-            _animator.Play(_trigger);
+            _rectTransform = GetComponent<RectTransform>();
+        }
+
+        public void Initialize(float value, Vector2 position)
+        {
+            _text.SetText($"{_plus}{value}");
+            _rectTransform.DOAnchorPos(position, _duration).OnComplete(() =>
+            {
+                Push();
+                _rectTransform.anchoredPosition = Vector2.zero;
+            });
         }
     }
 }

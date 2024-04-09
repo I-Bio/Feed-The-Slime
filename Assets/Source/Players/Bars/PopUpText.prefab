@@ -12,13 +12,12 @@ GameObject:
   - component: {fileID: 979920171693123563}
   - component: {fileID: 5221108376710701952}
   - component: {fileID: 6379620010601824093}
-  - component: {fileID: 941522143998401977}
   m_Layer: 5
   m_Name: PopUpText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!224 &1437061498611187821
 RectTransform:
@@ -37,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &979920171693123563
 CanvasRenderer:
@@ -76,7 +75,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 1694498815
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -148,27 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccb824f0cc5c462d85ec2b6bfaffa0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _trigger: PopUp
+  _plus: +
+  _duration: 1
   _text: {fileID: 5221108376710701952}
-  _animator: {fileID: 941522143998401977}
---- !u!95 &941522143998401977
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5795672222175218924}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7524eaf5b10460547991ec797de686da, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
