@@ -25,6 +25,14 @@ namespace Spawners
             return _spawnQueue.Dequeue().Pull<T>(position);
         }
 
+        public T PullAndSetParent<T>(Transform parent) where T: class
+        {
+            if (_spawnQueue.Count == 0)
+                PushOnInitialize(Instantiate(_spawnableObject, parent).Initialize(this));
+            
+            return _spawnQueue.Dequeue().Pull<T>();
+        }
+
         public virtual void Push(SpawnableObject spawnableObject)
         {
             PushOnInitialize(spawnableObject);

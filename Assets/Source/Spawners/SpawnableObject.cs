@@ -24,6 +24,12 @@ namespace Spawners
             _transform.position = position;
             return this as T;
         }
+        
+        public T Pull<T>() where T: class
+        {
+            SetActive(true);
+            return this as T;
+        }
 
         public void Push()
         {
