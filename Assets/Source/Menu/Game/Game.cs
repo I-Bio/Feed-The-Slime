@@ -22,17 +22,15 @@ namespace Menu
         private Screen _screen;
 
         private ITransferService _transferService;
-        private Transform _player;
+        private Revival _revival;
         private Stopper _stopper;
-        private Vector3 _playerStart;
         private int _stage;
         private float _maxStage;
 
-        public void Initialize(ITransferService transferService, Transform player)
+        public void Initialize(ITransferService transferService, Revival revival)
         {
             _transferService = transferService;
-            _player = player;
-            _playerStart = _player.position;
+            _revival = revival;
             _maxStage = Enum.GetValues(typeof(SatietyStage)).Length - 1;
             SetStage(SatietyStage.Exhaustion);
             _stopper = GetComponent<Stopper>();
@@ -41,11 +39,14 @@ namespace Menu
 
         public void ChangeWindow(GameWindows window)
         {
+            if (window == GameWindows.Lose && _revival.TryRevive() == true)
+                return;
+            
             _stopper.Pause();
             _backGround.alpha = 1f;
             _screen.SetWindow((int)window);
             
-            if(window == GameWindows.Pause)
+            if (window == GameWindows.Pause)
                 return;
 
             if (_transferService.Characteristics.IsAllowedShowInter == true)
@@ -99,7 +100,7 @@ namespace Menu
 
         private void Respawn()
         {
-            _player.position = _playerStart;
+            _revival.Revive();
             OnScreenResume();
         }
 
