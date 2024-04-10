@@ -16,13 +16,14 @@ namespace Boosters
 
         public void Update(float delay)
         {
-            foreach (SerializedPair<IStatBuffer, float> pair in _currentBoosters)
+            for (int i = 0; i < _currentBoosters.Count; i++)
             {
-                var booster = pair;
-                booster.Value -= delay;
+                var unPacked = _currentBoosters[i];
+                unPacked.Value -= delay;
+                _currentBoosters[i] = unPacked;
                 
-                if (booster.Value <= booster.Key.LifeTime)
-                    _toDeleteBoosters.Add(booster);
+                if (_currentBoosters[i].Value <= 0f)
+                    _toDeleteBoosters.Add(_currentBoosters[i]);
             }
 
             foreach (SerializedPair<IStatBuffer, float> pair in _toDeleteBoosters)
