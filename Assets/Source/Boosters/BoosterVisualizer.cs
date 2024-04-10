@@ -27,39 +27,41 @@ namespace Boosters
 
         public void Visit(IMovable movable)
         {
-            if (_boosters.Any(pair => pair.Value is IMovable == false))
+            if (_boosters.Count == 0 || _boosters.Where(pair => pair.Value is IMovable == true).ToList().Count == 0)
             {
                 _effectReproducer.PlayEffect(EffectType.SpeedBoost);
-                _boosters.Add(
-                    new KeyValuePair<SpawnableObject, IStatBuffer>(
-                        PullAndSetParent<BoostIcon>(Vector3.zero, _holder)
-                            .Initialize(movable.LifeTime, movable.Icon).Use(), movable));
+                SpawnIcon(movable);
                 return;
             }
 
-            Hide(movable);
+            Hide<IMovable>();
         }
 
         public void Visit(ICalculableScore calculableScore)
         {
-            if (_boosters.Any(pair => pair.Value is ICalculableScore != false))
+            if (_boosters.Count == 0 || _boosters.Where(pair => pair.Value is ICalculableScore == true).ToList().Count == 0)
             {
                 _effectReproducer.PlayEffect(EffectType.ScoreBoost);
-                _boosters.Add(
-                    new KeyValuePair<SpawnableObject, IStatBuffer>(
-                        PullAndSetParent<BoostIcon>(Vector3.zero, _holder)
-                            .Initialize(calculableScore.LifeTime, calculableScore.Icon).Use(), calculableScore));
+                SpawnIcon(calculableScore);
                 return;
             }
 
-            Hide(calculableScore);
+            Hide<ICalculableScore>();
         }
 
-        private void Hide(IStatBuffer boost)
+        private void SpawnIcon(IStatBuffer boost)
         {
-            KeyValuePair<SpawnableObject, IStatBuffer> buff = _boosters.First(pair => pair.Value == boost);
-            Push(buff.Key);
-            _boosters.Remove(buff);
+            _boosters.Add(
+                new KeyValuePair<SpawnableObject, IStatBuffer>(
+                    PullAndSetParent<BoostIcon>(_holder)
+                        .Initialize(boost.LifeTime, boost.Icon).Use(), boost));
+        }
+
+        private void Hide<T>()
+        {
+            KeyValuePair<SpawnableObject, IStatBuffer> boost = _boosters.First(pair => pair.Value is T);
+            Push(boost.Key);
+            _boosters.Remove(boost);
         }
 
         private IEnumerator UpdateRoutine()
