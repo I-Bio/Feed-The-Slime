@@ -23,8 +23,9 @@ namespace Spawners
             ICalculableScore calculableScore =
                 new AdditionalScore(new Score(), transferService.Characteristics.ScorePerEat, 0f, null);
             int id = 0;
+            Revival revival = new Revival(_player.transform, transferService.Characteristics.LifeCount);
 
-            _game.Initialize(transferService, _player.transform);
+            _game.Initialize(transferService, revival);
             _player.Initialize(movable, calculableScore, _game);
             _boosterSpawner.Initialize(movable, calculableScore);
 
