@@ -47,7 +47,10 @@ namespace Menu
 
             if (_canReceive == false)
                 return false;
-
+            
+            if (_rewardCount <= rewardCount)
+                return false;
+            
             rewardCount = _rewardCount;
             _rewardCount = 0;
             _canReceive = false;

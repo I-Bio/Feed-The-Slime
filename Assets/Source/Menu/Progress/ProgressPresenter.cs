@@ -73,9 +73,6 @@ namespace Menu
             if (TransferService.Instance.TryGetReward(out int value) == false)
                 return;
 
-            if (value <= 0)
-                return;
-
             _switcher.Hide();
             _reward.Reproduce(_switcher.ShowMain);
             _model.RewardReceive(value);
