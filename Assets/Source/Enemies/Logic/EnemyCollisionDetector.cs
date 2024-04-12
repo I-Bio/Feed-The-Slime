@@ -17,10 +17,10 @@ namespace Enemies
             if (_canContact == false)
                 return;
 
-            if (collision.collider.TryGetComponent(out PlayerCollisionDetector player) == false)
+            if (collision.collider.TryGetComponent(out IPlayerVisitor player) == false)
                 return;
 
-            player.ContactEnemy();
+            player.Visit(null as EnemyMover);
         }
     }
 }
