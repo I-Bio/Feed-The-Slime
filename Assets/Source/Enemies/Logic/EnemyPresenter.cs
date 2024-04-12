@@ -5,54 +5,58 @@ namespace Enemies
     public class EnemyPresenter : IPresenter
     {
         private readonly Enemy _model;
-        private readonly EnemyMover _mover;
+        private readonly EnemyBehaviour _behaviour;
         private readonly EnemyAnimation _animation;
         private readonly EnemyCollisionDetector _detector;
-        
-        public EnemyPresenter(Enemy model, EnemyMover mover, EnemyAnimation animation, EnemyCollisionDetector detector)
+
+        public EnemyPresenter(Enemy model, EnemyBehaviour behaviour, EnemyAnimation animation,
+            EnemyCollisionDetector detector)
         {
             _model = model;
-            _mover = mover;
+            _behaviour = behaviour;
             _animation = animation;
             _detector = detector;
         }
-        
+
         public void Enable()
         {
-            _model.Moved += OnMoved;
-            _model.Idled += OnIdled;
-            _model.RunningAway += OnRunningAway;
+            _model.GoingInteract += OnGoingInteract;
+            _model.Canceled += OnCanceled;
+            _model.Avoided += OnAvoided;
 
-            _mover.GoingMove += OnGoingMove;
+            _behaviour.GoingThink += OnGoingThink;
         }
 
         public void Disable()
         {
-            _model.Moved -= OnMoved;
-            _model.Idled -= OnIdled;
-            _model.RunningAway -= OnRunningAway;
+            _model.GoingInteract -= OnGoingInteract;
+            _model.Canceled -= OnCanceled;
+            _model.Avoided -= OnAvoided;
 
-            _mover.GoingMove -= OnGoingMove;
+            _behaviour.GoingThink -= OnGoingThink;
         }
 
-        private void OnMoved(Vector3 position)
+        private void OnGoingInteract(Vector3 position)
         {
             _animation.PlayMove();
-            _mover.Move(position);
+            _behaviour.InteractInClose(position);
         }
 
-        private void OnIdled()
+        private void OnCanceled()
         {
             _animation.PlayIdle();
+            _behaviour.CancelInteraction();
         }
 
-        private void OnRunningAway(Vector3 position)
+        private void OnAvoided(Vector3 position)
         {
-            _detector.DisallowContact();
-            OnMoved(position);
+            if (_model.IsAvoiding == false)
+                _detector.DisallowContact();
+
+            _behaviour.AvoidInteraction(position, _animation.PlayMove);
         }
 
-        private void OnGoingMove()
+        private void OnGoingThink()
         {
             _model.CompareDistance();
         }
