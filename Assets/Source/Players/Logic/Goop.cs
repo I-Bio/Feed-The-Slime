@@ -39,7 +39,8 @@ namespace Players
 
         public void IncreaseScore(float value)
         {
-            _score += _calculableScore.CalculateScore(value);
+            value = _calculableScore.CalculateScore(value);
+            _score += value;
 
             if (_score >= _maxScore)
                 RaiseLevel();
@@ -60,13 +61,10 @@ namespace Players
         private void RaiseStage()
         {
             _maxLevel += _levelsPerStage;
-
-            if (Enum.GetValues(typeof(SatietyStage)).Length - 1 > (int)_stage + 1)
-            {
-                _stage++;
-                SizeIncreased?.Invoke(_stage);
-            }
-            else
+            _stage++;
+            SizeIncreased?.Invoke(_stage);
+           
+            if (Enum.GetValues(typeof(SatietyStage)).Length - 1 <= (int)_stage)
                 Winning?.Invoke();
         }
     }
