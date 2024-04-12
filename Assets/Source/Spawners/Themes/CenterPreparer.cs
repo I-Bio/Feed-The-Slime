@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Enemies;
+using UnityEngine;
 
 namespace Spawners
 {
@@ -6,10 +7,10 @@ namespace Spawners
     {
         [SerializeField] private Material _material;
 
-        public void Initialize(IHidden player, Renderer ground)
+        public void Initialize(IHidden player, EnemyDependencyVisitor visitor, Renderer ground)
         {
             ground.material = _material;
-            base.Initialize(player);
+            base.Initialize(player, visitor);
         }
     }
 }

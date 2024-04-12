@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 8450164977697187394}
   - component: {fileID: 3298156250914272996}
   m_Layer: 0
-  m_Name: Center_Theme_1
+  m_Name: Center_Theme_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -401,7 +401,7 @@ MonoBehaviour:
   - {fileID: 257702990331676509}
   _behaviour: 0
   _enemies: []
-  _material: {fileID: 2100000, guid: 97a37bc3bcf841f4c9ebb320e5f7ae7b, type: 2}
+  _material: {fileID: 2100000, guid: aa02eaccb0d9b784fbaa4afce2275f6f, type: 2}
 --- !u!1001 &36564978419003363
 PrefabInstance:
   m_ObjectHideFlags: 0
