@@ -12,5 +12,7 @@ namespace Players
         [SerializeField] public int StartMaxScore;
         [SerializeField] public int LevelsPerStage;
         [SerializeField] public SatietyStage StartStage;
+        [SerializeField] public int MinToxinsCount = 0;
+        [SerializeField] public int MaxToxinsCount = 100;
     }
 }
