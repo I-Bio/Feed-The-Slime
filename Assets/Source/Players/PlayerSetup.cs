@@ -14,15 +14,16 @@ namespace Players
     [RequireComponent(typeof(AbilityCaster))]
     [RequireComponent(typeof(EffectReproducer))]
     [RequireComponent(typeof(SoundReproducer))]
+    [RequireComponent(typeof(Ticker))]
     public class PlayerSetup : MonoBehaviour
     {
         [Header("UI")] 
         [SerializeField] private LevelBar _levelBar;
         [SerializeField] private StageBar _stageBar;
+        [SerializeField] private ToxinBar _toxinBar;
 
         [Space, Header("Player Options")] 
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
-
         [SerializeField] private LevelConfig _levelConfig;
 
         [Space, Header("Move Options")] 
@@ -45,15 +46,18 @@ namespace Players
         private AbilityCaster _abilityCaster;
         private EffectReproducer _effectReproducer;
         private SoundReproducer _soundReproducer;
+        private Ticker _ticker;
         private Transform _transform;
 
         private Goop _model;
         private BoosterEjector _ejector;
         private BoosterService _service;
         private BoosterVisualizer _boosterVisualizer;
+        private PlayerToxins _playerToxins;
 
         private PlayerPresenter _playerPresenter;
         private BoosterPresenter _boosterPresenter;
+        private ToxinPresenter _toxinPresenter;
 
         public void Initialize(IMovable movable, ICalculableScore calculableScore, Game game)
         {
@@ -66,16 +70,19 @@ namespace Players
             _abilityCaster = GetComponent<AbilityCaster>();
             _effectReproducer = GetComponent<EffectReproducer>();
             _soundReproducer = GetComponent<SoundReproducer>();
+            _ticker = GetComponent<Ticker>();
             _transform = transform;
 
             _model = new Goop(calculableScore, _levelConfig.StartStage, _levelConfig.ScoreScaler,
                 _levelConfig.StartMaxScore, _levelConfig.LevelsPerStage);
             _ejector = new BoosterEjector(movable, calculableScore);
             _service = new BoosterService();
+            _playerToxins = new PlayerToxins(_levelConfig.MaxToxinsCount, _levelConfig.MinToxinsCount);
 
             _playerPresenter = new PlayerPresenter(_model, _collisionDetector, _scanner, _sizeScaler, _levelBar,
                 _stageBar, _service, _animation, _abilityCaster, _mover, _effectReproducer, _soundReproducer, game);
             _boosterPresenter = new BoosterPresenter(_model, _mover, _service, _boosterVisualizer, _ejector);
+            _toxinPresenter = new ToxinPresenter(_playerToxins, _toxinBar, _ticker, _collisionDetector);
 
             _levelBar.Initialize(_levelConfig.StartScore, _levelConfig.StartMaxScore);
             _stageBar.Initialize(_levelConfig.StartMaxScore, _levelConfig.LevelsPerStage, _levelConfig.ScoreScaler);
@@ -85,18 +92,21 @@ namespace Players
             _boosterVisualizer.Initialize(_updateDelay, _effectReproducer);
             _animation.Initialize(_animator, _eat, _idle, _hide);
             _abilityCaster.Initialize(_rotationPoint, _levelConfig.StartStage);
+            _toxinBar.Initialize(_levelConfig.MaxToxinsCount, _levelConfig.MinToxinsCount);
         }
 
         private void OnEnable()
         {
             _playerPresenter.Enable();
             _boosterPresenter.Enable();
+            _toxinPresenter.Enable();
         }
 
         private void OnDisable()
         {
             _playerPresenter.Disable();
             _boosterPresenter.Disable();
+            _toxinPresenter.Disable();
         }
     }
 }
