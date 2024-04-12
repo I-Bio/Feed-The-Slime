@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Enemies
 {
-    [RequireComponent(typeof(EnemyMover))]
+    [RequireComponent(typeof(EnemyBehaviour))]
     [RequireComponent(typeof(EnemyAnimation))]
     public class EnemySetup : MonoBehaviour
     {
@@ -16,7 +16,7 @@ namespace Enemies
         [SerializeField] private EnemyCollisionDetector _detector;
         [SerializeField] private FoodSetup _foodPart;
         
-        private EnemyMover _mover;
+        private EnemyBehaviour _behaviour;
         private EnemyAnimation _animation;
         private Transform _transform;
         
@@ -24,20 +24,26 @@ namespace Enemies
 
         private EnemyPresenter _presenter;
         
-        public void Initialize(IHidden player, IEnemyPolicy policy)
+        public void Initialize(IHidden player, EnemyDependencyVisitor visitor, IEnemyPolicy policy)
         {
             _transform = transform;
-            _mover = GetComponent<EnemyMover>();
+            _behaviour = GetComponent<EnemyBehaviour>();
             _animation = GetComponent<EnemyAnimation>();
 
             _model = new Enemy(_transform, player, policy, _foodPart.Stage, _followDistance);
-            _presenter = new EnemyPresenter(_model, _mover, _animation, _detector);
-            
-            _mover.Initialize(_thinkDelay);
+            _presenter = new EnemyPresenter(_model, _behaviour, _animation, _detector);
+
+            _behaviour.Accept(visitor, _thinkDelay);
             _animation.Initialize(_animator, _idle, _move);
-            _foodPart.Initialize(float.NaN);
+            _foodPart.Initialize(float.NaN, () => Destroy(gameObject));
             
             _presenter.Enable();
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, _followDistance);
         }
 
         private void OnDestroy()
