@@ -12,7 +12,7 @@ namespace Input
         private PlayerInput _model;
         private InputPresenter _presenter;
 
-        private void Awake()
+        public void Initialize()
         {
             _model = new PlayerInput();
             _presenter = new InputPresenter(_model, _joystick, _player, _caster);
