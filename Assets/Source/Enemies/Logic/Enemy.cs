@@ -25,9 +25,11 @@ namespace Enemies
             _isIdled = true;
         }
 
-        public event Action<Vector3> Moved;
-        public event Action<Vector3> RunningAway;
-        public event Action Idled;
+        public event Action<Vector3> GoingInteract;
+        public event Action<Vector3> Avoided;
+        public event Action Canceled;
+
+        public bool IsAvoiding { get; private set; }
 
         public void CompareDistance()
         {
@@ -38,9 +40,14 @@ namespace Enemies
                 if (distance <= _followDistance)
                 {
                     if (_player.Stage < _stage)
-                        Moved?.Invoke(_player.Position);
+                        GoingInteract?.Invoke(_player.Position);
                     else
-                        RunningAway?.Invoke(_transform.position - (_player.Position - _transform.position));
+                    {
+                        Avoided?.Invoke(_transform.position - (_player.Position - _transform.position));
+                        
+                        if (IsAvoiding == false)
+                            IsAvoiding = true;
+                    }
 
                     _isIdled = false;
                     return;
@@ -52,12 +59,12 @@ namespace Enemies
 
             if (_transform.position == _startPosition)
             {
-                Idled?.Invoke();
+                Canceled?.Invoke();
                 _isIdled = true;
                 return;
             }
 
-            Moved?.Invoke(_startPosition);
+            GoingInteract?.Invoke(_startPosition);
         }
     }
 }
