@@ -119,6 +119,8 @@ namespace Players
         {
             _mover.ProhibitMove();
             _animation.PlayHide();
+            _effectReproducer.PlayEffect(EffectType.Hide);
+            _soundReproducer.PlayClip(SoundType.Hide);
         }
 
         private void OnShowed()
