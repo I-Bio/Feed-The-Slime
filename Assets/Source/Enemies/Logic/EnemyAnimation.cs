@@ -5,16 +5,15 @@ namespace Enemies
     public class EnemyAnimation : MonoBehaviour
     {
         private Animator _animator;
-        
         private string _move;
         private string _idle;
         private bool _isMoved;
 
-        public void Initialize(Animator animator, string move, string idle)
+        public void Initialize(Animator animator, string idle, string move)
         {
             _animator = animator;
-            _move = move;
             _idle = idle;
+            _move = move;
         }
 
         public void PlayMove()
