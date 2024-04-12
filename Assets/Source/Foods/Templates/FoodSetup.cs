@@ -1,4 +1,5 @@
-﻿using Spawners;
+﻿using System;
+using Spawners;
 using UnityEngine;
 
 namespace Foods
@@ -7,11 +8,10 @@ namespace Foods
     [RequireComponent(typeof(ObjectHighlighter))]
     public class FoodSetup : SpawnableObject
     {
-        [SerializeField] private Material[] _standard;
-        [SerializeField] private Material[] _highlighted;
+        [SerializeField] private float _deselectValue = 0f;
+        [SerializeField] private float _selectValue = 4f;
         [SerializeField] private float _scorePerEat;
         [SerializeField] private SatietyStage _stage;
-        [SerializeField] private Renderer _renderer;
 
         private EdiblePart _ediblePart;
         private ObjectHighlighter _highlighter;
@@ -19,18 +19,21 @@ namespace Foods
         private Food _model;
         private FoodPresenter _presenter;
 
+        private Action _onDestroyCallback;
+
         public SatietyStage Stage => _stage;
         
-        public void Initialize(float scorePerEat)
+        public void Initialize(float scorePerEat, Action onDestroyCallback = null)
         {
             _ediblePart = GetComponent<EdiblePart>();
             _highlighter = GetComponent<ObjectHighlighter>();
+            _onDestroyCallback = onDestroyCallback;
 
             _model = new Food(_stage);
             _presenter = new FoodPresenter(_model, _ediblePart, _highlighter);
             
             _ediblePart.Initialize(float.IsNaN(scorePerEat) ? _scorePerEat : scorePerEat);
-            _highlighter.Initialize(_renderer, _standard, _highlighted);
+            _highlighter.Initialize(_deselectValue, _selectValue);
             
             _presenter.Enable();
         }
@@ -43,6 +46,7 @@ namespace Foods
         private void OnDestroy()
         {
             _presenter.Disable();
+            _onDestroyCallback?.Invoke();
         }
     }
 }

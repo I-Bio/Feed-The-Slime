@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 641124298864603287}
   - component: {fileID: 3938992239949883392}
   - component: {fileID: 3900686562562649368}
-  - component: {fileID: -3876095025936051465}
   - component: {fileID: 1622630171139796407}
+  - component: {fileID: 4583260054429639755}
   m_Layer: 0
   m_Name: Rock_Big_1
   m_TagString: Untagged
@@ -101,15 +101,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4106e0c23f5e42c0ba8b0b0449bc38b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _standard:
-  - {fileID: 2100000, guid: 29aabbe420f18164897798c5b8c13a29, type: 2}
-  _highlighted:
-  - {fileID: 2100000, guid: 29aabbe420f18164897798c5b8c13a29, type: 2}
-  - {fileID: 2100000, guid: 2438ae06d11849c478e54d80b0c39ffa, type: 2}
-  - {fileID: 2100000, guid: be5bb5211164fcd43a514a0b322a2044, type: 2}
+  _deselectValue: 0
+  _selectValue: 4
   _scorePerEat: 36
   _stage: 2
-  _renderer: {fileID: 8881663337669626600}
 --- !u!114 &641124298864603287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,27 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f379dd332d54aff9358d4df5cc4d953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &-3876095025936051465
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1497073631201182283}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.9306884, y: 1.9458139, z: 2.1928668}
-  m_Center: {x: -0.1020993, y: 0.03584683, z: 0.08352536}
 --- !u!208 &1622630171139796407
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -189,3 +163,25 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: -0.102000006, y: 0.036000002, z: 0.08400001}
   m_TimeToStationary: 0.5
+--- !u!64 &4583260054429639755
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1497073631201182283}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: fa2e670bb3648a84b9df8d16da25b85e, type: 3}
