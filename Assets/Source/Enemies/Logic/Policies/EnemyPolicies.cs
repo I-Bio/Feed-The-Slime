@@ -1,6 +1,6 @@
 ﻿namespace Enemies
 {
-    public enum EnemyBehaviours
+    public enum EnemyPolicies
     {
         Normal,
         Smart
