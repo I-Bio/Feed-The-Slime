@@ -1,13 +1,16 @@
 ﻿using Boosters;
+using Enemies;
+using Input;
 using Menu;
 using Players;
 using UnityEngine;
 
 namespace Spawners
 {
-    public class LevelLoader : MonoBehaviour
+    public class LevelBootstrap : MonoBehaviour
     {
         [SerializeField] private BoosterSpawner _boosterSpawner;
+        [SerializeField] private InputSetup _input;
         [SerializeField] private PlayerSetup _player;
         [SerializeField] private Game _game;
         [SerializeField] private Transform _center;
@@ -25,6 +28,7 @@ namespace Spawners
             int id = 0;
             Revival revival = new Revival(_player.transform, transferService.Characteristics.LifeCount);
 
+            _input.Initialize();
             _game.Initialize(transferService, revival);
             _player.Initialize(movable, calculableScore, _game);
             _boosterSpawner.Initialize(movable, calculableScore);
@@ -37,13 +41,16 @@ namespace Spawners
                 id = i;
                 break;
             }
+
+            IHidden hidden = _player.GetComponent<IHidden>();
+            EnemyDependencyVisitor visitor = new EnemyDependencyVisitor(_player.GetComponent<IPlayerVisitor>());
             
             Instantiate(_centerTemplates[id].Value.GetRandom(), _center)
-                .Initialize(_player.GetComponent<IHidden>(), _ground);
+                .Initialize(hidden, visitor, _ground);
 
             foreach (Transform zonePoint in _zonePoints)
                 Instantiate(_zoneTemplates[id].Value.GetRandom(), zonePoint)
-                    .Initialize(_player.GetComponent<IHidden>());
+                    .Initialize(hidden, visitor);
         }
     }
 }
