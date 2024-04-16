@@ -14,9 +14,11 @@ namespace Menu
         private readonly RewardReproducer _reward;
         private readonly WindowSwitcher _switcher;
         private readonly YandexLeaderboard _leaderboard;
+        private readonly TransferService _transferService;
 
         public ProgressPresenter(Progress model, IProgressionBar[] bars, Button play, TextMeshProUGUI level,
-            TextMeshProUGUI crystals, RewardReproducer reward, WindowSwitcher switcher, YandexLeaderboard leaderboard)
+            TextMeshProUGUI crystals, RewardReproducer reward, WindowSwitcher switcher, YandexLeaderboard leaderboard,
+            TransferService transferService)
         {
             _model = model;
             _bars = bars;
@@ -26,8 +28,7 @@ namespace Menu
             _reward = reward;
             _switcher = switcher;
             _leaderboard = leaderboard;
-
-            _switcher.ShowMain();
+            _transferService = transferService;
         }
 
         public void Enable()
@@ -37,7 +38,7 @@ namespace Menu
             _model.RewardReceived += OnRewardReceived;
             _model.LevelsIncreased += OnLevelsIncreased;
 #if UNITY_WEBGL && !UNITY_EDITOR
-            _switcher.LeaderboardOpened += _model.Load;
+            _switcher.LeaderboardOpened += OnLeaderboardOpened;
 #endif
             foreach (IProgressionBar bar in _bars)
                 bar.Bought += OnBought;
@@ -52,7 +53,7 @@ namespace Menu
             _model.RewardReceived -= OnRewardReceived;
             _model.LevelsIncreased -= OnLevelsIncreased;
 #if UNITY_WEBGL && !UNITY_EDITOR
-            _switcher.LeaderboardOpened -= _model.Load;
+            _switcher.LeaderboardOpened -= OnLeaderboardOpened;
 #endif
             foreach (IProgressionBar bar in _bars)
                 bar.Bought -= OnBought;
@@ -65,12 +66,17 @@ namespace Menu
             _bars[(int)PurchaseNames.Speed].Initialize(characteristics.Speed);
             _bars[(int)PurchaseNames.Score].Initialize(characteristics.ScorePerEat);
             _bars[(int)PurchaseNames.Life].Initialize(characteristics.LifeCount);
-            _bars[(int)PurchaseNames.Spit].Initialize(characteristics.SpitObtained);
+            _bars[(int)PurchaseNames.Spit].Initialize(characteristics.DidObtainSpit);
 
             OnLevelsIncreased(characteristics.CompletedLevels);
-            OnCrystalsChanged(characteristics.CrystalsCount);
 
-            if (TransferService.Instance.TryGetReward(out int value) == false)
+            if (_transferService.DidLevelPassed == true)
+                _model.AccumulateInter();
+
+            OnCrystalsChanged(characteristics.CrystalsCount);
+            _switcher.ShowMain();
+            
+            if (_transferService.TryGetReward(out int value) == false)
                 return;
 
             _switcher.Hide();
@@ -128,5 +134,12 @@ namespace Menu
 
             _model.ChangeCrystals(-spendCount);
         }
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+        private void OnLeaderboardOpened()
+        {
+            _model.UpdateLeaderboardScore(OnLevelsIncreased);
+        }
+#endif
     }
 }

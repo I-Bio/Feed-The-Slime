@@ -43,21 +43,25 @@ namespace Menu
 
         public void ObtainSpit(object isObtained)
         {
-            _characteristics.SpitObtained = isObtained as bool? ?? throw new NullReferenceException();
+            _characteristics.DidObtainSpit = isObtained as bool? ?? throw new NullReferenceException();
         }
 
         public void IncreaseLevels()
         {
             _characteristics.CompletedLevels++;
+            LevelsIncreased?.Invoke(_characteristics.CompletedLevels);
+        }
+        
+        public void AccumulateInter()
+        {
+            _characteristics.IsAllowedShowInter = false;
             _characteristics.AdvertAccumulation++;
 
-            if (_characteristics.AdvertAccumulation == _advertAccumulationStep)
-            {
-                _characteristics.AdvertAccumulation = 0;
-                _characteristics.IsAllowedShowInter = true;
-            }
-
-            LevelsIncreased?.Invoke(_characteristics.CompletedLevels);
+            if (_characteristics.AdvertAccumulation != _advertAccumulationStep)
+                return;
+            
+            _characteristics.AdvertAccumulation = 0;
+            _characteristics.IsAllowedShowInter = true;
         }
 
         public void ChangeCrystals(int value)
@@ -84,7 +88,6 @@ namespace Menu
 #if UNITY_WEBGL && !UNITY_EDITOR
         public void Save()
         {
-            Debug.Log("TO SAVE " + JsonUtility.ToJson(_characteristics));
             PlayerAccount.SetCloudSaveData(JsonUtility.ToJson(_characteristics));
         }
 
@@ -95,14 +98,15 @@ namespace Menu
 
         private void OnLoaded(string jsonData)
         {
-            PlayerCharacteristics characteristics = JsonUtility.FromJson<PlayerCharacteristics>(jsonData);
-            
-            if (characteristics != null && characteristics.Speed != 0f)
-                _characteristics = characteristics;
-            
-            Debug.Log("PRINT AFTER LOAD " + JsonUtility.ToJson(_characteristics));
-            
+            if (string.IsNullOrEmpty(jsonData) == false)
+                _characteristics = JsonUtility.FromJson<PlayerCharacteristics>(jsonData);
+
             Loaded?.Invoke(_characteristics);
+        }
+        
+        public void UpdateLeaderboardScore(Action<int> onUpdated)
+        {
+            onUpdated?.Invoke(_characteristics.CompletedLevels);
         }
 #endif
     }
