@@ -10,18 +10,20 @@ namespace Boosters
 {
     public class BoosterVisualizer : ObjectPool, IBoosterVisitor
     {
-        [SerializeField] private Transform _holder;
-
-        private float _delay;
-        private EffectReproducer _effectReproducer;
         private readonly List<KeyValuePair<SpawnableObject, IStatBuffer>> _boosters = new();
+        
+        private float _delay;
+        private Transform _holder;
+        private  Dictionary<Type, Action> _effects;
 
         public event Action<float> Updated;
 
-        public void Initialize(float delay, EffectReproducer effectReproducer)
+        public void Initialize(float delay, Dictionary<Type, Action> effects, Transform holder, BoostIcon icon)
         {
+            Initialize(icon);
+            _holder = holder;
             _delay = delay;
-            _effectReproducer = effectReproducer;
+            _effects = effects;
             StartCoroutine(UpdateRoutine());
         }
 
@@ -29,7 +31,10 @@ namespace Boosters
         {
             if (_boosters.Count == 0 || _boosters.Where(pair => pair.Value is IMovable == true).ToList().Count == 0)
             {
-                _effectReproducer.PlayEffect(EffectType.SpeedBoost);
+                if (_effects.TryGetValue(typeof(IMovable), out Action onGotSpeed) == false)
+                    throw new NullReferenceException(nameof(IMovable));
+                
+                onGotSpeed.Invoke();
                 SpawnIcon(movable);
                 return;
             }
@@ -41,7 +46,10 @@ namespace Boosters
         {
             if (_boosters.Count == 0 || _boosters.Where(pair => pair.Value is ICalculableScore == true).ToList().Count == 0)
             {
-                _effectReproducer.PlayEffect(EffectType.ScoreBoost);
+                if (_effects.TryGetValue(typeof(ICalculableScore), out Action onGotScore) == false)
+                    throw new NullReferenceException(nameof(ICalculableScore));
+                
+                onGotScore.Invoke();
                 SpawnIcon(calculableScore);
                 return;
             }
