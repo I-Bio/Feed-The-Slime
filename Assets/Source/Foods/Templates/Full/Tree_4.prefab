@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 3548490486308707406}
   - component: {fileID: -6204791431417868863}
   - component: {fileID: 1049595081892425403}
+  - component: {fileID: 8130783221368863936}
   m_Layer: 0
   m_Name: Tree_4
   m_TagString: Untagged
@@ -133,7 +134,6 @@ MonoBehaviour:
   outlineMode: 0
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 4
-  precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
 --- !u!114 &3548490486308707406
@@ -167,7 +167,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: f2d8e8ae3d401d945a9cc826211efc96, type: 3}
 --- !u!208 &1049595081892425403
@@ -186,3 +186,17 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 3.203, y: 6.1310005, z: 3.6980002}
   m_TimeToStationary: 0.5
+--- !u!114 &8130783221368863936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5346924836314137408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 915380fd5a5dfd941aed01d67df99099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fadedAlpha: 0.33
+  _fadeDelay: 0.03

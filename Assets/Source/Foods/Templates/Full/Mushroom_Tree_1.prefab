@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8489970798071827530, guid: 06600465b3455a74f9ca67e269850097, type: 3}
+      propertyPath: m_Extents.x
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: -8489970798071827530, guid: 06600465b3455a74f9ca67e269850097, type: 3}
+      propertyPath: m_Extents.z
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 893407379075660583, guid: 06600465b3455a74f9ca67e269850097, type: 3}
       propertyPath: m_LocalScale.x
       value: 25
@@ -64,6 +72,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom_Tree_1
       objectReference: {fileID: 0}
+    - target: {fileID: 4533950827123750959, guid: 06600465b3455a74f9ca67e269850097, type: 3}
+      propertyPath: outlineMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5418642259752572714, guid: 06600465b3455a74f9ca67e269850097, type: 3}
       propertyPath: _stage
       value: 2
@@ -80,6 +92,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2944167571901853817, guid: 06600465b3455a74f9ca67e269850097, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4930344917713341698}
+    - targetCorrespondingSourceObject: {fileID: 2944167571901853817, guid: 06600465b3455a74f9ca67e269850097, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4840039261253676027}
   m_SourcePrefab: {fileID: 100100000, guid: 06600465b3455a74f9ca67e269850097, type: 3}
 --- !u!1 &4370444088687243494 stripped
 GameObject:
@@ -108,3 +123,17 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7852103032475761981, guid: 6c890c97a154a474082af84a379dffce, type: 3}
+--- !u!114 &-4840039261253676027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4370444088687243494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 915380fd5a5dfd941aed01d67df99099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fadedAlpha: 0.33
+  _fadeDelay: 0.03

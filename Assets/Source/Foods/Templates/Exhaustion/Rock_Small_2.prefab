@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 4563084694724604706}
   - component: {fileID: 3885234476141841926}
   - component: {fileID: 8526836543832856739}
-  - component: {fileID: -5106989712861023905}
   m_Layer: 0
   m_Name: Rock_Small_2
   m_TagString: Untagged
@@ -101,15 +100,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4106e0c23f5e42c0ba8b0b0449bc38b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _standard:
-  - {fileID: 2100000, guid: 29aabbe420f18164897798c5b8c13a29, type: 2}
-  _highlighted:
-  - {fileID: 2100000, guid: 29aabbe420f18164897798c5b8c13a29, type: 2}
-  - {fileID: 2100000, guid: 2438ae06d11849c478e54d80b0c39ffa, type: 2}
-  - {fileID: 2100000, guid: be5bb5211164fcd43a514a0b322a2044, type: 2}
+  _deselectValue: 0
+  _selectValue: 4
   _scorePerEat: 0.6
   _stage: 0
-  _renderer: {fileID: 4758211256787190340}
 --- !u!65 &5039163116108467260
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -158,7 +152,6 @@ MonoBehaviour:
   outlineMode: 0
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 4
-  precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
 --- !u!114 &8526836543832856739
@@ -173,19 +166,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f379dd332d54aff9358d4df5cc4d953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!208 &-5106989712861023905
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 338672606563605732}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 6.8710003, y: 0.90000004, z: 5.953}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0.90000004, z: 0}
-  m_TimeToStationary: 0.5

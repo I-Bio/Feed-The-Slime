@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 7445520129083742315}
   - component: {fileID: 5112538274190968043}
   - component: {fileID: -156475383535321404}
+  - component: {fileID: 2746644075385379783}
   m_Layer: 0
   m_Name: Rock_Big_2
   m_TagString: Untagged
@@ -132,7 +133,6 @@ MonoBehaviour:
   outlineMode: 0
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 4
-  precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
 --- !u!114 &7445520129083742315
@@ -185,3 +185,17 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: dc3c0f651f80d534ba8e58f224d192a1, type: 3}
+--- !u!114 &2746644075385379783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8731902048296786452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 915380fd5a5dfd941aed01d67df99099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fadedAlpha: 0.33
+  _fadeDelay: 0.03

@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1747588769332426}
   - component: {fileID: 7708110097551703437}
   - component: {fileID: 8929229788287070881}
+  - component: {fileID: -7254244020465631214}
   m_Layer: 0
   m_Name: Bush_Tree_1
   m_TagString: Untagged
@@ -103,7 +104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _deselectValue: 0
   _selectValue: 4
-  _scorePerEat: 40
+  _scorePerEat: 47
   _stage: 2
 --- !u!114 &4884715463603694681
 MonoBehaviour:
@@ -132,7 +133,6 @@ MonoBehaviour:
   outlineMode: 0
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 4
-  precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
 --- !u!114 &1747588769332426
@@ -185,3 +185,17 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: cb146b91a12e4354c9749e6efb52d811, type: 3}
+--- !u!114 &-7254244020465631214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2818655204534364183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 915380fd5a5dfd941aed01d67df99099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fadedAlpha: 0.33
+  _fadeDelay: 0.03

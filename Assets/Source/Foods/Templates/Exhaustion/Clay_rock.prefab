@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 1362865507739689592}
   - component: {fileID: 2044227969764584915}
   - component: {fileID: 2701625859975895954}
-  - component: {fileID: 417380353311869005}
   m_Layer: 0
   m_Name: Clay_rock
   m_TagString: Untagged
@@ -102,17 +101,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4106e0c23f5e42c0ba8b0b0449bc38b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _standard:
-  - {fileID: 2100000, guid: 5f1194c80ea1de247a105fe249093bbe, type: 2}
-  - {fileID: 2100000, guid: 90869f91a5f63924e9c4808f1b1604ac, type: 2}
-  _highlighted:
-  - {fileID: 2100000, guid: 5f1194c80ea1de247a105fe249093bbe, type: 2}
-  - {fileID: 2100000, guid: 90869f91a5f63924e9c4808f1b1604ac, type: 2}
-  - {fileID: 2100000, guid: 2438ae06d11849c478e54d80b0c39ffa, type: 2}
-  - {fileID: 2100000, guid: be5bb5211164fcd43a514a0b322a2044, type: 2}
+  _deselectValue: 0
+  _selectValue: 4
   _scorePerEat: 0.6
   _stage: 0
-  _renderer: {fileID: 5736125936324018203}
 --- !u!65 &4388819272449529662
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -161,7 +153,6 @@ MonoBehaviour:
   outlineMode: 0
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 4
-  precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
 --- !u!114 &2701625859975895954
@@ -176,19 +167,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f379dd332d54aff9358d4df5cc4d953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!208 &417380353311869005
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3023820915976226952}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 6.4, y: 5.6460004, z: 6.4}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 5.6460004, z: 0}
-  m_TimeToStationary: 0.5

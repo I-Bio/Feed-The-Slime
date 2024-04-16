@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 7734774632640752459}
   - component: {fileID: 4533950827123750959}
   - component: {fileID: 1103223897838393755}
-  - component: {fileID: -8489970798071827530}
   m_Layer: 0
   m_Name: Mushroom_2
   m_TagString: Untagged
@@ -101,15 +100,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4106e0c23f5e42c0ba8b0b0449bc38b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _standard:
-  - {fileID: 2100000, guid: 1095427a7c35d23428ff13ff51fdf079, type: 2}
-  _highlighted:
-  - {fileID: 2100000, guid: 1095427a7c35d23428ff13ff51fdf079, type: 2}
-  - {fileID: 2100000, guid: 2438ae06d11849c478e54d80b0c39ffa, type: 2}
-  - {fileID: 2100000, guid: be5bb5211164fcd43a514a0b322a2044, type: 2}
+  _deselectValue: 0
+  _selectValue: 4
   _scorePerEat: 0.6
   _stage: 0
-  _renderer: {fileID: 7259853663708069005}
 --- !u!65 &8407869563456904606
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -158,7 +152,6 @@ MonoBehaviour:
   outlineMode: 0
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 4
-  precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
 --- !u!114 &1103223897838393755
@@ -173,19 +166,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f379dd332d54aff9358d4df5cc4d953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!208 &-8489970798071827530
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2944167571901853817}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.083000004, y: 0.115, z: 0.085}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: -0.002, y: 0.115, z: 0.006}
-  m_TimeToStationary: 0.5
