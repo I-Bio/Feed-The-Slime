@@ -13,6 +13,9 @@ namespace Spawners
         [SerializeField] private InputSetup _input;
         [SerializeField] private PlayerSetup _player;
         [SerializeField] private Game _game;
+
+        [SerializeField] private GameObject _spit;
+        
         [SerializeField] private Transform _center;
         [SerializeField] private Renderer _ground;
         [SerializeField] private Transform[] _zonePoints;
@@ -23,13 +26,16 @@ namespace Spawners
         {
             ITransferService transferService = TransferService.Instance;
             IMovable movable = new Speed(transferService.Characteristics.Speed);
-            ICalculableScore calculableScore =
-                new AdditionalScore(new Score(), transferService.Characteristics.ScorePerEat, 0f, null);
             int id = 0;
+            ICalculableScore calculableScore =
+                new AdditionalScore(new Score(), transferService.Characteristics.ScorePerEat, id, null);
             Revival revival = new Revival(_player.transform, transferService.Characteristics.LifeCount);
-
-            _input.Initialize();
+            
+            if (transferService.Characteristics.DidObtainSpit)
+                _spit.SetActive(true);
+            
             _game.Initialize(transferService, revival);
+            _input.Initialize(_game);
             _player.Initialize(movable, calculableScore, _game);
             _boosterSpawner.Initialize(movable, calculableScore);
 
