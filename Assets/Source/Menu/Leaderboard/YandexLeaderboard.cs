@@ -1,38 +1,43 @@
 ﻿using System.Collections.Generic;
 using Agava.YandexGames;
-using Lean.Localization;
+using TMPro;
 using UnityEngine;
 
 namespace Menu
 {
-    public class YandexLeaderboard : LeanLocalizedBehaviour
+    public class YandexLeaderboard : MonoBehaviour
     {
         private readonly List<LeaderboardPlayer> _players = new();
 
-        [SerializeField] private string _leaderboardName;
-        [SerializeField] private string _anonymousName;
-        [SerializeField] private LeaderBoardView _leaderBoard;
-        
-        public override void UpdateTranslation(LeanTranslation translation)
+        private LeaderboardView _leaderboard;
+        private TextMeshProUGUI _name;
+        private string _leaderboardName;
+        private string _anonymousName;
+
+        public void Initialize(LeaderboardView leaderboard, TextMeshProUGUI name, string leaderboardName, string anonymousName, Transform container)
         {
-            if (translation == null)
-                return;
-            
-            if (translation.Data is string == false)
-                return;
-            
-            _anonymousName = translation.Data as string;
+            _leaderboard = leaderboard;
+            _name = name;
+            _leaderboardName = leaderboardName;
+            _anonymousName = anonymousName;
+            _leaderboard.Initialize(container);
         }
         
         public void SetPlayerScore(int score)
         {
             if (PlayerAccount.IsAuthorized == false)
+            {
+                _name.SetText(_anonymousName);
                 return;
+            }
 
             Leaderboard.GetPlayerEntry(_leaderboardName, (result) =>
             {
                 if (result == null || result.score < score)
                     Leaderboard.SetScore(_leaderboardName, score);
+                
+                if (result?.player.publicName != null)
+                    _name.SetText(result.player.publicName);
             });
         }
 
@@ -51,7 +56,7 @@ namespace Menu
                         entry.player.publicName ?? _anonymousName,
                         entry.score));
 
-                _leaderBoard.Construct(_players);
+                _leaderboard.Construct(_players);
             });
         }
     }

@@ -4,12 +4,17 @@ using UnityEngine;
 
 namespace Menu
 {
-    public class LeaderBoardView : ObjectPool
+    public class LeaderboardView : ObjectPool
     {
-        [SerializeField] private Transform _container;
-
         private readonly List<LeaderboardElement> _spawned = new();
+        
+        private Transform _container;
 
+        public void Initialize(Transform container)
+        {
+            _container = container;
+        }
+        
         public void Construct(List<LeaderboardPlayer> players)
         {
             Clear();
