@@ -5,6 +5,8 @@ namespace Enemies
 {
     public class Enemy
     {
+        private const float IdleOffset = 0.1f;
+        
         private readonly Transform _transform;
         private readonly IHidden _player;
         private readonly IEnemyPolicy _policy;
@@ -35,9 +37,7 @@ namespace Enemies
         {
             if (_policy.CanMove(_player.IsHidden) == true)
             {
-                float distance = Vector3.Distance(_transform.position, _player.Position);
-
-                if (distance <= _followDistance)
+                if (Vector3.Distance(_transform.position, _player.Position) <= _followDistance)
                 {
                     if (_player.Stage < _stage)
                         GoingInteract?.Invoke(_player.Position);
@@ -57,7 +57,7 @@ namespace Enemies
             if (_isIdled == true)
                 return;
 
-            if (_transform.position == _startPosition)
+            if (Vector3.Distance(_transform.position, _startPosition) < IdleOffset)
             {
                 Canceled?.Invoke();
                 _isIdled = true;
