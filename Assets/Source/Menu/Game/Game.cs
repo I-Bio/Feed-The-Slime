@@ -1,4 +1,5 @@
 ﻿using System;
+using Agava.YandexGames;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,12 +9,11 @@ namespace Menu
 {
     [RequireComponent(typeof(Stopper))]
     [RequireComponent(typeof(Screen))]
-    public class Game : MonoBehaviour, IStageSettable
+    public class Game : MonoBehaviour, IGame, ILoader
     {
         [SerializeField] private float _double = 2f;
         [SerializeField] private Button _winAdvert;
         [SerializeField] private Button _loseAdvert;
-        [SerializeField] private Button[] _mainMenuButtons;
         [SerializeField] private TextMeshProUGUI[] _rewards;
         [SerializeField] private Button _pause;
         [SerializeField] private Button _resume;
@@ -41,24 +41,32 @@ namespace Menu
         {
             if (window == GameWindows.Lose && _revival.TryRevive() == true)
                 return;
-            
+
             _stopper.Pause();
             _backGround.alpha = 1f;
             _screen.SetWindow((int)window);
-            
+
             if (window == GameWindows.Pause)
                 return;
 
+            _transferService.PassLevel();
+
             if (_transferService.Characteristics.IsAllowedShowInter == true)
-                Agava.YandexGames.InterstitialAd.Show();
+                InterstitialAd.Show();
         }
 
         public void SetStage(SatietyStage stage)
         {
             _stage = (int)stage;
+            UpdateReward();
+        }
 
-            foreach (TextMeshProUGUI reward in _rewards)
-                reward.SetText(Mathf.CeilToInt(_transferService.Reward * (_stage / _maxStage)).ToString());
+        public void Load()
+        {
+            _stopper.Release();
+            _transferService.MultiplyIt(_stage / _maxStage);
+            _transferService.AllowReceive();
+            SceneManager.LoadScene((int)SceneNames.Menu);
         }
 
         private void OnEnable()
@@ -67,9 +75,6 @@ namespace Menu
             _loseAdvert.onClick.AddListener(ShowLoseAdvert);
             _pause.onClick.AddListener(OnScreenPause);
             _resume.onClick.AddListener(OnScreenResume);
-
-            foreach (Button button in _mainMenuButtons)
-                button.onClick.AddListener(Load);
         }
 
         private void OnDisable()
@@ -78,43 +83,46 @@ namespace Menu
             _loseAdvert.onClick.RemoveListener(ShowLoseAdvert);
             _pause.onClick.RemoveListener(OnScreenPause);
             _resume.onClick.RemoveListener(OnScreenResume);
-
-            foreach (Button button in _mainMenuButtons)
-                button.onClick.RemoveListener(Load);
         }
 
         private void ShowWinAdvert()
         {
-            ShowRewardAdvert(DoubleReward);
+            ShowRewardAdvert(DoubleReward, null);
         }
 
         private void ShowLoseAdvert()
         {
-            ShowRewardAdvert(Respawn);
+            ShowRewardAdvert(Respawn, OnScreenResume);
         }
 
-        private void ShowRewardAdvert(Action onReward)
+        private void ShowRewardAdvert(Action onReward, Action onClose)
         {
-            Agava.YandexGames.VideoAd.Show(_stopper.Pause, onReward, _stopper.Release);
+#if UNITY_EDITOR
+            onReward?.Invoke();
+            onClose?.Invoke();
+#endif
+#if UNITY_WEBGL && !UNITY_EDITOR
+            VideoAd.Show(_stopper.Pause, onReward, onClose);
+#endif
         }
 
         private void Respawn()
         {
+            _loseAdvert.gameObject.SetActive(false);
             _revival.Revive();
-            OnScreenResume();
         }
 
         private void DoubleReward()
         {
+            _winAdvert.gameObject.SetActive(false);
             _transferService.MultiplyIt(_double);
+            UpdateReward();
         }
 
-        private void Load()
+        private void UpdateReward()
         {
-            _stopper.Release();
-            _transferService.MultiplyIt(_stage / _maxStage);
-            _transferService.AllowReceive();
-            SceneManager.LoadScene((int)SceneNames.Menu);
+            foreach (TextMeshProUGUI reward in _rewards)
+                reward.SetText(Mathf.CeilToInt(_transferService.Reward * (_stage / _maxStage)).ToString());
         }
 
         private void OnScreenPause()
