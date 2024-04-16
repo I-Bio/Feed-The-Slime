@@ -18,6 +18,7 @@ namespace Foods
             Outline = GetComponent<Outline>();
             _deselectValue = deselectValue;
             SelectValue = selectValue;
+            Outline.Initialize();
         }
 
         public event Action<SatietyStage> GoingSelect;
