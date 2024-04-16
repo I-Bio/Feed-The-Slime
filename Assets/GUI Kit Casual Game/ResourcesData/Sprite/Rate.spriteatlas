@@ -44,24 +44,14 @@ SpriteAtlas:
       enableAlphaDilation: 0
     secondaryTextureSettings: {}
     variantMultiplier: 1
-    packables:
-    - {fileID: 102900000, guid: b9c17a70fe7974597b98739a709a4a2f, type: 3}
+    packables: []
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys:
-    - ae032443c5c224a3599fb8927bccb7ab: 21300000
-    - e3bb47a3556804624bd26e2adecbffce: 21300000
-    - d249acd8c8f234a4093464e66d8c92f8: 21300000
+    packedSpriteRenderDataKeys: []
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites:
-  - {fileID: 21300000, guid: ae032443c5c224a3599fb8927bccb7ab, type: 3}
-  - {fileID: 21300000, guid: e3bb47a3556804624bd26e2adecbffce, type: 3}
-  - {fileID: 21300000, guid: d249acd8c8f234a4093464e66d8c92f8, type: 3}
-  m_PackedSpriteNamesToIndex:
-  - rate_star_0
-  - rate_glow
-  - rate_star_2
+  m_PackedSprites: []
+  m_PackedSpriteNamesToIndex: []
   m_RenderDataMap: {}
   m_Tag: Rate
   m_IsVariant: 0

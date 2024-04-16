@@ -78,6 +78,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 77237084d67f848cd9c89a28f0b3c421, type: 3}
     - {fileID: 2800000, guid: f98154b33c65045c780880a671e55b05, type: 3}
     - {fileID: 2800000, guid: cd4f5d6acfdcc49288d2e34761f088bc, type: 3}
+    - {fileID: 2800000, guid: 010a6e5305fa7004f89c5d317b7b47d4, type: 3}
     - {fileID: 2800000, guid: 4b00db671a20143a8be8c3b5301d6a23, type: 3}
     - {fileID: 2800000, guid: 53321bd88b96e44b6a22820d87584c9d, type: 3}
     - {fileID: 2800000, guid: 9edf88ae67e094b3cb3b788b80b98798, type: 3}
@@ -94,16 +95,22 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 1c003fff2a78f4a4fa6e0a7be1fb3cbd, type: 3}
     - {fileID: 2800000, guid: 4c95714486ef949438634bdbd26b8887, type: 3}
     - {fileID: 2800000, guid: 8204a346530a44e11a8f7a16aed74e85, type: 3}
+    - {fileID: 2800000, guid: 78c67891a14a48145a72935fba17a1bb, type: 3}
+    - {fileID: 2800000, guid: 085185b08a40a924985bc0e4176edea6, type: 3}
+    - {fileID: 2800000, guid: d8ec7bed8b86f4a3d905859476e40a84, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
+    - 085185b08a40a924985bc0e4176edea6: 21300000
     - 6d034811652a84633bc8c63d22ce5574: 21300000
     - c3189121f7e3342a3b2fcc2f495c9e31: 21300000
+    - 78c67891a14a48145a72935fba17a1bb: 21300000
     - 9e60e4c19a24d4f9ab3b882467e3ff28: 21300000
     - 23d2f9d15f15a43c5bf2c57de1a27879: 21300000
     - 362cdbc283a1c43a7abec33080b04398: 21300000
     - 391584432233c4e0a864435a50a098c5: 21300000
+    - 010a6e5305fa7004f89c5d317b7b47d4: 21300000
     - 03a52e934f88f4a699b498a51573c186: 21300000
     - 86ad28a37b0134b33b88df67b42b7fe0: 21300000
     - f98154b33c65045c780880a671e55b05: 21300000
@@ -128,6 +135,7 @@ SpriteAtlas:
     - 9876fcfabd3b2425687da38e45dedbc2: 21300000
     - 1244643b3a604284fafc0d20ada4fe23: 21300000
     - 2323358c16953446e9b2cb27fde07104: 21300000
+    - d8ec7bed8b86f4a3d905859476e40a84: 21300000
     - 6bbcba4e267be464998897741b81d508: 21300000
     - 9edf88ae67e094b3cb3b788b80b98798: 21300000
     - 804461bef59b141dba258fc997c8ca15: 21300000
@@ -136,12 +144,15 @@ SpriteAtlas:
     - 1c003fff2a78f4a4fa6e0a7be1fb3cbd: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 085185b08a40a924985bc0e4176edea6, type: 3}
   - {fileID: 21300000, guid: 6d034811652a84633bc8c63d22ce5574, type: 3}
   - {fileID: 21300000, guid: c3189121f7e3342a3b2fcc2f495c9e31, type: 3}
+  - {fileID: 21300000, guid: 78c67891a14a48145a72935fba17a1bb, type: 3}
   - {fileID: 21300000, guid: 9e60e4c19a24d4f9ab3b882467e3ff28, type: 3}
   - {fileID: 21300000, guid: 23d2f9d15f15a43c5bf2c57de1a27879, type: 3}
   - {fileID: 21300000, guid: 362cdbc283a1c43a7abec33080b04398, type: 3}
   - {fileID: 21300000, guid: 391584432233c4e0a864435a50a098c5, type: 3}
+  - {fileID: 21300000, guid: 010a6e5305fa7004f89c5d317b7b47d4, type: 3}
   - {fileID: 21300000, guid: 03a52e934f88f4a699b498a51573c186, type: 3}
   - {fileID: 21300000, guid: 86ad28a37b0134b33b88df67b42b7fe0, type: 3}
   - {fileID: 21300000, guid: f98154b33c65045c780880a671e55b05, type: 3}
@@ -166,6 +177,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 9876fcfabd3b2425687da38e45dedbc2, type: 3}
   - {fileID: 21300000, guid: 1244643b3a604284fafc0d20ada4fe23, type: 3}
   - {fileID: 21300000, guid: 2323358c16953446e9b2cb27fde07104, type: 3}
+  - {fileID: 21300000, guid: d8ec7bed8b86f4a3d905859476e40a84, type: 3}
   - {fileID: 21300000, guid: 6bbcba4e267be464998897741b81d508, type: 3}
   - {fileID: 21300000, guid: 9edf88ae67e094b3cb3b788b80b98798, type: 3}
   - {fileID: 21300000, guid: 804461bef59b141dba258fc997c8ca15, type: 3}
@@ -173,12 +185,15 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 53a1ea3f1d6424c05b8510d75554f3f5, type: 3}
   - {fileID: 21300000, guid: 1c003fff2a78f4a4fa6e0a7be1fb3cbd, type: 3}
   m_PackedSpriteNamesToIndex:
+  - Handle_Outline
   - top_status_icon_gem
   - ability_icon_speed
+  - pause
   - title_bg_red
   - button_gray
   - button_sky
   - btn_icon_ad
+  - Handle_Plain
   - ribbon_bg_yellow
   - button_purple
   - pass_prg_bg
@@ -203,6 +218,7 @@ SpriteAtlas:
   - ability_icon_hp
   - mission_reward_icon_gem
   - ribbon_bg_orange
+  - userinfo_icon_skull
   - button_blue
   - reward_month_frame_blue
   - button_yellow
