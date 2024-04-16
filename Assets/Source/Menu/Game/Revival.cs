@@ -13,6 +13,7 @@ namespace Menu
         public Revival(Transform player, int maxLifeCount)
         {
             _player = player;
+            _startPosition = _player.position;
             _maxLifeCount = maxLifeCount;
         }
 
