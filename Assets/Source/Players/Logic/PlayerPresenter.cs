@@ -17,12 +17,12 @@ namespace Players
         private readonly SoundReproducer _soundReproducer;
         private readonly IInsertable _boosterService;
         private readonly IMover _mover;
-        private readonly Game _game;
+        private readonly IGame _game;
 
         public PlayerPresenter(Goop model, PlayerCollisionDetector collisionDetector, PlayerScanner scanner,
             SizeScaler sizeScaler, LevelBar levelBar, StageBar stageBar, IInsertable boosterService,
             PlayerAnimation animation, AbilityCaster caster, IMover mover, EffectReproducer effectReproducer,
-            SoundReproducer soundReproducer, Game game)
+            SoundReproducer soundReproducer, IGame game)
         {
             _model = model;
             _collisionDetector = collisionDetector;
