@@ -12,7 +12,7 @@ namespace Menu
         [field: SerializeField] public int CrystalsCount { get; set; }
         [field: SerializeField] public int CompletedLevels { get; set; }
         [field: SerializeField] public int AdvertAccumulation { get; set; }
-        [field: SerializeField] public bool SpitObtained { get; set; }
+        [field: SerializeField] public bool DidObtainSpit { get; set; }
         [field: SerializeField] public bool IsAllowedShowInter { get; set; }
     }
 }
