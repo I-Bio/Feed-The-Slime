@@ -6,12 +6,17 @@ namespace Players
 {
     public class Ticker : MonoBehaviour
     {
-        [SerializeField] private float _delay = 1f;
+        private float _delay;
 
         private Coroutine _routine;
         
         public event Action Ticked;
 
+        public void Initialize(float delay = 1f)
+        {
+            _delay = delay;
+        }
+        
         public void StartTick()
         {
             _routine = StartCoroutine(TickRoutine());

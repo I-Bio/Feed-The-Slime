@@ -17,7 +17,7 @@ namespace Menu
 
         public event Action LeaderboardOpened;
         
-        private void Awake()
+        public void Initialize()
         {
             _screen = GetComponent<Screen>();
         }
