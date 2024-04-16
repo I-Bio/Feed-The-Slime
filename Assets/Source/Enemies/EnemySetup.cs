@@ -21,7 +21,6 @@ namespace Enemies
         private Transform _transform;
         
         private Enemy _model;
-
         private EnemyPresenter _presenter;
         
         public void Initialize(IHidden player, EnemyDependencyVisitor visitor, IEnemyPolicy policy)
