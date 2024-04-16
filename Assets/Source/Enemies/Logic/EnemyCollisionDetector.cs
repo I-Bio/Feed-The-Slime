@@ -5,8 +5,13 @@ namespace Enemies
 {
     public class EnemyCollisionDetector : MonoBehaviour
     {
-        private bool _canContact = true;
+        private bool _canContact;
 
+        public void AllowContact()
+        {
+            _canContact = true;
+        }
+        
         public void DisallowContact()
         {
             _canContact = false;
