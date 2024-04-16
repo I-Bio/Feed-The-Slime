@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d622db66afdd4b54ae6693b526e69ecd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _followDistance: 12
+  _followDistance: 10
   _animator: {fileID: 1158648625675701293}
   _idle: Idle
   _move: Move
@@ -402,7 +402,6 @@ MonoBehaviour:
   outlineMode: 0
   outlineColor: {r: 1, g: 0.27058825, b: 0.27058825, a: 1}
   outlineWidth: 4
-  precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
 --- !u!136 &8183833116669115564
@@ -425,9 +424,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.010518344
-  m_Height: 0.031799715
+  m_Height: 0.03365134
   m_Direction: 1
-  m_Center: {x: -0.0000000071525577, y: 0.0008427418, z: 0.010365504}
+  m_Center: {x: -0.0000000071525577, y: -0.00008306027, z: 0.010365503}
 --- !u!114 &5738114067680842294
 MonoBehaviour:
   m_ObjectHideFlags: 0

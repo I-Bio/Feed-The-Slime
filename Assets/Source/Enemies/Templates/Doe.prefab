@@ -218,7 +218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4b60f39d1f696dd4db7bd987f185e074, type: 3}
       propertyPath: m_Name
-      value: Pudu
+      value: Doe
       objectReference: {fileID: 0}
     - target: {fileID: 4042940087036422592, guid: 4b60f39d1f696dd4db7bd987f185e074, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -386,7 +386,6 @@ MonoBehaviour:
   outlineMode: 0
   outlineColor: {r: 1, g: 0.27058825, b: 0.27058825, a: 1}
   outlineWidth: 4
-  precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
 --- !u!114 &5006771994128397223
@@ -420,10 +419,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.013819921
-  m_Height: 0.030570582
+  m_Radius: 0.01381992
+  m_Height: 0.033810306
   m_Direction: 1
-  m_Center: {x: -0.000000001192093, y: -0.002481766, z: 0.013421932}
+  m_Center: {x: -0.000000001192093, y: -0.0029809668, z: 0.013421933}
 --- !u!114 &1978641311062062569
 MonoBehaviour:
   m_ObjectHideFlags: 0

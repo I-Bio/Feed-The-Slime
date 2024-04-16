@@ -67,7 +67,7 @@ MonoBehaviour:
   _animator: {fileID: 8771530900987806628}
   _idle: Idle
   _move: Pull
-  _thinkDelay: 0.2
+  _thinkDelay: 0.35
   _detector: {fileID: 1441684218018404076}
   _foodPart: {fileID: 8883340709936717591}
 --- !u!95 &8771530900987806628
@@ -370,7 +370,6 @@ MonoBehaviour:
   outlineMode: 0
   outlineColor: {r: 1, g: 0, b: 0, a: 1}
   outlineWidth: 4
-  precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
 --- !u!114 &1441684218018404076
