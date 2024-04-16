@@ -20,14 +20,13 @@ namespace Menu
         [SerializeField] private TextMeshProUGUI _crystals;
         [SerializeField] private RewardReproducer _reward;
         [SerializeField] private WindowSwitcher _switcher;
-        [SerializeField] private YandexLeaderboard _leaderboard;
 
         private IProgressionBar[] _bars;
 
         private Progress _model;
         private ProgressPresenter _presenter;
 
-        private void Awake()
+        public void Initialize(YandexLeaderboard leaderboard)
         {
             _bars = new IProgressionBar[Enum.GetValues(typeof(PurchaseNames)).Length];
             _bars[(int)PurchaseNames.Speed] = _speedBar;
@@ -36,7 +35,12 @@ namespace Menu
             _bars[(int)PurchaseNames.Spit] = _spitBar;
 
             _model = new Progress(_startCharacteristics, _rewardSteps, _advertStep);
-            _presenter = new ProgressPresenter(_model, _bars, _play, _level, _crystals, _reward, _switcher, _leaderboard);
+            _presenter = new ProgressPresenter(_model, _bars, _play, _level, _crystals, _reward, _switcher, leaderboard,
+                TransferService.Instance);
+            _switcher.Initialize();
+#if UNITY_EDITOR
+            _switcher.ShowMain();
+#endif
         }
 
         private void OnEnable()
