@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Menu
 {
@@ -9,9 +10,11 @@ namespace Menu
         private IReadOnlyCharacteristics _characteristics;
         private int _rewardCount;
         private bool _canReceive;
+        private bool _didLevelPassed;
 
         public IReadOnlyCharacteristics Characteristics => _characteristics;
         public int Reward => _rewardCount;
+        public bool DidLevelPassed => _didLevelPassed;
 
         private void Awake()
         {
@@ -34,6 +37,11 @@ namespace Menu
         public void AllowReceive()
         {
             _canReceive = true;
+        }
+
+        public void PassLevel()
+        {
+            _didLevelPassed = true;
         }
 
         public void MultiplyIt(float value)

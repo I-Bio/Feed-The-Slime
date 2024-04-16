@@ -6,6 +6,7 @@
         public int Reward { get; }
 
         public void AllowReceive();
+        public void PassLevel();
         public void MultiplyIt(float value);
     }
 }
