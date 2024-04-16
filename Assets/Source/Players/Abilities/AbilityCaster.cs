@@ -5,16 +5,15 @@ using UnityEngine;
 namespace Players
 {
     [RequireComponent(typeof(LineRenderer))]
-    public class AbilityCaster : ObjectPool, IHidden, ICaster, IStageSettable
+    public class AbilityCaster : ObjectPool, IHidden, ICaster
     {
-        [SerializeField] private int _pointsCount;
-        [SerializeField] private float _castStrength;
-        [SerializeField] private Vector3 _castOffset;
-        [SerializeField] private EatableSpawner _spawner;
-        [SerializeField] private AbilityButton _spit;
-        
-        private Transform _transform;
         private LineRenderer _line;
+        private Transform _transform;
+        private int _pointsCount;
+        private float _castStrength;
+        private Vector3 _castOffset;
+        private EatableSpawner _spawner;
+        private AbilityButton _spitButton;
 
         public bool IsHidden { get; private set; }
         public Vector3 Position => _transform.position;
@@ -24,13 +23,20 @@ namespace Players
         public event Action Showed;
         public event Action SpitCasted;
 
-        public void Initialize(Transform transform, SatietyStage stage)
+        public void Initialize(Transform transform, SatietyStage stage, int pointsCount, float castStrength,
+            Vector3 castOffset, EatableSpawner spawner, AbilityButton spitButton, Projectile projectile)
         {
             _line = GetComponent<LineRenderer>();
+            Initialize(projectile);
             _line.positionCount = _pointsCount;
             _line.enabled = false;
             _transform = transform;
             Stage = stage;
+            _pointsCount = pointsCount;
+            _castStrength = castStrength;
+            _castOffset = castOffset;
+            _spawner = spawner;
+            _spitButton = spitButton;
             IsHidden = false;
         }
 
@@ -53,9 +59,9 @@ namespace Players
 
         public void DrawCastTrajectory()
         {
-            if (_spit.CanUse == false)
+            if (_spitButton.CanUse == false)
                 return;
-            
+
             _line.enabled = true;
 
             Vector3 start = _transform.position + _castOffset;
@@ -67,12 +73,13 @@ namespace Players
 
         public void CastSpit()
         {
-            if (_spit.CanUse == false)
+            if (_spitButton.CanUse == false)
                 return;
-            
+
             _line.enabled = false;
-            _spit.Use();
-            Pull<Projectile>(_transform.position + _castOffset).Initialize(_castStrength * _transform.forward, _spawner);
+            _spitButton.Use();
+            Pull<Projectile>(_transform.position + _castOffset)
+                .Initialize(_castStrength * _transform.forward, _spawner);
             SpitCasted?.Invoke();
         }
     }

@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Players
 {
-    public class PlayerScanner : MonoBehaviour, IStageSettable
+    public class PlayerScanner : MonoBehaviour
     {
-        private readonly List<ISelectable> _selectables = new List<ISelectable>();
+        private readonly List<ISelectable> _selectables = new();
 
         private Coroutine _routine;
         private SatietyStage _stage;

@@ -4,8 +4,13 @@ namespace Players
 {
     public class EffectReproducer : MonoBehaviour
     {
-        [SerializeField] private ParticleSystem[] _effects;
+        private ParticleSystem[] _effects;
 
+        public void Initialize(ParticleSystem[] effects)
+        {
+            _effects = effects;
+        }
+        
         public void PlayEffect(EffectType effect)
         {
             _effects[(int)effect].Play();

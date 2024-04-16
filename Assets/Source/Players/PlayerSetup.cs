@@ -1,7 +1,11 @@
-﻿using Boosters;
+﻿using System;
+using System.Collections.Generic;
+using Boosters;
 using Cinemachine;
 using Menu;
+using Spawners;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Players
 {
@@ -29,14 +33,30 @@ namespace Players
         [Space, Header("Move Options")] 
         [SerializeField] private Transform _rotationPoint;
 
+        [Space, Header("Sounds")] 
+        [SerializeField] private AudioSource[] _sources;
+        
+        [Space, Header("Effects")]
+        [SerializeField] private ParticleSystem[] _effects;
+        
         [Space, Header("Booster Effects")] 
         [SerializeField] private float _updateDelay;
+        [SerializeField] private Transform _holder;
+        [SerializeField] private BoostIcon _icon;
 
         [Space, Header("Animation")] 
         [SerializeField] private Animator _animator;
         [SerializeField] private string _eat;
         [SerializeField] private string _idle;
         [SerializeField] private string _hide;
+        
+        [Space, Header("Ability")] 
+        [SerializeField] private int _pointsCount;
+        [SerializeField] private float _castStrength;
+        [SerializeField] private Vector3 _castOffset;
+        [SerializeField] private EatableSpawner _spawner;
+        [SerializeField] private Projectile _projectile;
+        [SerializeField] private AbilityButton _spitButton;
 
         private PlayerCollisionDetector _collisionDetector;
         private PlayerScanner _scanner;
@@ -59,7 +79,7 @@ namespace Players
         private BoosterPresenter _boosterPresenter;
         private ToxinPresenter _toxinPresenter;
 
-        public void Initialize(IMovable movable, ICalculableScore calculableScore, Game game)
+        public void Initialize(IMovable movable, ICalculableScore calculableScore, IGame game)
         {
             _collisionDetector = GetComponent<PlayerCollisionDetector>();
             _scanner = GetComponent<PlayerScanner>();
@@ -89,10 +109,17 @@ namespace Players
             _scanner.SetStage(_levelConfig.StartStage);
             _sizeScaler.Initialize(_transform, _virtualCamera, _levelConfig.ScaleFactor, _levelConfig.CameraScale);
             _mover.Initialize(movable, _rotationPoint, _transform.forward);
-            _boosterVisualizer.Initialize(_updateDelay, _effectReproducer);
+            _boosterVisualizer.Initialize(_updateDelay, new Dictionary<Type, Action>
+            {
+                {typeof(IMovable), () => {_effectReproducer.PlayEffect(EffectType.SpeedBoost);}},
+                {typeof(ICalculableScore), () => {_effectReproducer.PlayEffect(EffectType.ScoreBoost);}},
+            }, _holder, _icon);
             _animation.Initialize(_animator, _eat, _idle, _hide);
-            _abilityCaster.Initialize(_rotationPoint, _levelConfig.StartStage);
+            _abilityCaster.Initialize(_rotationPoint, _levelConfig.StartStage, _pointsCount, _castStrength, _castOffset, _spawner, _spitButton, _projectile);
             _toxinBar.Initialize(_levelConfig.MaxToxinsCount, _levelConfig.MinToxinsCount);
+            _effectReproducer.Initialize(_effects);
+            _soundReproducer.Initialize(_sources);
+            _ticker.Initialize();
         }
 
         private void OnEnable()
