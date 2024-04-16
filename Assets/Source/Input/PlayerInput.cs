@@ -71,6 +71,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=1)"",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Load"",
+                    ""type"": ""Button"",
+                    ""id"": ""ba70d121-350c-42df-845e-d35c6bf00752"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -150,6 +159,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Spit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""faaea94b-4d75-4c5c-a93c-f4ac78c1494b"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Touch;Desktop"",
+                    ""action"": ""Load"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -186,6 +206,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_ScreenPosition = m_Player.FindAction("ScreenPosition", throwIfNotFound: true);
         m_Player_Hide = m_Player.FindAction("Hide", throwIfNotFound: true);
         m_Player_Spit = m_Player.FindAction("Spit", throwIfNotFound: true);
+        m_Player_Load = m_Player.FindAction("Load", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -252,6 +273,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ScreenPosition;
     private readonly InputAction m_Player_Hide;
     private readonly InputAction m_Player_Spit;
+    private readonly InputAction m_Player_Load;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -261,6 +283,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @ScreenPosition => m_Wrapper.m_Player_ScreenPosition;
         public InputAction @Hide => m_Wrapper.m_Player_Hide;
         public InputAction @Spit => m_Wrapper.m_Player_Spit;
+        public InputAction @Load => m_Wrapper.m_Player_Load;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -285,6 +308,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Spit.started += instance.OnSpit;
             @Spit.performed += instance.OnSpit;
             @Spit.canceled += instance.OnSpit;
+            @Load.started += instance.OnLoad;
+            @Load.performed += instance.OnLoad;
+            @Load.canceled += instance.OnLoad;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -304,6 +330,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Spit.started -= instance.OnSpit;
             @Spit.performed -= instance.OnSpit;
             @Spit.canceled -= instance.OnSpit;
+            @Load.started -= instance.OnLoad;
+            @Load.performed -= instance.OnLoad;
+            @Load.canceled -= instance.OnLoad;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -346,5 +375,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnScreenPosition(InputAction.CallbackContext context);
         void OnHide(InputAction.CallbackContext context);
         void OnSpit(InputAction.CallbackContext context);
+        void OnLoad(InputAction.CallbackContext context);
     }
 }
