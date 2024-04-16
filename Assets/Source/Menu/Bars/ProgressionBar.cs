@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Menu
 {
-    public class ProgressionBar<T> : LeanLocalizedBehaviour, IProgressionBar
+    public class ProgressionBar<T> : MonoBehaviour, IProgressionBar
     {
         
         [SerializeField] private Button _buyButton;
@@ -23,23 +23,12 @@ namespace Menu
 
         public event Action<int, PurchaseNames, object> Bought;
 
-        public override void UpdateTranslation(LeanTranslation translation)
-        {
-            if (translation == null)
-                return;
-            
-            if (translation.Data is string == false)
-                return;
-            
-            _maxText = translation.Data as string;
-        }
-
-        private new void OnEnable()
+        private void OnEnable()
         {
             _buyButton.onClick.AddListener(Buy);
         }
 
-        private new void OnDisable()
+        private void OnDisable()
         {
             _buyButton.onClick.RemoveListener(Buy);
         }
@@ -47,6 +36,7 @@ namespace Menu
         public void Initialize(object value)
         {
             int id = 0;
+            _maxText = LeanLocalization.GetTranslationText(_maxText);
 
             for (int i = 1; i <= _purchases.Length; i++)
                 if (_purchases[i - 1].Value.Equals(value))
@@ -58,12 +48,7 @@ namespace Menu
         public void CompareCrystals(int crystalsCount)
         {
             if (_isMax == true)
-            {
-                if (_buyButton.interactable == true)
-                    _buyButton.interactable = false;
-                
                 return;
-            }
             
             if (crystalsCount >= _purchases[_stage].Key)
             {
@@ -85,24 +70,30 @@ namespace Menu
             Bought?.Invoke(_purchases[_stage].Key, _name, _purchases[_stage].Value);
             _stage++;
             Display();
-            
-            if (_purchases.Length != _stage) 
-                return;
-            
-            _isMax = true;
+            DeactivateBuyButton();
         }
 
         private void Load(int id)
         {
             _stage = id;
+            DeactivateBuyButton();
             Display();
         }
 
         private void Display()
         {
             _slider.fillAmount = _stage / (float)_purchases.Length;
-            _price.SetText(_stage < _purchases.Length ? _purchases[_stage].Key.ToString() : _maxText);
+            _price.SetText(_stage < _purchases.Length ? _purchases[_stage].Key.ToString() : string.Empty);
             _currentCount.SetText(_stage < _purchases.Length ? $"{_stage}{_slash}{_purchases.Length}" : _maxText);
+        }
+
+        private void DeactivateBuyButton()
+        {
+            if (_purchases.Length != _stage) 
+                return;
+            
+            _isMax = true;
+            _buyButton.interactable = false;
         }
     }
 }
