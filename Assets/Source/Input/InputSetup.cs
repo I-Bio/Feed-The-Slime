@@ -1,4 +1,5 @@
-﻿using Players;
+﻿using Menu;
+using Players;
 using UnityEngine;
 
 namespace Input
@@ -12,10 +13,10 @@ namespace Input
         private PlayerInput _model;
         private InputPresenter _presenter;
 
-        public void Initialize()
+        public void Initialize(ILoader loader)
         {
             _model = new PlayerInput();
-            _presenter = new InputPresenter(_model, _joystick, _player, _caster);
+            _presenter = new InputPresenter(_model, _joystick, _player, _caster, loader);
         }
 
         private void OnEnable()
