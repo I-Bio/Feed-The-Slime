@@ -25,7 +25,7 @@ namespace Players
         
         public void SetScore(float score, int maxScore, float value)
         {
-            PullAndSetParent<PopUpText>(_container).Initialize(value, _targetPosition);
+            Pull<PopUpText>(_container).Initialize(value, _targetPosition);
             ChangeScore(score, maxScore);
         }
 
