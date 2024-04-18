@@ -6,7 +6,7 @@ namespace Menu
 {
     public class LeaderboardView : ObjectPool
     {
-        private readonly List<LeaderboardElement> _spawned = new();
+        private readonly List<LeaderboardElement> Spawned = new();
         
         private Transform _container;
 
@@ -20,16 +20,16 @@ namespace Menu
             Clear();
 
             foreach (LeaderboardPlayer player in players)
-                _spawned.Add(PullAndSetParent<LeaderboardElement>(Vector3.zero, _container)
+                Spawned.Add(Pull<LeaderboardElement>(Vector3.zero, _container)
                     .Initialize(player.Rank, player.Name, player.Score));
         }
 
         private void Clear()
         {
-            foreach (LeaderboardElement element in _spawned)
+            foreach (LeaderboardElement element in Spawned)
                 element.Push();
 
-            _spawned.Clear();
+            Spawned.Clear();
         }
     }
 }
