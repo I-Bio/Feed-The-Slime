@@ -35,6 +35,7 @@ namespace Enemies
             _behaviour.Accept(visitor, _thinkDelay);
             _animation.Initialize(_animator, _idle, _move);
             _foodPart.Initialize(float.NaN, () => Destroy(gameObject));
+            _detector.Initialize(_foodPart.Stage);
             
             _presenter.Enable();
         }
