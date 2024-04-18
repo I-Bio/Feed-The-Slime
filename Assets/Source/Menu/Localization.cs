@@ -1,5 +1,4 @@
-﻿using System;
-using Agava.YandexGames;
+﻿using Agava.YandexGames;
 using Lean.Localization;
 using UnityEngine;
 
@@ -12,17 +11,15 @@ namespace Menu
         private const string TurkishCode = "Turkish";
         private const string English = "en";
         private const string Russian = "ru";
-        private const string Turkish = "re";
+        private const string Turkish = "tr";
 
         [SerializeField] private LeanLocalization _localization;
-
+#if UNITY_WEBGL && !UNITY_EDITOR
         private void Awake()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
             ChangeLanguage();
-#endif
         }
-
+        
         private void ChangeLanguage()
         {
             string languageCode = YandexGamesSdk.Environment.i18n.lang;
@@ -42,5 +39,6 @@ namespace Menu
                     break;
             }
         }
+#endif
     }
 }
