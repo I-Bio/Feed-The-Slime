@@ -72,6 +72,7 @@ namespace Menu
 
         public void RewardReceive(int value)
         {
+            CompleteGuide();
             RewardReceived?.Invoke(value);
         }
 
@@ -82,10 +83,19 @@ namespace Menu
                 .Select(pair => pair.Value).FirstOrDefault();
 
             TransferService.Instance.SetStats(rewardValue, _characteristics);
-            SceneManager.LoadScene((int)SceneNames.Game);
+            
+            if (_characteristics.DidPassGuide == true)
+                SceneManager.LoadScene((int)SceneNames.Game);
+            else
+                SceneManager.LoadScene((int)SceneNames.Guide);
         }
 
 #if UNITY_WEBGL && !UNITY_EDITOR
+        public void UpdateLeaderboardScore(Action<int> onUpdated)
+        {
+            onUpdated?.Invoke(_characteristics.CompletedLevels);
+        }
+        
         public void Save()
         {
             PlayerAccount.SetCloudSaveData(JsonUtility.ToJson(_characteristics));
@@ -103,11 +113,14 @@ namespace Menu
 
             Loaded?.Invoke(_characteristics);
         }
-        
-        public void UpdateLeaderboardScore(Action<int> onUpdated)
-        {
-            onUpdated?.Invoke(_characteristics.CompletedLevels);
-        }
 #endif
+
+        private void CompleteGuide()
+        {
+            if (_characteristics.DidPassGuide == true)
+                return;
+
+            _characteristics.DidPassGuide = true;
+        }
     }
 }
