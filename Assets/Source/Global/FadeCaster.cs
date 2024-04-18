@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class FadeObjectBlockingObject : MonoBehaviour
+public class FadeCaster : MonoBehaviour
 {
-    [SerializeField] private LayerMask _layerMask;
-    [SerializeField] private Transform _player;
-    [SerializeField] private Transform _camera;
-    [SerializeField] private float _delay = 0.01f;
+    private readonly List<FadingObject> FadedObjects = new();
+    
+    private RaycastHit[] _hits;
+    private LayerMask _layerMask;
+    private Transform _player;
+    private Transform _camera;
+    private float _delay = 0.01f;
 
-    private readonly List<FadingObject> _objectsBlocking = new List<FadingObject>();
-    private readonly RaycastHit[] _hits = new RaycastHit[10];
-
-    private void Start()
+    public void Initialize(LayerMask layerMask, Transform player, Transform camera, float delay, int hitsCapacity)
     {
+        _layerMask = layerMask;
+        _player = player;
+        _camera = camera;
+        _delay = delay;
+        _hits = new RaycastHit[hitsCapacity];
+        
         StartCoroutine(CheckForObjects());
     }
 
@@ -34,12 +40,12 @@ public class FadeObjectBlockingObject : MonoBehaviour
             {
                 for (int i = 0; i < hits; i++)
                 {
-                    FadingObject fadingObject = GetFadingObjectFromHit(_hits[i]);
+                    FadingObject fadingObject = GetFadingFromHit(_hits[i]);
 
-                    if (fadingObject == null || _objectsBlocking.Contains(fadingObject) == true)
+                    if (fadingObject == null || FadedObjects.Contains(fadingObject) == true)
                         continue;
                     
-                    _objectsBlocking.Add(fadingObject);
+                    FadedObjects.Add(fadingObject);
                     fadingObject.FadeOut();
                 }
             }
@@ -54,24 +60,24 @@ public class FadeObjectBlockingObject : MonoBehaviour
 
     private void FadeObjectsNoLongerBeingHit()
     {
-        for (int i = 0; i < _objectsBlocking.Count; i++)
+        for (int i = 0; i < FadedObjects.Count; i++)
         {
-            bool objectIsBeingHit = _hits.Select(GetFadingObjectFromHit)
-                .Any(fadingObject => fadingObject != null && fadingObject == _objectsBlocking[i]);
+            bool objectIsBeingHit = _hits.Select(GetFadingFromHit)
+                .Any(fadingObject => fadingObject != null && fadingObject == FadedObjects[i]);
 
             if (objectIsBeingHit == true) 
                 continue;
             
-            if (_objectsBlocking[i] != null)
-                _objectsBlocking[i].FadeIn();
+            if (FadedObjects[i] != null)
+                FadedObjects[i].FadeIn();
             
-            _objectsBlocking.RemoveAt(i);
+            FadedObjects.RemoveAt(i);
         }
     }
 
-    private FadingObject GetFadingObjectFromHit(RaycastHit Hit)
+    private FadingObject GetFadingFromHit(RaycastHit hit)
     {
-        return Hit.collider != null ? Hit.collider.GetComponent<FadingObject>() : null;
+        return hit.collider != null ? hit.collider.GetComponent<FadingObject>() : null;
     }
 
     private void ClearHits()
