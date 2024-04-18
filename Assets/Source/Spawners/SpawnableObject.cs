@@ -18,14 +18,14 @@ namespace Spawners
             return this;
         }
 
-        public T Pull<T>(Vector3 position) where T: class
+        public T Pull<T>(Vector3 position) where T: SpawnableObject
         {
             SetActive(true);
             _transform.position = position;
             return this as T;
         }
         
-        public T Pull<T>() where T: class
+        public T Pull<T>() where T: SpawnableObject
         {
             SetActive(true);
             return this as T;

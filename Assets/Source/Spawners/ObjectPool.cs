@@ -5,43 +5,48 @@ namespace Spawners
 {
     public class ObjectPool : MonoBehaviour, IPushable
     {
-        private readonly Queue<SpawnableObject> _spawnQueue = new Queue<SpawnableObject>();
+        private readonly Queue<SpawnableObject> SpawnQueue = new();
         
         [SerializeField] private SpawnableObject _spawnableObject;
-
-        public T Pull<T>(Vector3 position) where T: class
-        {
-            if (_spawnQueue.Count == 0)
-                PushOnInitialize(Instantiate(_spawnableObject, position, Quaternion.identity).Initialize(this));
-            
-            return _spawnQueue.Dequeue().Pull<T>(position);
-        }
         
-        public T PullAndSetParent<T>(Vector3 position, Transform parent) where T: class
-        {
-            if (_spawnQueue.Count == 0)
-                PushOnInitialize(Instantiate(_spawnableObject, position, Quaternion.identity, parent).Initialize(this));
-            
-            return _spawnQueue.Dequeue().Pull<T>(position);
-        }
-
-        public T PullAndSetParent<T>(Transform parent) where T: class
-        {
-            if (_spawnQueue.Count == 0)
-                PushOnInitialize(Instantiate(_spawnableObject, parent).Initialize(this));
-            
-            return _spawnQueue.Dequeue().Pull<T>();
-        }
-
         public virtual void Push(SpawnableObject spawnableObject)
         {
             PushOnInitialize(spawnableObject);
+        }
+        
+        protected void Initialize(SpawnableObject spawnableObject)
+        {
+            _spawnableObject = spawnableObject;
+        }
+
+        protected T Pull<T>(Vector3 position) where T: SpawnableObject
+        {
+            if (SpawnQueue.Count == 0)
+                PushOnInitialize(Instantiate(_spawnableObject, position, Quaternion.identity).Initialize(this));
+            
+            return SpawnQueue.Dequeue().Pull<T>(position);
+        }
+
+        protected T Pull<T>(Vector3 position, Transform parent) where T: SpawnableObject
+        {
+            if (SpawnQueue.Count == 0)
+                PushOnInitialize(Instantiate(_spawnableObject, position, Quaternion.identity, parent).Initialize(this));
+            
+            return SpawnQueue.Dequeue().Pull<T>(position);
+        }
+
+        protected T Pull<T>(Transform parent) where T: SpawnableObject
+        {
+            if (SpawnQueue.Count == 0)
+                PushOnInitialize(Instantiate(_spawnableObject, parent).Initialize(this));
+            
+            return SpawnQueue.Dequeue().Pull<T>();
         }
 
         private void PushOnInitialize(SpawnableObject spawnableObject)
         {
             spawnableObject.SetActive(false);
-            _spawnQueue.Enqueue(spawnableObject);
+            SpawnQueue.Enqueue(spawnableObject);
         }
     }
 }
