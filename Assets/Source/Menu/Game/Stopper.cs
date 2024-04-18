@@ -5,16 +5,18 @@ namespace Menu
 {
     public class Stopper : MonoBehaviour
     {
+        private bool _isGlobalPaused;
+        
         public void Pause()
         {
-            Time.timeScale = 0f;
-            AudioListener.volume = 0f;
+            _isGlobalPaused = true;
+            StopTime();
         }
 
         public void Release()
         {
-            Time.timeScale = 1f;
-            AudioListener.volume = 1f;
+            _isGlobalPaused = false;
+            StartTime();
         }
         
         private void OnEnable()
@@ -32,17 +34,32 @@ namespace Menu
         private void OnFocusChangedApp(bool isInApp)
         {
             if (isInApp == false)
-                Pause();
+                StopTime();
             else
-                Release();
+                StartTime();
         }
 
         private void OnFocusChangedWeb(bool isBackGround)
         {
             if (isBackGround == false)
-                Release();
+                StartTime();
             else
-                Pause();
+                StopTime();
+        }
+
+        private void StopTime()
+        {
+            Time.timeScale = 0f;
+            AudioListener.volume = 0f;
+        }
+
+        private void StartTime()
+        {
+            if (_isGlobalPaused == true)
+                return;
+            
+            Time.timeScale = 1f;
+            AudioListener.volume = 1f;
         }
     }
 }
