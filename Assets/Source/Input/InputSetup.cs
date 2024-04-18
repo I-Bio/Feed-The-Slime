@@ -17,14 +17,10 @@ namespace Input
         {
             _model = new PlayerInput();
             _presenter = new InputPresenter(_model, _joystick, _player, _caster, loader);
-        }
-
-        private void OnEnable()
-        {
             _presenter.Enable();
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             _presenter.Disable();
         }
