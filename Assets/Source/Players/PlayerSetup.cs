@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Boosters;
 using Cinemachine;
+using Foods;
 using Menu;
 using Spawners;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Players
 {
@@ -19,6 +19,7 @@ namespace Players
     [RequireComponent(typeof(EffectReproducer))]
     [RequireComponent(typeof(SoundReproducer))]
     [RequireComponent(typeof(Ticker))]
+    [RequireComponent(typeof(EatableSpawner))]
     public class PlayerSetup : MonoBehaviour
     {
         [Header("UI")] 
@@ -54,7 +55,7 @@ namespace Players
         [SerializeField] private int _pointsCount;
         [SerializeField] private float _castStrength;
         [SerializeField] private Vector3 _castOffset;
-        [SerializeField] private EatableSpawner _spawner;
+        [SerializeField] private FoodSetup _dissolved;
         [SerializeField] private Projectile _projectile;
         [SerializeField] private AbilityButton _spitButton;
 
@@ -67,6 +68,7 @@ namespace Players
         private EffectReproducer _effectReproducer;
         private SoundReproducer _soundReproducer;
         private Ticker _ticker;
+        private EatableSpawner _spawner;
         private Transform _transform;
 
         private Goop _model;
@@ -91,6 +93,7 @@ namespace Players
             _effectReproducer = GetComponent<EffectReproducer>();
             _soundReproducer = GetComponent<SoundReproducer>();
             _ticker = GetComponent<Ticker>();
+            _spawner = GetComponent<EatableSpawner>();
             _transform = transform;
 
             _model = new Goop(calculableScore, _levelConfig.StartStage, _levelConfig.ScoreScaler,
@@ -120,16 +123,15 @@ namespace Players
             _effectReproducer.Initialize(_effects);
             _soundReproducer.Initialize(_sources);
             _ticker.Initialize();
-        }
-
-        private void OnEnable()
-        {
+            _spawner.Initialize(_dissolved);
+            _collisionDetector.SetStage(_levelConfig.StartStage);
+            
             _playerPresenter.Enable();
             _boosterPresenter.Enable();
             _toxinPresenter.Enable();
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             _playerPresenter.Disable();
             _boosterPresenter.Disable();
