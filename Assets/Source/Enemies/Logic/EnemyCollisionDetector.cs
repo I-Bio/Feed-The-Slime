@@ -6,10 +6,12 @@ namespace Enemies
     public class EnemyCollisionDetector : MonoBehaviour
     {
         private bool _canContact;
+        private SatietyStage _stage;
 
-        public void AllowContact()
+        public void Initialize(SatietyStage stage)
         {
             _canContact = true;
+            _stage = stage;
         }
         
         public void DisallowContact()
@@ -25,7 +27,7 @@ namespace Enemies
             if (collision.collider.TryGetComponent(out IPlayerVisitor player) == false)
                 return;
 
-            player.Visit(null as EnemyMover);
+            player.Visit(null, _stage);
         }
     }
 }

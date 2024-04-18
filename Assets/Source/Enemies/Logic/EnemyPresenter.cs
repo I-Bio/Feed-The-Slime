@@ -39,7 +39,6 @@ namespace Enemies
         private void OnGoingInteract(Vector3 position)
         {
             _animation.PlayMove();
-            _detector.AllowContact();
             _behaviour.InteractInClose(position);
         }
 
@@ -51,7 +50,9 @@ namespace Enemies
 
         private void OnAvoided(Vector3 position)
         {
-            _detector.DisallowContact();
+            if (_model.IsAvoiding == false)
+                _detector.DisallowContact();
+            
             _behaviour.AvoidInteraction(position, _animation.PlayMove);
         }
 
