@@ -23,7 +23,7 @@ SpriteAtlas:
     platformSettings:
     - serializedVersion: 3
       m_BuildTarget: WebGL
-      m_MaxTextureSize: 512
+      m_MaxTextureSize: 1024
       m_ResizeAlgorithm: 0
       m_TextureFormat: 50
       m_TextureCompression: 1
@@ -36,7 +36,7 @@ SpriteAtlas:
       m_ForceMaximumCompressionQuality_BC6H_BC7: 0
     - serializedVersion: 3
       m_BuildTarget: DefaultTexturePlatform
-      m_MaxTextureSize: 512
+      m_MaxTextureSize: 1024
       m_ResizeAlgorithm: 0
       m_TextureFormat: -1
       m_TextureCompression: 2
@@ -98,6 +98,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 78c67891a14a48145a72935fba17a1bb, type: 3}
     - {fileID: 2800000, guid: 085185b08a40a924985bc0e4176edea6, type: 3}
     - {fileID: 2800000, guid: d8ec7bed8b86f4a3d905859476e40a84, type: 3}
+    - {fileID: 2800000, guid: bee1d9fcc8d622c45bf9737885504343, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -135,6 +136,7 @@ SpriteAtlas:
     - 9876fcfabd3b2425687da38e45dedbc2: 21300000
     - 1244643b3a604284fafc0d20ada4fe23: 21300000
     - 2323358c16953446e9b2cb27fde07104: 21300000
+    - bee1d9fcc8d622c45bf9737885504343: 21300000
     - d8ec7bed8b86f4a3d905859476e40a84: 21300000
     - 6bbcba4e267be464998897741b81d508: 21300000
     - 9edf88ae67e094b3cb3b788b80b98798: 21300000
@@ -177,6 +179,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 9876fcfabd3b2425687da38e45dedbc2, type: 3}
   - {fileID: 21300000, guid: 1244643b3a604284fafc0d20ada4fe23, type: 3}
   - {fileID: 21300000, guid: 2323358c16953446e9b2cb27fde07104, type: 3}
+  - {fileID: 21300000, guid: bee1d9fcc8d622c45bf9737885504343, type: 3}
   - {fileID: 21300000, guid: d8ec7bed8b86f4a3d905859476e40a84, type: 3}
   - {fileID: 21300000, guid: 6bbcba4e267be464998897741b81d508, type: 3}
   - {fileID: 21300000, guid: 9edf88ae67e094b3cb3b788b80b98798, type: 3}
@@ -218,6 +221,7 @@ SpriteAtlas:
   - ability_icon_hp
   - mission_reward_icon_gem
   - ribbon_bg_orange
+  - Slime
   - userinfo_icon_skull
   - button_blue
   - reward_month_frame_blue
