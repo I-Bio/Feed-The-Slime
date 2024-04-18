@@ -8,7 +8,7 @@ namespace Players
         public event Action ToxinContacted;
         public event Action ContactStopped;
         
-        public void Visit(EnemyMover normal);
+        public void Visit(EnemyMover normal, SatietyStage stage);
         public void Visit(EnemyToxin toxin);
         public void Visit(EnemyEmpty empty);
     }

@@ -7,14 +7,19 @@ namespace Players
 {
     public class PlayerCollisionDetector : MonoBehaviour, IPlayerVisitor
     {
+        private SatietyStage _stage;
+        
         public event Action<float> ScoreGained;
         public event Action<IBooster> BoosterEntered;
         public event Action EnemyContacted;
         public event Action ToxinContacted;
         public event Action ContactStopped;
 
-        public void Visit(EnemyMover normal)
+        public void Visit(EnemyMover normal, SatietyStage stage)
         {
+            if (stage <= _stage)
+                return;
+            
             EnemyContacted?.Invoke();
         }
 
@@ -26,6 +31,11 @@ namespace Players
         public void Visit(EnemyEmpty empty)
         {
             ContactStopped?.Invoke();
+        }
+
+        public void SetStage(SatietyStage stage)
+        {
+            _stage = stage;
         }
 
         private void OnCollisionEnter(Collision collision)
