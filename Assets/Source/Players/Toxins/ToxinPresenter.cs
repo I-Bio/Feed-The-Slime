@@ -46,7 +46,7 @@ namespace Players
         
         private void OnGoingDie()
         {
-            _visitor.Visit(null as EnemyMover);
+            _visitor.Visit(null, SatietyStage.Overeat);
         }
 
         private void OnHid()
