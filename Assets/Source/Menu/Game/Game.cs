@@ -17,58 +17,17 @@ namespace Menu
         [SerializeField] private TextMeshProUGUI[] _rewards;
         [SerializeField] private Button _pause;
         [SerializeField] private Button _resume;
-        [SerializeField] private CanvasGroup _backGround;
-
-        private Screen _screen;
-
+        [SerializeField] private CanvasGroup _background;
+        
         private ITransferService _transferService;
+        private Screen _screen;
         private Revival _revival;
         private Stopper _stopper;
         private int _stage;
         private float _maxStage;
-
-        public void Initialize(ITransferService transferService, Revival revival)
-        {
-            _transferService = transferService;
-            _revival = revival;
-            _maxStage = Enum.GetValues(typeof(SatietyStage)).Length - 1;
-            SetStage(SatietyStage.Exhaustion);
-            _stopper = GetComponent<Stopper>();
-            _screen = GetComponent<Screen>();
-        }
-
-        public void ChangeWindow(GameWindows window)
-        {
-            if (window == GameWindows.Lose && _revival.TryRevive() == true)
-                return;
-
-            _stopper.Pause();
-            _backGround.alpha = 1f;
-            _screen.SetWindow((int)window);
-
-            if (window == GameWindows.Pause)
-                return;
-
-            _transferService.PassLevel();
-
-            if (_transferService.Characteristics.IsAllowedShowInter == true)
-                InterstitialAd.Show();
-        }
-
-        public void SetStage(SatietyStage stage)
-        {
-            _stage = (int)stage;
-            UpdateReward();
-        }
-
-        public void Load()
-        {
-            _stopper.Release();
-            _transferService.MultiplyIt(_stage / _maxStage);
-            _transferService.AllowReceive();
-            SceneManager.LoadScene((int)SceneNames.Menu);
-        }
-
+        private float _offAlpha;
+        private float _onAlpha;
+        
         private void OnEnable()
         {
             _winAdvert.onClick.AddListener(ShowWinAdvert);
@@ -84,7 +43,62 @@ namespace Menu
             _pause.onClick.RemoveListener(OnScreenPause);
             _resume.onClick.RemoveListener(OnScreenResume);
         }
+        
+        public void Initialize(ITransferService transferService, Revival revival, float offAlpha, float onAlpha)
+        {
+            _transferService = transferService;
+            _revival = revival;
+            _maxStage = Enum.GetValues(typeof(SatietyStage)).Length - 1;
+            SetStage(SatietyStage.Exhaustion);
+            _offAlpha = offAlpha;
+            _onAlpha = onAlpha;
+            
+            _stopper = GetComponent<Stopper>();
+            _screen = GetComponent<Screen>();
+        }
 
+        public void SetStage(SatietyStage stage)
+        {
+            _stage = (int)stage;
+            UpdateReward();
+        }
+
+        public void Win()
+        {
+            ChangeWindow(GameWindows.Win);
+        }
+
+        public void Lose()
+        {
+            ChangeWindow(GameWindows.Lose);
+        }
+
+        public void Load()
+        {
+            _stopper.Release();
+            _transferService.MultiplyIt(_stage / _maxStage);
+            _transferService.AllowReceive();
+            SceneManager.LoadScene((int)SceneNames.Menu);
+        }
+        
+        private void ChangeWindow(GameWindows window)
+        {
+            if (window == GameWindows.Lose && _revival.TryRevive() == true)
+                return;
+
+            _stopper.Pause();
+            _background.alpha = _onAlpha;
+            _screen.SetWindow((int)window);
+
+            if (window == GameWindows.Pause)
+                return;
+
+            _transferService.PassLevel();
+
+            if (_transferService.Characteristics.IsAllowedShowInter == true)
+                InterstitialAd.Show();
+        }
+        
         private void ShowWinAdvert()
         {
             ShowRewardAdvert(DoubleReward, null);
@@ -132,7 +146,7 @@ namespace Menu
 
         private void OnScreenResume()
         {
-            _backGround.alpha = 0f;
+            _background.alpha = _offAlpha;
             _screen.Hide();
             _stopper.Release();
         }
