@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
 
-namespace Menu
-{
-    public class Revival
+public class Revival : MonoBehaviour
     {
-        private readonly Transform _player;
-        private readonly Vector3 _startPosition;
-        private readonly int _maxLifeCount;
+        private Transform _player;
+        private Vector3 _startPosition;
+        private int _maxLifeCount;
 
         private int _currentLifeCount;
         
-        public Revival(Transform player, int maxLifeCount)
+        public void Initialize(Transform player, int maxLifeCount)
         {
             _player = player;
             _startPosition = _player.position;
@@ -32,4 +30,3 @@ namespace Menu
             _player.position = _startPosition;
         }
     }
-}
