@@ -14,5 +14,6 @@ namespace Menu
         [field: SerializeField] public int AdvertAccumulation { get; set; }
         [field: SerializeField] public bool DidObtainSpit { get; set; }
         [field: SerializeField] public bool IsAllowedShowInter { get; set; }
+        [field: SerializeField] public bool DidPassGuide { get; set; }
     }
 }
