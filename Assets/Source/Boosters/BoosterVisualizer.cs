@@ -61,7 +61,7 @@ namespace Boosters
         {
             _boosters.Add(
                 new KeyValuePair<SpawnableObject, IStatBuffer>(
-                    PullAndSetParent<BoostIcon>(_holder)
+                    Pull<BoostIcon>(_holder)
                         .Initialize(boost.LifeTime, boost.Icon).Use(), boost));
         }
 
