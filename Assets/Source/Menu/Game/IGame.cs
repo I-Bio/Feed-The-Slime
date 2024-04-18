@@ -3,6 +3,7 @@
     public interface IGame
     {
         public void SetStage(SatietyStage stage);
-        public void ChangeWindow(GameWindows window);
+        public void Win();
+        public void Lose();
     }
 }
