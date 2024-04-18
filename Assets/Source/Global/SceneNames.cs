@@ -3,4 +3,5 @@
     Load,
     Menu,
     Game,
+    Guide
 }
