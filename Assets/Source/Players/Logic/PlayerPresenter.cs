@@ -5,134 +5,136 @@ namespace Players
 {
     public class PlayerPresenter : IPresenter
     {
-        private readonly Goop _model;
-        private readonly PlayerCollisionDetector _collisionDetector;
-        private readonly PlayerScanner _scanner;
-        private readonly SizeScaler _sizeScaler;
-        private readonly LevelBar _levelBar;
-        private readonly StageBar _stageBar;
-        private readonly PlayerAnimation _animation;
-        private readonly AbilityCaster _caster;
-        private readonly EffectReproducer _effectReproducer;
-        private readonly SoundReproducer _soundReproducer;
-        private readonly IInsertable _boosterService;
-        private readonly IMover _mover;
-        private readonly IGame _game;
+        private readonly Goop Model;
+        private readonly PlayerCollisionDetector CollisionDetector;
+        private readonly PlayerScanner Scanner;
+        private readonly SizeScaler SizeScaler;
+        private readonly LevelBar LevelBar;
+        private readonly StageBar StageBar;
+        private readonly PlayerAnimation Animation;
+        private readonly AbilityCaster Caster;
+        private readonly EffectReproducer EffectReproducer;
+        private readonly SoundReproducer SoundReproducer;
+        private readonly IInsertable BoosterService;
+        private readonly IMover Mover;
+        private readonly IGame Game;
 
         public PlayerPresenter(Goop model, PlayerCollisionDetector collisionDetector, PlayerScanner scanner,
             SizeScaler sizeScaler, LevelBar levelBar, StageBar stageBar, IInsertable boosterService,
             PlayerAnimation animation, AbilityCaster caster, IMover mover, EffectReproducer effectReproducer,
             SoundReproducer soundReproducer, IGame game)
         {
-            _model = model;
-            _collisionDetector = collisionDetector;
-            _scanner = scanner;
-            _sizeScaler = sizeScaler;
-            _levelBar = levelBar;
-            _stageBar = stageBar;
-            _boosterService = boosterService;
-            _animation = animation;
-            _caster = caster;
-            _mover = mover;
-            _effectReproducer = effectReproducer;
-            _soundReproducer = soundReproducer;
-            _game = game;
+            Model = model;
+            CollisionDetector = collisionDetector;
+            Scanner = scanner;
+            SizeScaler = sizeScaler;
+            LevelBar = levelBar;
+            StageBar = stageBar;
+            BoosterService = boosterService;
+            Animation = animation;
+            Caster = caster;
+            Mover = mover;
+            EffectReproducer = effectReproducer;
+            SoundReproducer = soundReproducer;
+            Game = game;
         }
 
         public void Enable()
         {
-            _model.ScoreChanged += OnScoreChanged;
-            _model.LevelIncreased += OnLevelIncreased;
-            _model.SizeIncreased += OnSizeIncreased;
-            _model.Winning += OnWinning;
+            Model.ScoreChanged += OnScoreChanged;
+            Model.LevelIncreased += OnLevelIncreased;
+            Model.SizeIncreased += OnSizeIncreased;
+            Model.Winning += OnWinning;
 
-            _collisionDetector.ScoreGained += OnScoreGained;
-            _collisionDetector.BoosterEntered += OnBoosterEntered;
-            _collisionDetector.EnemyContacted += OnEnemyContacted;
-            _caster.Hid += OnHid;
-            _caster.Showed += OnShowed;
-            _caster.SpitCasted += OnSpitCasted;
+            CollisionDetector.ScoreGained += OnScoreGained;
+            CollisionDetector.BoosterEntered += OnBoosterEntered;
+            CollisionDetector.EnemyContacted += OnEnemyContacted;
+            Caster.Hid += OnHid;
+            Caster.Showed += OnShowed;
+            Caster.SpitCasted += OnSpitCasted;
         }
 
         public void Disable()
         {
-            _model.ScoreChanged -= OnScoreChanged;
-            _model.LevelIncreased -= OnLevelIncreased;
-            _model.SizeIncreased -= OnSizeIncreased;
-            _model.Winning -= OnWinning;
+            Model.ScoreChanged -= OnScoreChanged;
+            Model.LevelIncreased -= OnLevelIncreased;
+            Model.SizeIncreased -= OnSizeIncreased;
+            Model.Winning -= OnWinning;
 
-            _collisionDetector.ScoreGained -= OnScoreGained;
-            _collisionDetector.BoosterEntered -= OnBoosterEntered;
-            _collisionDetector.EnemyContacted -= OnEnemyContacted;
-            _caster.Hid -= OnHid;
-            _caster.Showed -= OnShowed;
-            _caster.SpitCasted -= OnSpitCasted;
+            CollisionDetector.ScoreGained -= OnScoreGained;
+            CollisionDetector.BoosterEntered -= OnBoosterEntered;
+            CollisionDetector.EnemyContacted -= OnEnemyContacted;
+            Caster.Hid -= OnHid;
+            Caster.Showed -= OnShowed;
+            Caster.SpitCasted -= OnSpitCasted;
         }
 
         private void OnScoreChanged(float score, int maxScore, float value)
         {
-            _soundReproducer.PlayClip(SoundType.ScoreGain);
-            _levelBar.SetScore(score, maxScore, value);
-            _stageBar.ChangeValue(score);
+            SoundReproducer.PlayClip(SoundType.ScoreGain);
+            LevelBar.SetScore(score, maxScore, value);
+            StageBar.ChangeValue(score);
         }
 
         private void OnLevelIncreased(int level)
         {
-            _soundReproducer.PlayClip(SoundType.LevelUp);
-            _levelBar.SetLevel(level);
+            SoundReproducer.PlayClip(SoundType.LevelUp);
+            LevelBar.SetLevel(level);
         }
 
         private void OnSizeIncreased(SatietyStage stage)
         {
-            _soundReproducer.PlayClip(SoundType.StageUp);
-            _effectReproducer.PlayEffect(EffectType.StageUp);
-            _caster.SetStage(stage);
-            _scanner.SetStage(stage);
-            _game.SetStage(stage);
-            _stageBar.Increase();
-            _scanner.Rescan();
-            _sizeScaler.Scale(stage);
+            SoundReproducer.PlayClip(SoundType.StageUp);
+            EffectReproducer.PlayEffect(EffectType.StageUp);
+            Caster.SetStage(stage);
+            Scanner.SetStage(stage);
+            CollisionDetector.SetStage(stage);
+            Game.SetStage(stage);
+            StageBar.Increase();
+            Scanner.Rescan();
+            SizeScaler.Scale(stage);
         }
 
         private void OnWinning()
         {
-            _game.ChangeWindow(GameWindows.Win);
+            Game.Win();
         }
 
         private void OnEnemyContacted()
         {
-            _game.ChangeWindow(GameWindows.Lose);
+            Game.Lose();
         }
 
         private void OnScoreGained(float value)
         {
-            _animation.PlayAttack();
-            _model.IncreaseScore(value);
+            Animation.PlayAttack();
+            Model.IncreaseScore(value);
         }
 
         private void OnBoosterEntered(IBooster booster)
         {
-            _boosterService.TryInsert(booster);
+            if(BoosterService.TryInsert(booster) == true)
+                SoundReproducer.PlayClip(SoundType.Boost);
         }
 
         private void OnHid()
         {
-            _mover.ProhibitMove();
-            _animation.PlayHide();
-            _effectReproducer.PlayEffect(EffectType.Hide);
-            _soundReproducer.PlayClip(SoundType.Hide);
+            Mover.ProhibitMove();
+            Animation.PlayHide();
+            EffectReproducer.PlayEffect(EffectType.Hide);
+            SoundReproducer.PlayClip(SoundType.Hide);
         }
 
         private void OnShowed()
         {
-            _mover.AllowMove();
-            _animation.PlayIdle();
+            Mover.AllowMove();
+            Animation.PlayIdle();
         }
 
         private void OnSpitCasted()
         {
-            _soundReproducer.PlayClip(SoundType.Spit);
-            _animation.PlayAttack();
+            SoundReproducer.PlayClip(SoundType.Spit);
+            Animation.PlayAttack();
         }
     }
 }
