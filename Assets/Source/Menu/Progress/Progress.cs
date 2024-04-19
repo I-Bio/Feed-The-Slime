@@ -50,10 +50,7 @@ namespace Menu
         {
             _characteristics.CompletedLevels++;
             LevelsIncreased?.Invoke(_characteristics.CompletedLevels);
-        }
-        
-        public void AccumulateInter()
-        {
+            
             _characteristics.IsAllowedShowInter = false;
             _characteristics.AdvertAccumulation++;
 
@@ -73,7 +70,7 @@ namespace Menu
         public void RewardReceive(int value)
         {
             CompleteGuide();
-            RewardReceived?.Invoke(value);
+            ChangeCrystals(value);
         }
 
         public void StartGame()

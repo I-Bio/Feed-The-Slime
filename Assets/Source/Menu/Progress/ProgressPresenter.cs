@@ -35,7 +35,6 @@ namespace Menu
         {
             _model.Loaded += OnLoaded;
             _model.CrystalsChanged += OnCrystalsChanged;
-            _model.RewardReceived += OnRewardReceived;
             _model.LevelsIncreased += OnLevelsIncreased;
 #if UNITY_WEBGL && !UNITY_EDITOR
             _switcher.LeaderboardOpened += OnLeaderboardOpened;
@@ -50,7 +49,6 @@ namespace Menu
         {
             _model.Loaded -= OnLoaded;
             _model.CrystalsChanged -= OnCrystalsChanged;
-            _model.RewardReceived -= OnRewardReceived;
             _model.LevelsIncreased -= OnLevelsIncreased;
 #if UNITY_WEBGL && !UNITY_EDITOR
             _switcher.LeaderboardOpened -= OnLeaderboardOpened;
@@ -71,7 +69,7 @@ namespace Menu
             OnLevelsIncreased(characteristics.CompletedLevels);
 
             if (_transferService.DidLevelPassed == true)
-                _model.AccumulateInter();
+                _model.IncreaseLevels();
 
             OnCrystalsChanged(characteristics.CrystalsCount);
             _switcher.ShowMain();
@@ -93,12 +91,6 @@ namespace Menu
 
             foreach (IProgressionBar bar in _bars)
                 bar.CompareCrystals(crystalsCount);
-        }
-
-        private void OnRewardReceived(int value)
-        {
-            _model.IncreaseLevels();
-            _model.ChangeCrystals(value);
         }
 
         private void OnLevelsIncreased(int value)
