@@ -10,7 +10,12 @@ namespace Enemies
         
         private IPlayerVisitor _player;
         private bool _didHide;
-        
+
+        private void OnDestroy()
+        {
+            _player?.Visit(null as EnemyEmpty);
+        }
+
         public void Initialize(float delay, IPlayerVisitor player)
         {
             _player = player;

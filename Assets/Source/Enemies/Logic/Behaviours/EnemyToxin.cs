@@ -12,7 +12,12 @@ namespace Enemies
         private AudioSource _source;
         private IPlayerVisitor _player;
         private bool _canReproduce;
-
+        
+        private void OnDestroy()
+        {
+            _player?.Visit(null as EnemyEmpty);
+        }
+        
         public void Initialize(float delay, IPlayerVisitor player)
         {
             _player = player;
