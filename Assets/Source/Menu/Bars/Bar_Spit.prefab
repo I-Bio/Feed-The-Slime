@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 182710644273536612, guid: 257086205c3db2649bb04759fa97c093, type: 3}
       propertyPath: translationName
-      value: Spit
+      value: Spit Ability
       objectReference: {fileID: 0}
     - target: {fileID: 1542787380849436416, guid: 257086205c3db2649bb04759fa97c093, type: 3}
       propertyPath: m_SizeDelta.x
@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8457874653498588859, guid: 257086205c3db2649bb04759fa97c093, type: 3}
       propertyPath: m_text
-      value: Spit
+      value: Spit Ability
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5128805649055238985, guid: 257086205c3db2649bb04759fa97c093, type: 3}
@@ -104,7 +104,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c712e43e1314e11a13553580f0dfc5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  translationName: Obtained
   _buyButton: {fileID: 5240362221549497443}
   _price: {fileID: 3118669260044267431}
   _currentCount: {fileID: 7031195187920980408}
