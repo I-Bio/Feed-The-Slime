@@ -50,13 +50,13 @@ namespace Menu
         {
             _characteristics.CompletedLevels++;
             LevelsIncreased?.Invoke(_characteristics.CompletedLevels);
-            
+
             _characteristics.IsAllowedShowInter = false;
             _characteristics.AdvertAccumulation++;
 
             if (_characteristics.AdvertAccumulation != _advertAccumulationStep)
                 return;
-            
+
             _characteristics.AdvertAccumulation = 0;
             _characteristics.IsAllowedShowInter = true;
         }
@@ -80,7 +80,7 @@ namespace Menu
                 .Select(pair => pair.Value).FirstOrDefault();
 
             TransferService.Instance.SetStats(rewardValue, _characteristics);
-            
+
             if (_characteristics.DidPassGuide == true)
                 SceneManager.LoadScene((int)SceneNames.Game);
             else
@@ -105,13 +105,14 @@ namespace Menu
 
         private void OnLoaded(string jsonData)
         {
-            if (string.IsNullOrEmpty(jsonData) == false)
+            PlayerCharacteristics characteristics = JsonUtility.FromJson<PlayerCharacteristics>(jsonData);
+
+            if (characteristics != null && characteristics.Speed >= _characteristics.Speed)
                 _characteristics = JsonUtility.FromJson<PlayerCharacteristics>(jsonData);
 
             Loaded?.Invoke(_characteristics);
         }
 #endif
-
         private void CompleteGuide()
         {
             if (_characteristics.DidPassGuide == true)
