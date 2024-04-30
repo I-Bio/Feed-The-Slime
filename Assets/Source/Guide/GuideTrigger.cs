@@ -38,6 +38,7 @@ namespace Guide
 
         private void ShowEnemy()
         {
+            _didPlay = true;
             _camera.LookAt = _enemy;
             OnStarted?.Invoke();
         }
