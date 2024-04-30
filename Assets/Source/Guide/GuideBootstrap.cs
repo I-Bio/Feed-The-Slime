@@ -33,8 +33,9 @@ namespace Guide
         [SerializeField] private CanvasGroup _endGame;
         [SerializeField] private CanvasGroup _mainUi;
         [SerializeField] private Button[] _nextButtons;
-        [SerializeField] private Button _release;
+        [SerializeField] private Button[] _releaseButtons;
         [SerializeField] private Button _win;
+        [SerializeField] private Button _pause;
         [SerializeField] private ObjectHighlighter _exampleFood;
         [SerializeField] private float _selectValue = 4f;
         [SerializeField] private Transform _enemy;
@@ -58,7 +59,7 @@ namespace Guide
 
             _input.Initialize(_guide);
             _player.Initialize(movable, calculableScore, _guide);
-            _guide.Initialize(transferService, _fadeBackground, _endGame, _mainUi, _nextButtons, _release, _win,
+            _guide.Initialize(transferService, _fadeBackground, _endGame, _mainUi, _nextButtons, _releaseButtons, _win, _pause,
                 OffAlpha, OnAlpha, _rewards);
             _boosterSpawner.Initialize(movable, calculableScore);
             _theme.Initialize(hidden, visitor);
