@@ -10,6 +10,7 @@
         DialogEnd,
         Win,
         Lose,
-        Enemy
+        Enemy,
+        Pause
     }
 }
