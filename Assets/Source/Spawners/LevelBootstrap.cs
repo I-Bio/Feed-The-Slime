@@ -1,4 +1,5 @@
-﻿using Boosters;
+﻿using System;
+using Boosters;
 using Enemies;
 using Input;
 using Menu;
@@ -11,9 +12,6 @@ namespace Spawners
     [RequireComponent(typeof(FadeCaster))]
     public class LevelBootstrap : MonoBehaviour
     {
-        private const float OffAlpha = 0f;
-        private const float OnAlpha = 1f;
-        
         [SerializeField] private BoosterSpawner _boosterSpawner;
         [SerializeField] private InputSetup _input;
         [SerializeField] private PlayerSetup _player;
@@ -36,30 +34,19 @@ namespace Spawners
         private Revival _revival;
         private FadeCaster _fadeCaster;
 
-        private void Awake()
+        public void Initialize(int completedLevels)
         {
-            ITransferService transferService = TransferService.Instance;
-            IMovable movable = new Speed(transferService.Characteristics.Speed);
-            ICalculableScore calculableScore =
-                new AdditionalScore(new Score(), transferService.Characteristics.ScorePerEat, OffAlpha, null);
             _revival = GetComponent<Revival>();
             _fadeCaster = GetComponent<FadeCaster>();
-
-            if (transferService.Characteristics.DidObtainSpit)
-                _spit.SetActive(true);
-
-            _game.Initialize(transferService, _revival, OffAlpha, OnAlpha);
+            
             _input.Initialize(_game);
-            _player.Initialize(movable, calculableScore, _game);
-            _revival.Initialize(_player.transform, transferService.Characteristics.LifeCount);
-            _boosterSpawner.Initialize(movable, calculableScore);
             _fadeCaster.Initialize(_fadeMask, _player.transform, _camera, _delay, _hitsCapacity);
             
             int id = 0;
 
             for (int i = 0; i < _zoneTemplates.Length; i++)
             {
-                if (_zoneTemplates[i].Key > transferService.Characteristics.CompletedLevels)
+                if (_zoneTemplates[i].Key > completedLevels)
                     break;
 
                 id = i;
@@ -74,6 +61,23 @@ namespace Spawners
             foreach (Transform zonePoint in _zonePoints)
                 Instantiate(_zoneTemplates[id].Value.GetRandom(), zonePoint)
                     .Initialize(hidden, visitor);
+        }
+
+        public void Launch(IReadOnlyCharacteristics characteristics, WindowSwitcher switcher, Stopper stopper, int reward)
+        {
+            IMovable movable = new Speed(characteristics.Speed);
+            ICalculableScore calculableScore =
+                new AdditionalScore(new Score(), characteristics.ScorePerEat, float.MinValue, null);
+
+            if (characteristics.DidObtainSpit)
+                _spit.SetActive(true);
+
+            
+            _player.Initialize(movable, calculableScore, _game);
+            _revival.Initialize(_player.transform, characteristics.LifeCount);
+            _boosterSpawner.Initialize(movable, calculableScore);
+            
+            _game.Initialize(_revival, switcher, stopper, reward);
         }
     }
 }
