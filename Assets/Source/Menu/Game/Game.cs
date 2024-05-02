@@ -4,57 +4,43 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 
 namespace Menu
 {
-    [RequireComponent(typeof(Stopper))]
-    [RequireComponent(typeof(Screen))]
     public class Game : MonoBehaviour, IGame, ILoader
     {
         [SerializeField] private float _double = 2f;
         [SerializeField] private Button _winAdvert;
         [SerializeField] private Button _loseAdvert;
         [SerializeField] private TextMeshProUGUI[] _rewards;
-        [SerializeField] private Button _pause;
-        [SerializeField] private Button _resume;
-        [SerializeField] private CanvasGroup _background;
-        
-        private ITransferService _transferService;
-        private Screen _screen;
-        private Revival _revival;
+
+        private WindowSwitcher _switcher;
         private Stopper _stopper;
+        private Revival _revival;
         private int _stage;
         private float _maxStage;
-        private float _offAlpha;
-        private float _onAlpha;
+        private int _rewardCount;
         
-        private void OnEnable()
-        {
-            _winAdvert.onClick.AddListener(ShowWinAdvert);
-            _loseAdvert.onClick.AddListener(ShowLoseAdvert);
-            _pause.onClick.AddListener(OnScreenPause);
-            _resume.onClick.AddListener(OnScreenResume);
-        }
-
-        private void OnDisable()
+        private void OnDestroy()
         {
             _winAdvert.onClick.RemoveListener(ShowWinAdvert);
             _loseAdvert.onClick.RemoveListener(ShowLoseAdvert);
-            _pause.onClick.RemoveListener(OnScreenPause);
-            _resume.onClick.RemoveListener(OnScreenResume);
         }
         
-        public void Initialize(ITransferService transferService, Revival revival, float offAlpha, float onAlpha)
+        public void Initialize(Revival revival, WindowSwitcher switcher, Stopper stopper, int reward)
         {
-            _transferService = transferService;
             _revival = revival;
+            _rewardCount = reward;
             _maxStage = Enum.GetValues(typeof(SatietyStage)).Length - 1;
             SetStage(SatietyStage.Exhaustion);
-            _offAlpha = offAlpha;
-            _onAlpha = onAlpha;
+            _switcher = switcher;
+            _stopper = stopper;
             
-            _stopper = GetComponent<Stopper>();
-            _screen = GetComponent<Screen>();
+            _winAdvert.onClick.AddListener(ShowWinAdvert);
+            _loseAdvert.onClick.AddListener(ShowLoseAdvert);
+            
+            _switcher.ChangeWindow(Windows.Play);
         }
 
         public void SetStage(SatietyStage stage)
@@ -65,40 +51,22 @@ namespace Menu
 
         public void Win()
         {
-            ChangeWindow(GameWindows.Win);
+            _switcher.ChangeWindow(Windows.Win);
         }
 
         public void Lose()
         {
-            ChangeWindow(GameWindows.Lose);
+            _switcher.ChangeWindow(Windows.Lose, _revival);
         }
 
         public void Load()
         {
             _stopper.Release();
-            _transferService.MultiplyIt(_stage / _maxStage);
-            _transferService.AllowReceive();
-            SceneManager.LoadScene((int)SceneNames.Menu);
+            _rewardCount = Mathf.CeilToInt(_rewardCount * (_stage / _maxStage));
+            PlayerPrefs.SetInt(nameof(CharacteristicConstants.Reward), _rewardCount);
+            SceneManager.LoadScene((int)SceneNames.Game);
         }
-        
-        private void ChangeWindow(GameWindows window)
-        {
-            if (window == GameWindows.Lose && _revival.TryRevive() == true)
-                return;
 
-            _stopper.Pause();
-            _background.alpha = _onAlpha;
-            _screen.SetWindow((int)window);
-
-            if (window == GameWindows.Pause)
-                return;
-
-            _transferService.PassLevel();
-
-            if (_transferService.Characteristics.IsAllowedShowInter == true)
-                InterstitialAd.Show();
-        }
-        
         private void ShowWinAdvert()
         {
             ShowRewardAdvert(DoubleReward, null);
@@ -106,7 +74,7 @@ namespace Menu
 
         private void ShowLoseAdvert()
         {
-            ShowRewardAdvert(Respawn, OnScreenResume);
+            ShowRewardAdvert(Respawn, _switcher.ResumeScreen);
         }
 
         private void ShowRewardAdvert(Action onReward, Action onClose)
@@ -129,26 +97,14 @@ namespace Menu
         private void DoubleReward()
         {
             _winAdvert.gameObject.SetActive(false);
-            _transferService.MultiplyIt(_double);
+            _rewardCount = Mathf.CeilToInt(_rewardCount * _double);
             UpdateReward();
         }
 
         private void UpdateReward()
         {
             foreach (TextMeshProUGUI reward in _rewards)
-                reward.SetText(Mathf.CeilToInt(_transferService.Reward * (_stage / _maxStage)).ToString());
-        }
-
-        private void OnScreenPause()
-        {
-            ChangeWindow(GameWindows.Pause);
-        }
-
-        private void OnScreenResume()
-        {
-            _background.alpha = _offAlpha;
-            _screen.Hide();
-            _stopper.Release();
+                reward.SetText(Mathf.CeilToInt(_rewardCount * (_stage / _maxStage)).ToString());
         }
     }
 }
