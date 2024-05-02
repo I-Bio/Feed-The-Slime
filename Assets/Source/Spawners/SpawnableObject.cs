@@ -20,9 +20,14 @@ namespace Spawners
 
         public T Pull<T>(Vector3 position) where T: SpawnableObject
         {
-            SetActive(true);
             _transform.position = position;
-            return this as T;
+            return Pull<T>();
+        }
+
+        public T Pull<T>(Transform parent) where T : SpawnableObject
+        {
+            _transform.SetParent(parent);
+            return Pull<T>();
         }
         
         public T Pull<T>() where T: SpawnableObject

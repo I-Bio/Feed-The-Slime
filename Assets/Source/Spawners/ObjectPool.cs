@@ -32,7 +32,7 @@ namespace Spawners
             if (SpawnQueue.Count == 0)
                 PushOnInitialize(Instantiate(_spawnableObject, position, Quaternion.identity, parent).Initialize(this));
             
-            return SpawnQueue.Dequeue().Pull<T>(position);
+            return SpawnQueue.Dequeue().Pull<T>(parent).Pull<T>(position);
         }
 
         protected T Pull<T>(Transform parent) where T: SpawnableObject
@@ -40,7 +40,7 @@ namespace Spawners
             if (SpawnQueue.Count == 0)
                 PushOnInitialize(Instantiate(_spawnableObject, parent).Initialize(this));
             
-            return SpawnQueue.Dequeue().Pull<T>();
+            return SpawnQueue.Dequeue().Pull<T>(parent);
         }
 
         private void PushOnInitialize(SpawnableObject spawnableObject)
