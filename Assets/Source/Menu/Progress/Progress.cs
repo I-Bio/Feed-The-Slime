@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using Agava.YandexGames;
+using Spawners;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 
 namespace Menu
 {
@@ -21,10 +23,10 @@ namespace Menu
             _advertAccumulationStep = advertAccumulationStep;
         }
 
-        public event Action<IReadOnlyCharacteristics> Loaded;
+        public event Action<PlayerCharacteristics> GoingSave;
         public event Action<int> CrystalsChanged;
-        public event Action<int> RewardReceived;
         public event Action<int> LevelsIncreased;
+        public event Action<IReadOnlyCharacteristics, int> RewardPrepared;
 
         public void SetSpeed(object speed)
         {
@@ -67,24 +69,38 @@ namespace Menu
             CrystalsChanged?.Invoke(_characteristics.CrystalsCount);
         }
 
-        public void RewardReceive(int value)
-        {
-            CompleteGuide();
-            ChangeCrystals(value);
-        }
-
-        public void StartGame()
+        public void PrepareReward()
         {
             int rewardValue = _rewardSteps
                 .Where(pair => pair.Key <= _characteristics.CompletedLevels || pair == _rewardSteps[^1])
                 .Select(pair => pair.Value).FirstOrDefault();
+            
+            RewardPrepared?.Invoke(_characteristics, rewardValue);
+        }
+        
+        public void Load(IReadOnlyCharacteristics characteristics)
+        {
+            _characteristics = characteristics as PlayerCharacteristics;
 
-            TransferService.Instance.SetStats(rewardValue, _characteristics);
+            if (_characteristics == null)
+                throw new NullReferenceException(nameof(_characteristics));
 
             if (_characteristics.DidPassGuide == true)
-                SceneManager.LoadScene((int)SceneNames.Game);
-            else
+                return;
+            
+            return;
+            if (PlayerPrefs.GetString(nameof(CharacteristicConstants.DidPassGuide)) == string.Empty)
+            {
                 SceneManager.LoadScene((int)SceneNames.Guide);
+                return;
+            }
+                
+            _characteristics.DidPassGuide = true;
+        }
+        
+        public void Save()
+        {
+            GoingSave?.Invoke(_characteristics);
         }
 
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -92,33 +108,6 @@ namespace Menu
         {
             onUpdated?.Invoke(_characteristics.CompletedLevels);
         }
-        
-        public void Save()
-        {
-            PlayerAccount.SetCloudSaveData(JsonUtility.ToJson(_characteristics));
-        }
-
-        public void Load()
-        {
-            PlayerAccount.GetCloudSaveData(OnLoaded);
-        }
-
-        private void OnLoaded(string jsonData)
-        {
-            PlayerCharacteristics characteristics = JsonUtility.FromJson<PlayerCharacteristics>(jsonData);
-
-            if (characteristics != null && characteristics.Speed >= _characteristics.Speed)
-                _characteristics = JsonUtility.FromJson<PlayerCharacteristics>(jsonData);
-
-            Loaded?.Invoke(_characteristics);
-        }
 #endif
-        private void CompleteGuide()
-        {
-            if (_characteristics.DidPassGuide == true)
-                return;
-
-            _characteristics.DidPassGuide = true;
-        }
     }
 }
