@@ -7,13 +7,13 @@ namespace Menu
     public class PlayerCharacteristics : IReadOnlyCharacteristics
     {
         [field: SerializeField] public float Speed { get; set; }
-        [field: SerializeField] public float ScorePerEat { get; set; }
-        [field: SerializeField] public int LifeCount { get; set; }
-        [field: SerializeField] public int CrystalsCount { get; set; }
-        [field: SerializeField] public int CompletedLevels { get; set; }
-        [field: SerializeField] public int AdvertAccumulation { get; set; }
-        [field: SerializeField] public bool DidObtainSpit { get; set; }
-        [field: SerializeField] public bool IsAllowedShowInter { get; set; }
-        [field: SerializeField] public bool DidPassGuide { get; set; }
+        public float ScorePerEat { get; set; }
+        public int LifeCount { get; set; }
+        public int CrystalsCount { get; set; }
+        public int CompletedLevels { get; set; }
+        public int AdvertAccumulation { get; set; }
+        public bool DidObtainSpit { get; set; }
+        public bool IsAllowedShowInter { get; set; }
+        public bool DidPassGuide { get; set; }
     }
 }
