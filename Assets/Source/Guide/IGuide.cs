@@ -2,6 +2,6 @@
 {
     public interface IGuide
     {
-        public void Open();
+        public void Win();
     }
 }

@@ -8,7 +8,7 @@ namespace Guide
         
         private void OnDestroy()
         {
-            _guide?.Open();
+            _guide?.Win();
         }
 
         public void Initialize(IGuide guide)
