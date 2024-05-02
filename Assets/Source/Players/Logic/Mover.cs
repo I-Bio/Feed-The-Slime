@@ -12,9 +12,13 @@ namespace Players
         private Vector2 _input;
         private Vector3 _forward;
         private bool _canMove;
+        private bool _didInitialize;
 
         private void FixedUpdate()
         {
+            if (_didInitialize == false)
+                return;
+            
             Move();
             RotateAlongMove();
         }
@@ -26,6 +30,7 @@ namespace Players
             _movable = movable;
             _rotationPoint = rotationPoint;
             _canMove = true;
+            _didInitialize = true;
         }
     
         public void SetBoost(IStatBuffer boost)
