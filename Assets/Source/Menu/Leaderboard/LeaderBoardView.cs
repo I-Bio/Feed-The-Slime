@@ -10,8 +10,9 @@ namespace Menu
         
         private Transform _container;
 
-        public void Initialize(Transform container)
+        public void Initialize(Transform container, LeaderboardElement element)
         {
+            base.Initialize(element);
             _container = container;
         }
         
