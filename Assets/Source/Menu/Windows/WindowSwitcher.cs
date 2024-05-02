@@ -11,15 +11,18 @@ namespace Menu
         [SerializeField] private Button _evolution;
         [SerializeField] private Button _leaders;
         [SerializeField] private Button _authorize;
+        [SerializeField] private Button _pause;
+        [SerializeField] private Button _resume;
         [SerializeField] private Button[] _closeButtons;
 
         private Screen _screen;
 
         public event Action LeaderboardOpened;
         
-        public void Initialize()
+        public void Initialize(Stopper stopper)
         {
             _screen = GetComponent<Screen>();
+            _screen.Initialize(stopper);
         }
 
         private void OnEnable()
@@ -27,6 +30,8 @@ namespace Menu
             _evolution.onClick.AddListener(ShowEvolution);
             _leaders.onClick.AddListener(ShowLeader);
             _authorize.onClick.AddListener(Authorize);
+            _pause.onClick.AddListener(PauseScreen);
+            _resume.onClick.AddListener(ResumeScreen);
             
             foreach (Button button in _closeButtons)
                 button.onClick.AddListener(ShowMain);
@@ -37,24 +42,48 @@ namespace Menu
             _evolution.onClick.RemoveListener(ShowEvolution);
             _leaders.onClick.RemoveListener(ShowLeader);
             _authorize.onClick.RemoveListener(Authorize);
+            _pause.onClick.RemoveListener(PauseScreen);
+            _resume.onClick.RemoveListener(ResumeScreen);
             
             foreach (Button button in _closeButtons)
                 button.onClick.RemoveListener(ShowMain);
         }
         
-        public void Hide()
+        public void PauseScreen()
         {
-            _screen.Hide();
+            ChangeWindow(Windows.Pause);
         }
 
+        public void ResumeScreen()
+        {
+            ChangeWindow(Windows.Play);
+        }
+        
         public void ShowMain()
         {
-            _screen.SetWindow((int)MainMenuWindows.Main);
+            ChangeWindow(Windows.Main);
         }
         
         private void ShowEvolution()
         {
-            _screen.SetWindow((int)MainMenuWindows.Evolution);
+            ChangeWindow(Windows.Upgrades);
+        }
+        
+        public void ChangeWindow(Windows window, Revival revival = null)
+        {
+            if (window == Windows.Lose && revival != null && revival.TryRevive())
+                return;
+            
+            _screen.SetWindow((int)window);
+
+            if (window != Windows.Lose && window != Windows.Win)
+                return;
+
+            if (PlayerPrefs.GetString(nameof(CharacteristicConstants.CanShowAdvert)) == string.Empty) 
+                return;
+            
+            InterstitialAd.Show();
+            PlayerPrefs.GetString(nameof(CharacteristicConstants.CanShowAdvert), string.Empty);
         }
 
         private void ShowLeader()
@@ -64,12 +93,12 @@ namespace Menu
                 PlayerAccount.RequestPersonalProfileDataPermission(() =>
                 {
                     LeaderboardOpened?.Invoke();
-                    _screen.SetWindow((int)MainMenuWindows.Leader);
+                    _screen.SetWindow((int)Windows.Leader);
                 });
                 return;
             }
 
-            _screen.SetWindow((int)MainMenuWindows.Authorize);
+            _screen.SetWindow((int)Windows.Authorize);
         }
 
         private void Authorize()
