@@ -22,7 +22,7 @@ namespace Input
 
         private void OnDestroy()
         {
-            _presenter.Disable();
+            _presenter?.Disable();
         }
     }
 }

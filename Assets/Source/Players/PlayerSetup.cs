@@ -133,9 +133,9 @@ namespace Players
 
         private void OnDestroy()
         {
-            _playerPresenter.Disable();
-            _boosterPresenter.Disable();
-            _toxinPresenter.Disable();
+            _playerPresenter?.Disable();
+            _boosterPresenter?.Disable();
+            _toxinPresenter?.Disable();
         }
     }
 }
