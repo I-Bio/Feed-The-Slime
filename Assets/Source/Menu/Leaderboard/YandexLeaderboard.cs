@@ -10,35 +10,27 @@ namespace Menu
         private readonly List<LeaderboardPlayer> Players = new();
 
         private LeaderboardView _leaderboard;
-        private TextMeshProUGUI _name;
         private string _leaderboardName;
         private string _anonymousName;
 
-        public void Initialize(LeaderboardView leaderboard, TextMeshProUGUI name, string leaderboardName,
-            string anonymousName, Transform container)
+        public void Initialize(LeaderboardView leaderboard, string leaderboardName,
+            string anonymousName, Transform container, LeaderboardElement element)
         {
             _leaderboard = leaderboard;
-            _name = name;
             _leaderboardName = leaderboardName;
             _anonymousName = anonymousName;
-            _leaderboard.Initialize(container);
+            _leaderboard.Initialize(container, element);
         }
 
         public void SetPlayerScore(int score)
         {
             if (PlayerAccount.IsAuthorized == false)
-            {
-                _name.SetText(_anonymousName);
                 return;
-            }
 
             Leaderboard.GetPlayerEntry(_leaderboardName, (result) =>
             {
                 if (result == null || result.score < score)
                     Leaderboard.SetScore(_leaderboardName, score);
-
-                if (result?.player.publicName != null)
-                    _name.SetText(result.player.publicName);
             });
         }
 
