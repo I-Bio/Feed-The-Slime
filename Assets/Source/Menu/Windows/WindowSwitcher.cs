@@ -8,39 +8,21 @@ namespace Menu
     [RequireComponent(typeof(Screen))]
     public class WindowSwitcher : MonoBehaviour
     {
-        [SerializeField] private Button _evolution;
-        [SerializeField] private Button _leaders;
-        [SerializeField] private Button _authorize;
-        [SerializeField] private Button _pause;
-        [SerializeField] private Button _resume;
-        [SerializeField] private Button[] _closeButtons;
-
+        private Button _upgrade;
+        private Button _leader;
+        private Button _authorize;
+        private Button _pause;
+        private Button _resume;
+        private Button _volume;
+        private Button[] _closeButtons;
         private Screen _screen;
 
         public event Action LeaderboardOpened;
-        
-        public void Initialize(Stopper stopper)
-        {
-            _screen = GetComponent<Screen>();
-            _screen.Initialize(stopper);
-        }
 
-        private void OnEnable()
+        private void OnDestroy()
         {
-            _evolution.onClick.AddListener(ShowEvolution);
-            _leaders.onClick.AddListener(ShowLeader);
-            _authorize.onClick.AddListener(Authorize);
-            _pause.onClick.AddListener(PauseScreen);
-            _resume.onClick.AddListener(ResumeScreen);
-            
-            foreach (Button button in _closeButtons)
-                button.onClick.AddListener(ShowMain);
-        }
-
-        private void OnDisable()
-        {
-            _evolution.onClick.RemoveListener(ShowEvolution);
-            _leaders.onClick.RemoveListener(ShowLeader);
+            _upgrade.onClick.RemoveListener(ShowEvolution);
+            _leader.onClick.RemoveListener(ShowLeader);
             _authorize.onClick.RemoveListener(Authorize);
             _pause.onClick.RemoveListener(PauseScreen);
             _resume.onClick.RemoveListener(ResumeScreen);
@@ -49,39 +31,62 @@ namespace Menu
                 button.onClick.RemoveListener(ShowMain);
         }
         
-        public void PauseScreen()
+        public void Initialize(Stopper stopper, Button upgrade, Button leader, Button authorize, Button pause,
+            Button resume, Button[] closeButtons)
         {
-            ChangeWindow(Windows.Pause);
+            _upgrade = upgrade;
+            _leader = leader;
+            _authorize = authorize;
+            _pause = pause;
+            _resume = resume;
+            _closeButtons = closeButtons;
+            
+            _screen = GetComponent<Screen>();
+            _screen.Initialize(stopper);
+            
+            _upgrade.onClick.AddListener(ShowEvolution);
+            _leader.onClick.AddListener(ShowLeader);
+            _authorize.onClick.AddListener(Authorize);
+            _pause.onClick.AddListener(PauseScreen);
+            _resume.onClick.AddListener(ResumeScreen);
+
+            foreach (Button button in _closeButtons)
+                button.onClick.AddListener(ShowMain);
         }
 
         public void ResumeScreen()
         {
             ChangeWindow(Windows.Play);
         }
-        
+
         public void ShowMain()
         {
             ChangeWindow(Windows.Main);
         }
-        
+
         private void ShowEvolution()
         {
             ChangeWindow(Windows.Upgrades);
         }
         
+        private void PauseScreen()
+        {
+            ChangeWindow(Windows.Pause);
+        }
+
         public void ChangeWindow(Windows window, Revival revival = null)
         {
             if (window == Windows.Lose && revival != null && revival.TryRevive())
                 return;
-            
+
             _screen.SetWindow((int)window);
 
             if (window != Windows.Lose && window != Windows.Win)
                 return;
 
-            if (PlayerPrefs.GetString(nameof(CharacteristicConstants.CanShowAdvert)) == string.Empty) 
+            if (PlayerPrefs.GetString(nameof(CharacteristicConstants.CanShowAdvert)) == string.Empty)
                 return;
-            
+
             InterstitialAd.Show();
             PlayerPrefs.GetString(nameof(CharacteristicConstants.CanShowAdvert), string.Empty);
         }
