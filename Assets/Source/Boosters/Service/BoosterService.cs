@@ -18,9 +18,9 @@ namespace Boosters
         {
             for (int i = 0; i < _currentBoosters.Count; i++)
             {
-                var unPacked = _currentBoosters[i];
-                unPacked.Value -= delay;
-                _currentBoosters[i] = unPacked;
+                var unpacked = _currentBoosters[i];
+                unpacked.Value -= delay;
+                _currentBoosters[i] = unpacked;
                 
                 if (_currentBoosters[i].Value <= 0f)
                     _toDeleteBoosters.Add(_currentBoosters[i]);
