@@ -15,5 +15,7 @@ namespace Menu
         public bool DidObtainSpit { get; set; }
         public bool IsAllowedShowInter { get; set; }
         public bool DidPassGuide { get; set; }
+        public float GameVolume { get; set; }
+        public float MusicVolume { get; set; }
     }
 }
