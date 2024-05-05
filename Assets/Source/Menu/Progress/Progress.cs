@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Agava.YandexGames;
-using Spawners;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 
@@ -10,8 +7,8 @@ namespace Menu
 {
     public class Progress
     {
-        private readonly SerializedPair<int, int>[] _rewardSteps;
-        private readonly int _advertAccumulationStep;
+        private readonly SerializedPair<int, int>[] RewardSteps;
+        private readonly int AdvertAccumulationStep;
 
         private PlayerCharacteristics _characteristics;
 
@@ -19,8 +16,8 @@ namespace Menu
             int advertAccumulationStep)
         {
             _characteristics = startCharacteristics;
-            _rewardSteps = rewardSteps;
-            _advertAccumulationStep = advertAccumulationStep;
+            RewardSteps = rewardSteps;
+            AdvertAccumulationStep = advertAccumulationStep;
         }
 
         public event Action<PlayerCharacteristics> GoingSave;
@@ -56,10 +53,10 @@ namespace Menu
             _characteristics.IsAllowedShowInter = false;
             _characteristics.AdvertAccumulation++;
 
-            if (_characteristics.AdvertAccumulation != _advertAccumulationStep)
+            if (_characteristics.AdvertAccumulation != AdvertAccumulationStep)
                 return;
 
-            _characteristics.AdvertAccumulation = 0;
+            _characteristics.AdvertAccumulation = (int)ValueConstants.Zero;
             _characteristics.IsAllowedShowInter = true;
         }
 
@@ -71,8 +68,8 @@ namespace Menu
 
         public void PrepareReward()
         {
-            int rewardValue = _rewardSteps
-                .Where(pair => pair.Key <= _characteristics.CompletedLevels || pair == _rewardSteps[^1])
+            int rewardValue = RewardSteps
+                .Where(pair => pair.Key <= _characteristics.CompletedLevels || pair == RewardSteps[^1])
                 .Select(pair => pair.Value).FirstOrDefault();
             
             RewardPrepared?.Invoke(_characteristics, rewardValue);
@@ -88,7 +85,6 @@ namespace Menu
             if (_characteristics.DidPassGuide == true)
                 return;
             
-            return;
             if (PlayerPrefs.GetString(nameof(CharacteristicConstants.DidPassGuide)) == string.Empty)
             {
                 SceneManager.LoadScene((int)SceneNames.Guide);
@@ -101,6 +97,16 @@ namespace Menu
         public void Save()
         {
             GoingSave?.Invoke(_characteristics);
+        }
+
+        public void ChangeGameVolume(float volume)
+        {
+            _characteristics.GameVolume = volume;
+        }
+
+        public void ChangeMusicVolume(float volume)
+        {
+            _characteristics.MusicVolume = volume;
         }
 
 #if UNITY_WEBGL && !UNITY_EDITOR
