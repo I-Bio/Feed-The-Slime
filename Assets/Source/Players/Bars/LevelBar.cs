@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 namespace Players
 {
+    [RequireComponent(typeof(LocalizedText))]
     public class LevelBar : ObjectPool
     {
         [SerializeField] private Slider _slider;
@@ -13,11 +14,13 @@ namespace Players
         [SerializeField] private string _slash;
         [SerializeField] private TextMeshProUGUI _score;
         [SerializeField] private TextMeshProUGUI _level;
-        
+
+        private LocalizedText _localized;
         private Vector2 _targetPosition;
         
         public void Initialize(float score, int maxScore)
         {
+            _localized = GetComponent<LocalizedText>();
             ChangeScore(score, maxScore);
             SetLevel((int)score);
             _targetPosition = _targetPoint.anchoredPosition;
@@ -31,7 +34,7 @@ namespace Players
 
         public void SetLevel(int levelPoint)
         {
-            _level.SetText(levelPoint.ToString());
+            _level.SetText($"{_localized.Label} {levelPoint}");
         }
 
         private void ChangeScore(float score, int maxScore)
