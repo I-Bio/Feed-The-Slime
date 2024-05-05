@@ -15,15 +15,19 @@ namespace Menu
         private readonly TextMeshProUGUI Crystals;
         private readonly RewardReproducer Reward;
         private readonly WindowSwitcher Switcher;
+        private readonly ObjectFiller Filler;
         private readonly YandexLeaderboard Leaderboard;
         private readonly LevelBootstrap Bootstrap;
         private readonly Stopper Stopper;
+        private readonly SoundChanger Sound;
+        private readonly IRewardCollector EndGame;
         private readonly SaveService SaveService;
-        
 
         public ProgressPresenter(Progress model, IProgressionBar[] bars, Button play, TextMeshProUGUI level,
-            TextMeshProUGUI crystals, RewardReproducer reward, WindowSwitcher switcher, YandexLeaderboard leaderboard,
-            LevelBootstrap bootstrap, Stopper stopper, PlayerCharacteristics characteristics)
+            TextMeshProUGUI crystals, RewardReproducer reward, WindowSwitcher switcher, ObjectFiller filler,
+            YandexLeaderboard leaderboard,
+            LevelBootstrap bootstrap, Stopper stopper, SoundChanger sound, IRewardCollector endGame,
+            PlayerCharacteristics characteristics)
         {
             Model = model;
             Bars = bars;
@@ -32,9 +36,12 @@ namespace Menu
             Crystals = crystals;
             Reward = reward;
             Switcher = switcher;
+            Filler = filler;
             Leaderboard = leaderboard;
             Bootstrap = bootstrap;
             Stopper = stopper;
+            Sound = sound;
+            EndGame = endGame;
             SaveService = new SaveService(OnLoaded, characteristics);
         }
 
@@ -44,13 +51,18 @@ namespace Menu
             Model.LevelsIncreased += OnLevelsIncreased;
             Model.GoingSave += OnGoingSave;
             Model.RewardPrepared += OnRewardPrepared;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            Switcher.LeaderboardOpened += OnLeaderboardOpened;
-#endif
+
             foreach (IProgressionBar bar in Bars)
                 bar.Bought += OnBought;
 
+            EndGame.GoingCollect += OnGoingCollect;
+            Sound.GameVolumeChanged += OnGameVolumeChanged;
+            Sound.MusicVolumeChanged += OnMusicVolumeChanged;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            Switcher.LeaderboardOpened += OnLeaderboardOpened;
+#endif
             Play.onClick.AddListener(OnGameLaunched);
+
             SaveService.Load();
         }
 
@@ -58,29 +70,36 @@ namespace Menu
         {
             Model.CrystalsChanged -= OnCrystalsChanged;
             Model.LevelsIncreased -= OnLevelsIncreased;
+            Model.GoingSave -= OnGoingSave;
             Model.RewardPrepared -= OnRewardPrepared;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            Switcher.LeaderboardOpened -= OnLeaderboardOpened;
-#endif
+
             foreach (IProgressionBar bar in Bars)
                 bar.Bought -= OnBought;
 
+            EndGame.GoingCollect -= OnGoingCollect;
+            Sound.GameVolumeChanged -= OnGameVolumeChanged;
+            Sound.MusicVolumeChanged -= OnMusicVolumeChanged;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            Switcher.LeaderboardOpened -= OnLeaderboardOpened;
+#endif
             Play.onClick.RemoveListener(OnGameLaunched);
         }
-
+        
         private void OnLoaded(IReadOnlyCharacteristics characteristics)
         {
             Model.Load(characteristics);
+
             Bars[(int)PurchaseNames.Speed].Initialize(characteristics.Speed);
             Bars[(int)PurchaseNames.Score].Initialize(characteristics.ScorePerEat);
             Bars[(int)PurchaseNames.Life].Initialize(characteristics.LifeCount);
             Bars[(int)PurchaseNames.Spit].Initialize(characteristics.DidObtainSpit);
-            
+
             Bootstrap.Initialize(characteristics.CompletedLevels);
+            Sound.Load(characteristics.GameVolume, characteristics.MusicVolume);
             OnLevelsIncreased(characteristics.CompletedLevels);
             OnCrystalsChanged(characteristics.CrystalsCount);
             Switcher.ShowMain();
-            PassLevel();
+            Filler.EmptyUp();
         }
 
         private void OnCrystalsChanged(int crystalsCount)
@@ -101,20 +120,40 @@ namespace Menu
             Level.SetText(value.ToString());
         }
 
-        private void PassLevel()
+        private void OnGoingCollect(int rewardCount, bool didPass, bool haveReward, Action callBack)
         {
-            if (PlayerPrefs.GetInt(nameof(CharacteristicConstants.Reward)) == int.MinValue)
+            if (didPass == true)
+                Model.IncreaseLevels();
+
+            if (haveReward == true)
+            {
+                Model.ChangeCrystals(rewardCount);
+                Reward.Reproduce(() => Filler.FillUp(callBack));
                 return;
-            
-            Model.IncreaseLevels();
-            Reward.Reproduce();
-            Model.ChangeCrystals(PlayerPrefs.GetInt(nameof(CharacteristicConstants.Reward)));
-            PlayerPrefs.SetInt(nameof(CharacteristicConstants.Reward), int.MinValue);
+            }
+
+            Filler.FillUp(callBack);
         }
 
         private void OnGoingSave(IReadOnlyCharacteristics characteristics)
         {
             SaveService.Save(characteristics);
+        }
+
+        private void OnRewardPrepared(IReadOnlyCharacteristics characteristics, int rewardCount)
+        {
+            Model.Save();
+            Bootstrap.Launch(characteristics, Switcher, Stopper, rewardCount);
+        }
+
+        private void OnGameVolumeChanged(float volume)
+        {
+            Model.ChangeGameVolume(volume);
+        }
+
+        private void OnMusicVolumeChanged(float volume)
+        {
+            Model.ChangeMusicVolume(volume);
         }
 
         private void OnBought(int spendCount, PurchaseNames progression, object value)
@@ -146,13 +185,7 @@ namespace Menu
 
         private void OnGameLaunched()
         {
-            Reward.gameObject.SetActive(false);
             Model.PrepareReward();
-        }
-
-        private void OnRewardPrepared(IReadOnlyCharacteristics characteristics, int rewardCount)
-        {
-            Bootstrap.Launch(characteristics, Switcher, Stopper, rewardCount);
         }
 
 #if UNITY_WEBGL && !UNITY_EDITOR
