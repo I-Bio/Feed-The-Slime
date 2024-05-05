@@ -13,10 +13,10 @@ namespace Input
         private PlayerInput _model;
         private InputPresenter _presenter;
 
-        public void Initialize(ILoader loader)
+        public void Initialize()
         {
             _model = new PlayerInput();
-            _presenter = new InputPresenter(_model, _joystick, _player, _caster, loader);
+            _presenter = new InputPresenter(_model, _joystick, _player, _caster);
             _presenter.Enable();
         }
 
