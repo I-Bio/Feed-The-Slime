@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface IReadable
+public interface IReader
 {
     public void ReadInput(Vector2 input);
 }
