@@ -22,5 +22,13 @@ namespace Menu
             _current = _windows[id];
             _current.Open();
         }
+
+        public void Hide()
+        {
+            if (_current != null) 
+                _current.Close();
+
+            _current = null;
+        }
     }
 }
