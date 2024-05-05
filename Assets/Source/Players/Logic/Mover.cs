@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Players
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class Mover : MonoBehaviour, ISettable, IReadable, IMover
+    public class Mover : MonoBehaviour, ISettable, IReader, IMover
     {
         private Rigidbody _rigidbody;
         private IMovable _movable;
