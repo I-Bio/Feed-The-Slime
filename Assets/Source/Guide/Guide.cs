@@ -9,7 +9,7 @@ namespace Guide
 {
     [RequireComponent(typeof(Stopper))]
     [RequireComponent(typeof(Screen))]
-    public class Guide : MonoBehaviour, IGame, ILoader, IGuide
+    public class Guide : MonoBehaviour, IGame, IGuide
     {
         private Screen _screen;
         private Stopper _stopper;
@@ -17,7 +17,9 @@ namespace Guide
         private int _pointer;
         private Button[] _nextButtons;
         private Button[] _releaseButtons;
+        private Button[] _loadButtons;
         private Button _pause;
+        private ObjectFiller _filler;
 
         private void OnDestroy()
         {
@@ -26,33 +28,45 @@ namespace Guide
 
             foreach (Button release in _releaseButtons)
                 release.onClick.RemoveListener(Release);
-            
+
+            foreach (Button load in _loadButtons)
+                load.onClick.RemoveListener(Load);
+
             _pause.onClick.RemoveListener(Pause);
         }
 
-        public void Initialize(Button[] nextButtons, Button[] releaseButtons, Button pause)
+        public void Initialize(Button[] nextButtons, Button[] releaseButtons, Button[] loadButtons, Button pause,
+            ObjectFiller filler, SubWindowSwitcher subSwitcher, Button[] subCloseButtons, Button[] subVolumeButtons, Window[] subParents)
         {
             _nextButtons = nextButtons;
             _releaseButtons = releaseButtons;
+            _loadButtons = loadButtons;
             _pause = pause;
+            _filler = filler;
 
             _stopper = GetComponent<Stopper>();
             _screen = GetComponent<Screen>();
+            
             _screen.Initialize(_stopper);
+            subSwitcher.Initialize(_stopper, subCloseButtons, subVolumeButtons, subParents);
 
             foreach (Button next in _nextButtons)
                 next.onClick.AddListener(Next);
 
             foreach (Button release in _releaseButtons)
                 release.onClick.AddListener(Release);
-            
+
+            foreach (Button load in _loadButtons)
+                load.onClick.AddListener(Load);
+
             _pause.onClick.AddListener(Pause);
 
             SetStage(SatietyStage.Exhaustion);
             Next();
+            _filler.EmptyUp();
         }
 
-        public void SetStage(SatietyStage stage) { }
+        public void SetStage(SatietyStage stage) {}
 
         public void Win()
         {
@@ -74,20 +88,20 @@ namespace Guide
             _stopper.Release();
             PlayerPrefs.SetString(nameof(CharacteristicConstants.DidPassGuide),
                 nameof(CharacteristicConstants.DidPassGuide));
-            SceneManager.LoadScene((int)SceneNames.Game);
+            _filler.FillUp(() => SceneManager.LoadScene((int)SceneNames.Game));
         }
 
         public void Release()
         {
             ChangeWindow(GuideWindows.Main);
         }
-        
+
         private void Next()
         {
             ChangeWindow((GuideWindows)_pointer);
             _pointer++;
         }
-        
+
         private void Pause()
         {
             ChangeWindow(GuideWindows.Pause);
