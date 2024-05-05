@@ -4,15 +4,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 
 namespace Menu
 {
-    public class Game : MonoBehaviour, IGame, ILoader
+    public class Game : MonoBehaviour, IGame, IRewardCollector
     {
         [SerializeField] private float _double = 2f;
         [SerializeField] private Button _winAdvert;
         [SerializeField] private Button _loseAdvert;
+        [SerializeField] private Button[] _loadButtons;
         [SerializeField] private TextMeshProUGUI[] _rewards;
 
         private WindowSwitcher _switcher;
@@ -21,13 +21,19 @@ namespace Menu
         private int _stage;
         private float _maxStage;
         private int _rewardCount;
-        
+        private bool _didPass;
+
+        public event Action<int, bool, bool, Action> GoingCollect;
+
         private void OnDestroy()
         {
             _winAdvert.onClick.RemoveListener(ShowWinAdvert);
             _loseAdvert.onClick.RemoveListener(ShowLoseAdvert);
+            
+            foreach (Button load in _loadButtons)
+                load.onClick.RemoveListener(Load);
         }
-        
+
         public void Initialize(Revival revival, WindowSwitcher switcher, Stopper stopper, int reward)
         {
             _revival = revival;
@@ -36,9 +42,12 @@ namespace Menu
             SetStage(SatietyStage.Exhaustion);
             _switcher = switcher;
             _stopper = stopper;
-            
+
             _winAdvert.onClick.AddListener(ShowWinAdvert);
             _loseAdvert.onClick.AddListener(ShowLoseAdvert);
+
+            foreach (Button load in _loadButtons)
+                load.onClick.AddListener(Load);
             
             _switcher.ChangeWindow(Windows.Play);
         }
@@ -51,6 +60,7 @@ namespace Menu
 
         public void Win()
         {
+            _didPass = true;
             _switcher.ChangeWindow(Windows.Win);
         }
 
@@ -61,10 +71,8 @@ namespace Menu
 
         public void Load()
         {
-            _stopper.Release();
             _rewardCount = Mathf.CeilToInt(_rewardCount * (_stage / _maxStage));
-            PlayerPrefs.SetInt(nameof(CharacteristicConstants.Reward), _rewardCount);
-            SceneManager.LoadScene((int)SceneNames.Game);
+            GoingCollect?.Invoke(_rewardCount, _didPass, _rewardCount > 0, () => { SceneManager.LoadScene((int)SceneNames.Game); });
         }
 
         private void ShowWinAdvert()
