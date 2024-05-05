@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using DG.Tweening;
 using Spawners;
 using UnityEngine;
@@ -23,6 +22,7 @@ namespace Menu
         private Vector2 _size;
         private int _pointer;
         private bool _isPlaying;
+        private Action _callBack;
 
         public void Initialize(RewardGem template)
         {
@@ -31,12 +31,13 @@ namespace Menu
             _gems = new RewardGem[_gemsCount];
         }
 
-        public void Reproduce()
+        public void Reproduce(Action callBack = null)
         {
             if (_isPlaying == true)
                 return;
             
             _isPlaying = true;
+            _callBack = callBack;
             Vector3 targetPosition = _parent.TransformPoint(_target.localPosition);
 
             for (int i = 0; i < _gemsCount; i++)
@@ -64,8 +65,9 @@ namespace Menu
 
         private void Stop()
         {
-            _pointer = 0;
             _isPlaying = false;
+            _pointer = 0;
+            _callBack?.Invoke();
         }
     }
 }
