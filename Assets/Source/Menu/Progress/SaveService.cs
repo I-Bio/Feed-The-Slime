@@ -29,14 +29,12 @@ namespace Menu
 
         public void Load()
         {
-            if (PlayerPrefs.HasKey(nameof(CharacteristicConstants.Reward)) == false)
-                PlayerPrefs.SetInt(nameof(CharacteristicConstants.Reward), int.MinValue);
-            
             if (PlayerPrefs.HasKey(nameof(CharacteristicConstants.CanShowAdvert)) == false)
                 PlayerPrefs.SetString(nameof(CharacteristicConstants.CanShowAdvert), string.Empty);
 
             if (PlayerPrefs.HasKey(nameof(CharacteristicConstants.DidPassGuide)) == false)
                 PlayerPrefs.SetString(nameof(CharacteristicConstants.DidPassGuide), string.Empty);
+
 #if UNITY_EDITOR
             OnLoaded(PlayerPrefs.GetString(nameof(PlayerCharacteristics)));
 #endif     
