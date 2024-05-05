@@ -39,7 +39,7 @@ namespace Spawners
             _revival = GetComponent<Revival>();
             _fadeCaster = GetComponent<FadeCaster>();
             
-            _input.Initialize(_game);
+            _input.Initialize();
             _fadeCaster.Initialize(_fadeMask, _player.transform, _camera, _delay, _hitsCapacity);
             
             int id = 0;

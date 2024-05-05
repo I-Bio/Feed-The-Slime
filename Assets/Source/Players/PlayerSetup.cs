@@ -106,7 +106,7 @@ namespace Players
                 _stageBar, _service, _animation, _abilityCaster, _mover, _effectReproducer, _soundReproducer, game);
             _boosterPresenter = new BoosterPresenter(_model, _mover, _service, _boosterVisualizer, _ejector);
             _toxinPresenter = new ToxinPresenter(_playerToxins, _toxinBar, _ticker, _collisionDetector);
-
+            
             _levelBar.Initialize(_levelConfig.StartScore, _levelConfig.StartMaxScore);
             _stageBar.Initialize(_levelConfig.StartMaxScore, _levelConfig.LevelsPerStage, _levelConfig.ScoreScaler);
             _scanner.SetStage(_levelConfig.StartStage);
