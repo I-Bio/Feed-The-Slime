@@ -84,7 +84,7 @@ namespace Menu
 
             if (_characteristics.DidPassGuide == true)
                 return;
-            
+
             if (PlayerPrefs.GetString(nameof(CharacteristicConstants.DidPassGuide)) == string.Empty)
             {
                 SceneManager.LoadScene((int)SceneNames.Guide);
