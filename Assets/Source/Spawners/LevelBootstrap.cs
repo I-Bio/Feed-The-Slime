@@ -1,5 +1,6 @@
-﻿using System;
-using Boosters;
+﻿using Boosters;
+using Cameras;
+using Cinemachine;
 using Enemies;
 using Input;
 using Menu;
@@ -19,7 +20,6 @@ namespace Spawners
         [SerializeField] private GameObject _spit;
         
         [Space, Header("FadeCaster")] 
-        [SerializeField] private Transform _camera;
         [SerializeField] private LayerMask _fadeMask;
         [SerializeField] private float _delay = 0.01f;
         [SerializeField] private int _hitsCapacity = 10;
@@ -30,6 +30,11 @@ namespace Spawners
         [SerializeField] private Transform[] _zonePoints;
         [SerializeField] private SerializedPair<int, ThemePreparer[]>[] _zoneTemplates;
         [SerializeField] private SerializedPair<int, CenterPreparer[]>[] _centerTemplates;
+        
+        [Space, Header(nameof(CameraSetter))]
+        [SerializeField] private CameraSetter _setter;
+        [SerializeField] private CinemachineVirtualCamera _camera;
+        [SerializeField] private Vector3 _gameViewPosition;
 
         private Revival _revival;
         private FadeCaster _fadeCaster;
@@ -40,8 +45,9 @@ namespace Spawners
             _fadeCaster = GetComponent<FadeCaster>();
             
             _input.Initialize();
-            _fadeCaster.Initialize(_fadeMask, _player.transform, _camera, _delay, _hitsCapacity);
-            
+            _fadeCaster.Initialize(_fadeMask, _player.transform, _camera.transform, _delay, _hitsCapacity);
+            _setter.Initialize(_camera, _gameViewPosition);
+
             int id = 0;
 
             for (int i = 0; i < _zoneTemplates.Length; i++)
@@ -71,8 +77,8 @@ namespace Spawners
 
             if (characteristics.DidObtainSpit)
                 _spit.SetActive(true);
-
             
+            _setter.ChangeToGameView();
             _player.Initialize(movable, calculableScore, _game);
             _revival.Initialize(_player.transform, characteristics.LifeCount);
             _boosterSpawner.Initialize(movable, calculableScore);
