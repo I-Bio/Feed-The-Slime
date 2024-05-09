@@ -4,13 +4,16 @@ using UnityEngine;
 namespace Players
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class Mover : MonoBehaviour, ISettable, IReader, IMover
+    public class Mover : MonoBehaviour, ISettable<IMovable>, IReader, IMover
     {
         private Rigidbody _rigidbody;
         private IMovable _movable;
+        private StatCombiner<IMovable> _combiner;
+        private IFactory<IMovable> _factory;
         private Transform _rotationPoint;
         private Vector2 _input;
         private Vector3 _forward;
+        private float _scaleFactor;
         private bool _canMove;
         private bool _didInitialize;
 
@@ -18,24 +21,28 @@ namespace Players
         {
             if (_didInitialize == false)
                 return;
-            
+
             Move();
             RotateAlongMove();
         }
 
-        public void Initialize(IMovable movable, Transform rotationPoint, Vector3 forward)
+        public void Initialize(IMovable movable, IFactory<IMovable> factory, Transform rotationPoint, Vector3 forward)
         {
             _rigidbody = GetComponent<Rigidbody>();
             _forward = forward;
-            _movable = movable;
+            _factory = factory;
+            _combiner = new StatCombiner<IMovable>(new CombinedSpeed());
+            _combiner.Add(movable);
+            _movable = _combiner.GetRecombined();
             _rotationPoint = rotationPoint;
             _canMove = true;
             _didInitialize = true;
         }
-    
-        public void SetBoost(IStatBuffer boost)
+
+        public void SetBoost(IMovable boost)
         {
-            _movable = boost as IMovable;
+            _combiner.ChangeBoost(boost);
+            _movable = _combiner.GetRecombined();
         }
 
         public void ReadInput(Vector2 input)
@@ -50,7 +57,13 @@ namespace Players
 
         public void ProhibitMove()
         {
-            _canMove = false;   
+            _canMove = false;
+        }
+
+        public void Scale(SatietyStage stage)
+        {
+            _combiner.AddAfterFirst(_factory.Create());
+            _movable = _combiner.GetRecombined();
         }
 
         private void Move()
@@ -63,7 +76,7 @@ namespace Players
 
             if (_rigidbody.velocity == Vector3.zero && _input == Vector2.zero)
                 return;
-            
+
             _rigidbody.velocity = new Vector3(_input.x, 0f, _input.y) * _movable.GetSpeed();
         }
 
@@ -71,7 +84,7 @@ namespace Players
         {
             if (_input == Vector2.zero)
                 return;
-        
+
             Vector3 direction = new Vector3(_input.x, 0f, _input.y);
             _rotationPoint.eulerAngles = new Vector3(0f, Vector3.SignedAngle(_forward, direction, Vector3.up), 0f);
         }
