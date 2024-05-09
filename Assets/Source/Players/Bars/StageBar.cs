@@ -20,7 +20,7 @@ namespace Players
             _levelsPerStage = levelsPerStage;
             _scaler = scaler;
             
-            Increase();
+            Recalculate();
             _levelsPerStage++;
         }
 
@@ -33,6 +33,12 @@ namespace Players
         }
 
         public void Increase()
+        {
+            _sliders[_pointer].value = (float)ValueConstants.One;
+            Recalculate();
+        }
+
+        private void Recalculate()
         {
             for (int i = 1; i < _levelsPerStage; i++)
                 _maxScore = Mathf.FloorToInt(_maxScore * _scaler);
