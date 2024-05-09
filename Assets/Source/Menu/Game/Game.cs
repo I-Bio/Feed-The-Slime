@@ -9,6 +9,7 @@ namespace Menu
 {
     public class Game : MonoBehaviour, IGame, IRewardCollector
     {
+        [SerializeField] private float _minPercent = 0.01f;
         [SerializeField] private float _double = 2f;
         [SerializeField] private Button _winAdvert;
         [SerializeField] private Button _loseAdvert;
@@ -19,11 +20,12 @@ namespace Menu
         private Stopper _stopper;
         private Revival _revival;
         private int _stage;
-        private float _maxStage;
         private int _rewardCount;
+        private float _maxStage;
+        private float _stageScale;
         private bool _didPass;
 
-        public event Action<int, bool, bool, Action> GoingCollect;
+        public event Action<int, bool, Action> GoingCollect;
 
         private void OnDestroy()
         {
@@ -71,8 +73,8 @@ namespace Menu
 
         public void Load()
         {
-            _rewardCount = Mathf.CeilToInt(_rewardCount * (_stage / _maxStage));
-            GoingCollect?.Invoke(_rewardCount, _didPass, _rewardCount > 0, () => { SceneManager.LoadScene((int)SceneNames.Game); });
+            _rewardCount = Mathf.CeilToInt(_rewardCount * _stageScale);
+            GoingCollect?.Invoke(_rewardCount, _didPass, () => { SceneManager.LoadScene((int)SceneNames.Game); });
         }
 
         private void ShowWinAdvert()
@@ -111,8 +113,10 @@ namespace Menu
 
         private void UpdateReward()
         {
+            _stageScale = _stage == (int)SatietyStage.Exhaustion ? _minPercent : _stage / _maxStage;
+            
             foreach (TextMeshProUGUI reward in _rewards)
-                reward.SetText(Mathf.CeilToInt(_rewardCount * (_stage / _maxStage)).ToString());
+                reward.SetText(Mathf.CeilToInt(_rewardCount * _stageScale).ToString());
         }
     }
 }

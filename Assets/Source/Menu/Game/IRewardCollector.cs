@@ -4,6 +4,6 @@ namespace Menu
 {
     public interface IRewardCollector
     {
-        public event Action<int, bool, bool, Action> GoingCollect;
+        public event Action<int, bool, Action> GoingCollect;
     }
 }
