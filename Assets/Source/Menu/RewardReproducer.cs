@@ -11,7 +11,6 @@ namespace Menu
         [SerializeField] private AudioSource _sound;
         [SerializeField] private float _duration;
         [SerializeField] private float _durationOffSet;
-        [SerializeField] private int _gemsCount;
         [SerializeField] private RectTransform _target;
         [SerializeField] private RectTransform _creator;
         [SerializeField] private RectTransform _parent;
@@ -28,19 +27,19 @@ namespace Menu
         {
             base.Initialize(template);
             _size = template.RectTransform.sizeDelta;
-            _gems = new RewardGem[_gemsCount];
         }
 
-        public void Reproduce(Action callBack = null)
+        public void Reproduce(int count, Action callBack = null)
         {
             if (_isPlaying == true)
                 return;
             
             _isPlaying = true;
+            _gems = new RewardGem[count];
             _callBack = callBack;
             Vector3 targetPosition = _parent.TransformPoint(_target.localPosition);
 
-            for (int i = 0; i < _gemsCount; i++)
+            for (int i = 0; i < _gems.Length; i++)
             {
                 Vector2 position = new Vector2(Random.Range(-_offsetX, _offsetX), Random.Range(-_offsetY, _offsetY));
                 float duration = Random.Range(_duration - _durationOffSet, _duration + _durationOffSet);
