@@ -1,6 +1,6 @@
 ﻿namespace Boosters
 {
-    public interface IMovable : IStatBuffer
+    public interface IMovable
     {
         public float GetSpeed();
     }
