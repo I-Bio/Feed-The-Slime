@@ -2,7 +2,7 @@
 
 namespace Boosters
 {
-    public interface IStatBuffer
+    public interface IStat
     {
         public float LifeTime { get;}
         public Sprite Icon { get;}
