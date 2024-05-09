@@ -2,6 +2,7 @@
 using Agava.YandexGames;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 
 namespace Menu
 {
@@ -93,6 +94,7 @@ namespace Menu
 
         private void ShowLeader()
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
             if (PlayerAccount.IsAuthorized)
             {
                 PlayerAccount.RequestPersonalProfileDataPermission(() =>
@@ -102,13 +104,22 @@ namespace Menu
                 });
                 return;
             }
-
+#endif
+#if UNITY_EDITOR
+            if(PlayerPrefs.HasKey(nameof(Authorize)))
+                LeaderboardOpened?.Invoke();
+#endif
             _screen.SetWindow((int)Windows.Authorize);
         }
 
         private void Authorize()
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
             PlayerAccount.Authorize();
+#endif
+#if UNITY_EDITOR
+            PlayerPrefs.SetString(nameof(Authorize), nameof(Authorize));
+#endif
             ShowMain();
         }
     }
