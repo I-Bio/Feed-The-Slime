@@ -12,7 +12,7 @@ namespace Menu
 
         public void Initialize(Transform container, LeaderboardElement element)
         {
-            base.Initialize(element);
+            Initialize(element);
             _container = container;
         }
         
@@ -21,7 +21,7 @@ namespace Menu
             Clear();
 
             foreach (LeaderboardPlayer player in players)
-                Spawned.Add(Pull<LeaderboardElement>(Vector3.zero, _container)
+                Spawned.Add(Pull<LeaderboardElement>(_container)
                     .Initialize(player.Rank, player.Name, player.Score));
         }
 
