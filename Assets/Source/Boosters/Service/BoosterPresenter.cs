@@ -1,47 +1,42 @@
-﻿namespace Boosters
+﻿using UnityEngine;
+
+namespace Boosters
 {
     public class BoosterPresenter : IPresenter, IBoosterVisitor
     {
-        private readonly ISettable _scoreHolder;
-        private readonly ISettable _speedHolder;
+        private readonly ISettable<ICalculableScore> _scoreHolder;
+        private readonly ISettable<IMovable> _speedHolder;
         private readonly BoosterService _service;
         private readonly BoosterVisualizer _visualizer;
-        private readonly BoosterEjector _ejector;
 
-        public BoosterPresenter(ISettable scoreHolder, ISettable speedHolder, BoosterService service, BoosterVisualizer visualizer, BoosterEjector ejector)
+        public BoosterPresenter(ISettable<ICalculableScore> scoreHolder, ISettable<IMovable> speedHolder, BoosterService service,
+            BoosterVisualizer visualizer)
         {
             _scoreHolder = scoreHolder;
             _speedHolder = speedHolder;
             _service = service;
             _visualizer = visualizer;
-            _ejector = ejector;
         }
 
         public void Enable()
         {
-            _service.Injected += OnBoosterAccept;
-            _service.Ejected += OnEjected;
-            _ejector.Completed += OnBoosterAccept;
-            
+            _service.Injected += OnBoosterStateChanged;
+            _service.Ejected += OnBoosterStateChanged;
+
             _visualizer.Updated += OnUpdated;
         }
 
         public void Disable()
         {
-            _service.Injected -= OnBoosterAccept;
-            _service.Ejected -= OnEjected;
-            _ejector.Completed -= OnBoosterAccept;
+            _service.Injected -= OnBoosterStateChanged;
+            _service.Ejected -= OnBoosterStateChanged;
 
             _visualizer.Updated -= OnUpdated;
         }
-
-        private void OnEjected(IStatBuffer boost)
+        
+        private void OnBoosterStateChanged(IStat boost)
         {
-            boost.Accept(_ejector);
-        }
-
-        private void OnBoosterAccept(IStatBuffer boost)
-        {
+            Debug.Log(boost.ToString());
             boost.Accept(this);
         }
 

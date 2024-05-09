@@ -10,13 +10,13 @@ namespace Boosters
         [SerializeField] private TextMeshPro _text;
         [SerializeField] private SpriteRenderer _renderer;
         
-        private IStatBuffer _boost;
+        private IStat _boost;
 
-        public void Initialize(KeyValuePair<IStatBuffer, string> boostPair)
+        public void Initialize(IStat boost)
         {
-            _boost = boostPair.Key;
-            _text.SetText(boostPair.Value);
-            _renderer.sprite = boostPair.Key.Icon;
+            _boost = boost;
+            _text.SetText(boost.ToString());
+            _renderer.sprite = _boost.Icon;
         }
 
         public void Use()
@@ -24,7 +24,7 @@ namespace Boosters
             Push();
         }
         
-        public IStatBuffer GetBoost()
+        public IStat GetBoost()
         {
             return _boost; 
         }

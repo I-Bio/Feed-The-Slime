@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Players;
 using Spawners;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace Boosters
 {
     public class BoosterVisualizer : ObjectPool, IBoosterVisitor
     {
-        private readonly List<KeyValuePair<SpawnableObject, IStatBuffer>> _boosters = new();
+        private readonly List<KeyValuePair<SpawnableObject, IStat>> _boosters = new();
         
         private float _delay;
         private Transform _holder;
@@ -35,7 +34,7 @@ namespace Boosters
                     throw new NullReferenceException(nameof(IMovable));
                 
                 onGotSpeed.Invoke();
-                SpawnIcon(movable);
+                SpawnIcon(movable as IStat);
                 return;
             }
 
@@ -50,24 +49,24 @@ namespace Boosters
                     throw new NullReferenceException(nameof(ICalculableScore));
                 
                 onGotScore.Invoke();
-                SpawnIcon(calculableScore);
+                SpawnIcon(calculableScore as IStat);
                 return;
             }
 
             Hide<ICalculableScore>();
         }
 
-        private void SpawnIcon(IStatBuffer boost)
+        private void SpawnIcon(IStat boost)
         {
             _boosters.Add(
-                new KeyValuePair<SpawnableObject, IStatBuffer>(
+                new KeyValuePair<SpawnableObject, IStat>(
                     Pull<BoostIcon>(_holder)
                         .Initialize(boost.LifeTime, boost.Icon).Use(), boost));
         }
 
         private void Hide<T>()
         {
-            KeyValuePair<SpawnableObject, IStatBuffer> boost = _boosters.First(pair => pair.Value is T);
+            KeyValuePair<SpawnableObject, IStat> boost = _boosters.First(pair => pair.Value is T);
             Push(boost.Key);
             _boosters.Remove(boost);
         }

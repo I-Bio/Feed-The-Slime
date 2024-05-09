@@ -1,6 +1,4 @@
-﻿using Boosters;
-
-public interface ISettable
+﻿public interface ISettable<T>
 {
-    public void SetBoost(IStatBuffer boost);
+    public void SetBoost(T boost);
 }
