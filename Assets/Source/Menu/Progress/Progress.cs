@@ -108,12 +108,10 @@ namespace Menu
         {
             _characteristics.MusicVolume = volume;
         }
-
-#if UNITY_WEBGL && !UNITY_EDITOR
+        
         public void UpdateLeaderboardScore(Action<int> onUpdated)
         {
             onUpdated?.Invoke(_characteristics.CompletedLevels);
         }
-#endif
     }
 }
