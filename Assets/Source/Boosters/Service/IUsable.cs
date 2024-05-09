@@ -1,6 +1,6 @@
 ﻿namespace Boosters
 {
-    public interface IInsertable
+    public interface IUsable
     {
         public bool TryInsert(IBooster booster);
     }
