@@ -2,7 +2,7 @@
 {
     public interface IBooster
     {
-        public IStatBuffer GetBoost();
+        public IStat GetBoost();
         public void Use();
     }
 }
