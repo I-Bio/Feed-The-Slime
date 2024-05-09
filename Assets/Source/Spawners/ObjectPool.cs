@@ -14,12 +14,12 @@ namespace Spawners
             PushOnInitialize(spawnableObject);
         }
         
-        protected void Initialize(SpawnableObject spawnableObject)
+        public void Initialize(SpawnableObject spawnableObject)
         {
             _spawnableObject = spawnableObject;
         }
 
-        protected T Pull<T>(Vector3 position) where T: SpawnableObject
+        public T Pull<T>(Vector3 position) where T: SpawnableObject
         {
             if (SpawnQueue.Count == 0)
                 PushOnInitialize(Instantiate(_spawnableObject, position, Quaternion.identity).Initialize(this));
@@ -27,15 +27,7 @@ namespace Spawners
             return SpawnQueue.Dequeue().Pull<T>(position);
         }
 
-        protected T Pull<T>(Vector3 position, Transform parent) where T: SpawnableObject
-        {
-            if (SpawnQueue.Count == 0)
-                PushOnInitialize(Instantiate(_spawnableObject, position, Quaternion.identity, parent).Initialize(this));
-            
-            return SpawnQueue.Dequeue().Pull<T>(parent).Pull<T>(position);
-        }
-
-        protected T Pull<T>(Transform parent) where T: SpawnableObject
+        public T Pull<T>(Transform parent) where T: SpawnableObject
         {
             if (SpawnQueue.Count == 0)
                 PushOnInitialize(Instantiate(_spawnableObject, parent).Initialize(this));
