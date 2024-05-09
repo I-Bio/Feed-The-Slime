@@ -4,53 +4,57 @@ using UnityEngine;
 
 namespace Players
 {
-    public class Goop : ISettable
+    public class Player : ISettable<ICalculableScore>
     {
-        private readonly float _scoreScaler;
-        private readonly int _levelsPerStage;
+        private readonly float ScoreScaler;
+        private readonly int LevelsPerStage;
+        private readonly StatCombiner<ICalculableScore> Combiner;
 
         private ICalculableScore _calculableScore;
         private SatietyStage _stage;
-        private int _maxScore;
+        private float _maxScore;
         private float _score;
         private int _maxLevel;
         private int _currentLevel;
 
-        public Goop(ICalculableScore calculableScore, SatietyStage stage, float scoreScaler, int maxScore,
+        public Player(ICalculableScore calculableScore, SatietyStage stage, float scoreScaler, float maxScore,
             int levelsPerStage)
         {
-            _calculableScore = calculableScore;
+            Combiner = new StatCombiner<ICalculableScore>(new CombinedScore());
+            Combiner.Add(calculableScore);
+            _calculableScore = Combiner.GetRecombined();
             _stage = stage;
-            _scoreScaler = scoreScaler;
+            ScoreScaler = scoreScaler;
             _maxScore = maxScore;
-            _levelsPerStage = levelsPerStage;
-            _maxLevel = _levelsPerStage;
+            LevelsPerStage = levelsPerStage;
+            _maxLevel = LevelsPerStage;
         }
 
-        public event Action<float, int, float> ScoreChanged;
+        public event Action<float, int> ScoreChanged;
         public event Action<SatietyStage> SizeIncreased;
         public event Action<int> LevelIncreased;
         public event Action Winning;
 
-        public void SetBoost(IStatBuffer boost)
+        public void SetBoost(ICalculableScore boost)
         {
-            _calculableScore = boost as ICalculableScore;
+            Combiner.ChangeBoost(boost);
+            _calculableScore = Combiner.GetRecombined();
         }
 
         public void IncreaseScore(float value)
         {
             value = _calculableScore.CalculateScore(value);
             _score += value;
-
-            if (_score >= _maxScore)
+            
+            if (_score >= _maxScore || Mathf.Approximately(_score, _maxScore))
                 RaiseLevel();
 
-            ScoreChanged?.Invoke(_score, _maxScore, value);
+            ScoreChanged?.Invoke(_score, (int)_maxScore);
         }
 
         private void RaiseLevel()
         {
-            _maxScore = Mathf.FloorToInt(_maxScore * _scoreScaler);
+            _maxScore = Mathf.FloorToInt(_maxScore * ScoreScaler);
             _currentLevel++;
             LevelIncreased?.Invoke(_currentLevel);
 
@@ -60,7 +64,7 @@ namespace Players
 
         private void RaiseStage()
         {
-            _maxLevel += _levelsPerStage;
+            _maxLevel += LevelsPerStage;
             _stage++;
             SizeIncreased?.Invoke(_stage);
            
