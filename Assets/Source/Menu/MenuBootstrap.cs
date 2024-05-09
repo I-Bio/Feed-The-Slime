@@ -1,6 +1,4 @@
-﻿using Lean.Localization;
-using Spawners;
-using TMPro;
+﻿using Spawners;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -14,7 +12,7 @@ namespace Menu
     public class MenuBootstrap : MonoBehaviour
     {
         [SerializeField] private string _leaderboardName = "Leaderboard";
-        [SerializeField] private string _anonymousName = "Anonymous";
+        [SerializeField] private LocalizedText _anonymous;
         [SerializeField] private Transform _container;
         [SerializeField] private LeaderboardElement _template;
 
@@ -46,16 +44,11 @@ namespace Menu
             _stopper = GetComponent<Stopper>();
             _sound = GetComponent<SoundChanger>();
             
+            _yandexLeaderboard.Initialize(_leaderboard, _leaderboardName, _anonymous, _container, _template);
             _sound.Initialize(_mixer, _gameVolume, _musicVolume, _music);
             _stopper.Initialize(_sound.Mute, _sound.Release);
             _progress.Initialize(_yandexLeaderboard, _bootstrap, _stopper, _sound, _endGame);
             _subSwitcher.Initialize(_stopper, _subCloseButtons, _subVolumeButtons, _subParents);
-        }
-
-        private void Start()
-        {
-            _anonymousName = LeanLocalization.GetTranslationText(_anonymousName);
-            _yandexLeaderboard.Initialize(_leaderboard, _leaderboardName, _anonymousName, _container, _template);
         }
     }
 }
