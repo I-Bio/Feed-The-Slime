@@ -58,9 +58,7 @@ namespace Menu
             EndGame.GoingCollect += OnGoingCollect;
             Sound.GameVolumeChanged += OnGameVolumeChanged;
             Sound.MusicVolumeChanged += OnMusicVolumeChanged;
-#if UNITY_WEBGL && !UNITY_EDITOR
             Switcher.LeaderboardOpened += OnLeaderboardOpened;
-#endif
             Play.onClick.AddListener(OnGameLaunched);
 
             SaveService.Load();
@@ -79,9 +77,7 @@ namespace Menu
             EndGame.GoingCollect -= OnGoingCollect;
             Sound.GameVolumeChanged -= OnGameVolumeChanged;
             Sound.MusicVolumeChanged -= OnMusicVolumeChanged;
-#if UNITY_WEBGL && !UNITY_EDITOR
             Switcher.LeaderboardOpened -= OnLeaderboardOpened;
-#endif
             Play.onClick.RemoveListener(OnGameLaunched);
         }
         
@@ -120,19 +116,13 @@ namespace Menu
             Level.SetText(value.ToString());
         }
 
-        private void OnGoingCollect(int rewardCount, bool didPass, bool haveReward, Action callBack)
+        private void OnGoingCollect(int rewardCount, bool didPass, Action callBack)
         {
             if (didPass == true)
                 Model.IncreaseLevels();
 
-            if (haveReward == true)
-            {
-                Model.ChangeCrystals(rewardCount);
-                Reward.Reproduce(() => Filler.FillUp(callBack));
-                return;
-            }
-
-            Filler.FillUp(callBack);
+            Model.ChangeCrystals(rewardCount);
+            Reward.Reproduce(rewardCount,() => Filler.FillUp(callBack));
         }
 
         private void OnGoingSave(IReadOnlyCharacteristics characteristics)
@@ -187,12 +177,10 @@ namespace Menu
         {
             Model.PrepareReward();
         }
-
-#if UNITY_WEBGL && !UNITY_EDITOR
+        
         private void OnLeaderboardOpened()
         {
             Model.UpdateLeaderboardScore(OnLevelsIncreased);
         }
-#endif
     }
 }
