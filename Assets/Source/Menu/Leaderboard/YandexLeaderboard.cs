@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Agava.YandexGames;
-using TMPro;
 using UnityEngine;
 
 namespace Menu
@@ -11,14 +10,14 @@ namespace Menu
 
         private LeaderboardView _leaderboard;
         private string _leaderboardName;
-        private string _anonymousName;
+        private LocalizedText _anonymous;
 
         public void Initialize(LeaderboardView leaderboard, string leaderboardName,
-            string anonymousName, Transform container, LeaderboardElement element)
+            LocalizedText anonymous, Transform container, LeaderboardElement element)
         {
             _leaderboard = leaderboard;
             _leaderboardName = leaderboardName;
-            _anonymousName = anonymousName;
+            _anonymous = anonymous;
             _leaderboard.Initialize(container, element);
         }
 
@@ -46,7 +45,7 @@ namespace Menu
                 foreach (var entry in result.entries)
                     Players.Add(new LeaderboardPlayer(
                         entry.rank,
-                        entry.player.publicName ?? _anonymousName,
+                        entry.player.publicName ?? _anonymous.Label,
                         entry.score));
 
                 _leaderboard.Construct(Players);
