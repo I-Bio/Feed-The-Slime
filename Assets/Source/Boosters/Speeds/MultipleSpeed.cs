@@ -2,30 +2,23 @@
 
 namespace Boosters
 {
-    public class MultipleSpeed : IMovable
+    public class MultipleSpeed : Movable, IInsertable<IMovable>
     {
-        private readonly IMovable _movable;
-        private readonly float _scaler;
+        private IMovable _movable;
 
-        public MultipleSpeed(IMovable movable, float scaler, float lifeTime, Sprite icon)
+        public MultipleSpeed(IMovable movable, float scaler, float lifeTime = 0f, Sprite icon = null, string sign = "") : base(scaler, lifeTime, icon, sign)
         {
             _movable = movable;
-            _scaler = scaler;
-            LifeTime = lifeTime;
-            Icon = icon;
         }
         
-        public float LifeTime { get; }
-        public Sprite Icon { get; }
-
-        public void Accept(IBoosterVisitor visitor)
+        public void Insert(IMovable stat)
         {
-            visitor.Visit(this);
+            _movable = stat;
         }
 
-        public float GetSpeed()
+        public override float GetSpeed()
         {
-            return _movable.GetSpeed() * _scaler;
+            return _movable.GetSpeed() * Value;
         }
     }
 }
