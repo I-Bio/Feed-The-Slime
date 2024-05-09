@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 1425206975033782064}
   - component: {fileID: 2054180320817579186}
   - component: {fileID: 157056917512438499}
+  - component: {fileID: 7990649355978371417}
   m_Layer: 5
   m_Name: LevelBar
   m_TagString: Untagged
@@ -315,13 +316,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96550607fa634437a961969b04b23e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnableObject: {fileID: 6379620010601824093, guid: 5799db0c4e7261646b09a4624c5e77c9, type: 3}
   _slider: {fileID: 2054180320817579186}
-  _targetPoint: {fileID: 7492049532625186664}
-  _container: {fileID: 8532237208012248782}
   _slash: /
   _score: {fileID: 3015177832972330422}
   _level: {fileID: 4772305892450384385}
+--- !u!114 &7990649355978371417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3613165045633843755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7c131c9e17147968858e566a5bd8794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  translationName: Lvl
+  _label: "\u0423\u0440."
 --- !u!1 &4364647489833048962
 GameObject:
   m_ObjectHideFlags: 0
@@ -621,7 +633,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lvl. 100
+  m_text: "\u0423\u0440. 0"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b99a6d312945d9648a3de1dd010a39dd, type: 2}
   m_sharedMaterial: {fileID: 6661379711801168483, guid: b99a6d312945d9648a3de1dd010a39dd, type: 2}
