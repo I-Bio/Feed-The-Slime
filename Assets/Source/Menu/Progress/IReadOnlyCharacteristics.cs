@@ -11,7 +11,6 @@
         public bool DidObtainSpit{ get; }
         public bool IsAllowedShowInter { get; }
         public bool DidPassGuide { get; }
-        public float GameVolume { get; }
-        public float MusicVolume { get; }
+        public bool IsAllowedSound { get; }
     }
 }
