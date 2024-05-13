@@ -10,7 +10,7 @@ namespace Enemies
 
         public event Action GoingThink;
 
-        protected void Initialize(float delay)
+        public void Initialize(float delay)
         {
             _delay = delay;
             StartCoroutine(ThinkRoutine());
