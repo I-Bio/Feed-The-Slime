@@ -3,16 +3,15 @@
 namespace Enemies
 {
     [RequireComponent(typeof(EnemyMover))]
-    [RequireComponent(typeof(AudioSource))]
     public class Swarm : MonoBehaviour
     {
         private EnemyMover _mover;
         private AudioSource _source;
         
-        public void Initialize(float delay)
+        public void Initialize(float delay, AudioSource source)
         {
             _mover = GetComponent<EnemyMover>();
-            _source = GetComponent<AudioSource>();
+            _source = source;
             _mover.Initialize(delay);
         }
 
