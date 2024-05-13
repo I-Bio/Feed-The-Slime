@@ -2,6 +2,4 @@
 {
     CanShowAdvert,
     DidPassGuide,
-    GameVolume,
-    MusicVolume,
 }

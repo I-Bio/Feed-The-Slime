@@ -36,7 +36,7 @@ namespace Players
 
         [Space, Header("Sounds")] 
         [SerializeField] private AudioSource[] _sources;
-        
+
         [Space, Header("Effects")]
         [SerializeField] private ParticleSystem[] _effects;
         

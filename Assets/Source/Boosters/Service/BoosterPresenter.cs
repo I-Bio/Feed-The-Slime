@@ -36,7 +36,6 @@ namespace Boosters
         
         private void OnBoosterStateChanged(IStat boost)
         {
-            Debug.Log(boost.ToString());
             boost.Accept(this);
         }
 
