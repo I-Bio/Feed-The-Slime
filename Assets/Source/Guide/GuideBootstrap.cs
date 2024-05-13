@@ -1,4 +1,5 @@
-﻿using Boosters;
+﻿using System.Collections.Generic;
+using Boosters;
 using Cameras;
 using Cinemachine;
 using Enemies;
@@ -8,13 +9,12 @@ using Menu;
 using Players;
 using Spawners;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.UI;
+using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 
 namespace Guide
 {
     [RequireComponent(typeof(FadeCaster))]
-    [RequireComponent(typeof(SoundChanger))]
     public class GuideBootstrap : MonoBehaviour
     {
         [SerializeField] private InputSetup _input;
@@ -22,11 +22,13 @@ namespace Guide
         [SerializeField] private PlayerSetup _player;
         [SerializeField] private ThemePreparer _theme;
         
-        [Space, Header(nameof(SoundChanger))]
-        [SerializeField] private AudioMixer _mixer;
-        [SerializeField] private Slider _game;
-        [SerializeField] private Slider _music;
-        [SerializeField] private AudioSource _sound;
+        [Space, Header("Sound")]
+        [SerializeField] private Sprite _onIcon;
+        [SerializeField] private Sprite _offIcon;
+        [SerializeField] private Button _volume;
+        [SerializeField] private Image _icon;
+        [SerializeField] private List<AudioSource> _sources;
+        [SerializeField] private AudioSource _music;
         
         [Space, Header(nameof(FadeCaster))] 
         [SerializeField] private LayerMask _fadeMask;
@@ -63,28 +65,13 @@ namespace Guide
         [SerializeField] private Button[] _loadButtons;
         [SerializeField] private ObjectFiller _filler;
 
-        [Space, Header(nameof(SubWindowSwitcher))] 
-        [SerializeField] private SubWindowSwitcher _subSwitcher;
-        [SerializeField] private Button[] _subCloseButtons;
-        [SerializeField] private Button[] _subVolumeButtons;
-        [SerializeField] private Window[] _subParents;
-
         private FadeCaster _fadeCaster;
-        private SoundChanger _changer;
-        private GuideSaveService _saveService;
+        private SaveService _saveService;
         
         private void Awake()
         {
-            _saveService = new GuideSaveService(Launch, _characteristics);
+            _saveService = new SaveService(Launch, _characteristics);
             _saveService.Load();
-            _changer.GameVolumeChanged += _saveService.OnGameVolumeChanged;
-            _changer.MusicVolumeChanged += _saveService.OnMusicVolumeChanged;
-        }
-
-        private void OnDestroy()
-        {
-            _changer.GameVolumeChanged -= _saveService.OnGameVolumeChanged;
-            _changer.MusicVolumeChanged -= _saveService.OnMusicVolumeChanged;
         }
 
         private void Launch(IReadOnlyCharacteristics characteristics)
@@ -93,16 +80,16 @@ namespace Guide
             ICalculableScore calculableScore = new AdditionalScore(new Score(), characteristics.ScorePerEat);
             IHidden hidden = _player.GetComponent<IHidden>();
             EnemyDependencyVisitor visitor = new EnemyDependencyVisitor(_player.GetComponent<IPlayerVisitor>());
+            PlayerPrefs.SetString(nameof(PlayerCharacteristics.IsAllowedSound), characteristics.IsAllowedSound.ToString());
             
             _fadeCaster = GetComponent<FadeCaster>();
-            _changer = GetComponent<SoundChanger>();
 
             _input.Initialize();
             _player.Initialize(movable, calculableScore, _guide);
             _boosterSpawner.Initialize(new BoosterStatFactory(_scaleValues, _additionalValues,
                 _speedIcon, _scoreIcon, _maxLifeTime, _minLifeTime), _pointsHolder, _offSet, _spawnDelay, _template);
             _theme.Initialize(hidden, visitor);
-            _changer.Initialize(_mixer, _game, _music, _sound);
+            
             _beacon.Initialize(_guide);
             _trigger.Initialize(_camera, _close, _player.transform, _enemy,
                 () => { _guide.ChangeWindow(GuideWindows.Enemy); },
@@ -111,9 +98,7 @@ namespace Guide
             _fadeCaster.Initialize(_fadeMask, _player.transform, _camera.transform, _castDelay, _hitsCapacity);
             _filler.Initialize();
             _exampleFood.SetSelection();
-            _changer.Load((float)ValueConstants.Zero, (float)ValueConstants.Zero);
-            _guide.Initialize(_nextButtons, _releaseButtons, _loadButtons, _pause, _filler,
-                _subSwitcher, _subCloseButtons, _subVolumeButtons, _subParents);
+            _guide.Initialize(_nextButtons, _releaseButtons, _loadButtons, _pause, _filler, _onIcon, _offIcon, _volume, _icon, _sources, _music);
         }
     }
 }

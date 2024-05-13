@@ -1,4 +1,5 @@
-﻿using Menu;
+﻿using System.Collections.Generic;
+using Menu;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -36,7 +37,7 @@ namespace Guide
         }
 
         public void Initialize(Button[] nextButtons, Button[] releaseButtons, Button[] loadButtons, Button pause,
-            ObjectFiller filler, SubWindowSwitcher subSwitcher, Button[] subCloseButtons, Button[] subVolumeButtons, Window[] subParents)
+            ObjectFiller filler, Sprite onIcon, Sprite offIcon, Button volume, Image icon, List<AudioSource> sources, AudioSource music)
         {
             _nextButtons = nextButtons;
             _releaseButtons = releaseButtons;
@@ -46,9 +47,9 @@ namespace Guide
 
             _stopper = GetComponent<Stopper>();
             _screen = GetComponent<Screen>();
-            
+
+            _stopper.Initialize(onIcon, offIcon, volume, icon, sources, music);
             _screen.Initialize(_stopper);
-            subSwitcher.Initialize(_stopper, subCloseButtons, subVolumeButtons, subParents);
 
             foreach (Button next in _nextButtons)
                 next.onClick.AddListener(Next);
@@ -85,7 +86,6 @@ namespace Guide
 
         public void Load()
         {
-            _stopper.Release();
             PlayerPrefs.SetString(nameof(CharacteristicConstants.DidPassGuide),
                 nameof(CharacteristicConstants.DidPassGuide));
             _filler.FillUp(() => SceneManager.LoadScene((int)SceneNames.Game));
