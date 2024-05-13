@@ -1,5 +1,5 @@
 ﻿using System;
-using Agava.YandexGames;
+using Spawners;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,21 +12,39 @@ namespace Menu
         [SerializeField] private ProgressionBar<float> _scoreBar;
         [SerializeField] private ProgressionBar<int> _lifeBar;
         [SerializeField] private ProgressionBar<bool> _spitBar;
+        [SerializeField] private ObjectFiller _filler;
+        [SerializeField] private Button _play;
+        
+        [Space, Header(nameof(WindowSwitcher))]
+        [SerializeField] private WindowSwitcher _switcher;
+        [SerializeField] private Button _upgrade;
+        [SerializeField] private Button _leader;
+        [SerializeField] private Button _authorize;
+        [SerializeField] private Button _pause;
+        [SerializeField] private Button _resume;
+        [SerializeField] private Button[] _closeButtons;
+        
+        [Space, Header("Stats")]
         [SerializeField] private PlayerCharacteristics _startCharacteristics;
         [SerializeField] private int _advertStep;
         [SerializeField] private SerializedPair<int, int>[] _rewardSteps;
-        [SerializeField] private Button _play;
         [SerializeField] private TextMeshProUGUI _level;
         [SerializeField] private TextMeshProUGUI _crystals;
+        
+        [Space, Header(nameof(RewardReproducer))]
         [SerializeField] private RewardReproducer _reward;
-        [SerializeField] private WindowSwitcher _switcher;
+        [SerializeField] private RewardGem _gemTemplate;
 
         private IProgressionBar[] _bars;
-
         private Progress _model;
         private ProgressPresenter _presenter;
 
-        public void Initialize(YandexLeaderboard leaderboard)
+        private void OnDestroy()
+        {
+            _presenter.Disable();
+        }
+        
+        public void Initialize(YandexLeaderboard leaderboard, LevelBootstrap bootstrap, Stopper stopper, IRewardCollector endGame)
         {
             _bars = new IProgressionBar[Enum.GetValues(typeof(PurchaseNames)).Length];
             _bars[(int)PurchaseNames.Speed] = _speedBar;
@@ -35,25 +53,12 @@ namespace Menu
             _bars[(int)PurchaseNames.Spit] = _spitBar;
 
             _model = new Progress(_startCharacteristics, _rewardSteps, _advertStep);
-            _presenter = new ProgressPresenter(_model, _bars, _play, _level, _crystals, _reward, _switcher, leaderboard,
-                TransferService.Instance);
-            _switcher.Initialize();
-#if UNITY_EDITOR
-            _switcher.ShowMain();
-#endif
-        }
-
-        private void OnEnable()
-        {
+            _presenter = new ProgressPresenter(_model, _bars, _play, _level, _crystals, _reward, _switcher, _filler,
+                leaderboard, bootstrap, stopper, endGame, _startCharacteristics);
+            _switcher.Initialize(stopper, _upgrade, _leader, _authorize, _pause, _resume, _closeButtons);
+            _reward.Initialize(_gemTemplate);
+            _filler.Initialize();
             _presenter.Enable();
-#if UNITY_WEBGL && !UNITY_EDITOR
-            _model.Load();
-#endif
-        }
-
-        private void OnDisable()
-        {
-            _presenter.Disable();
         }
     }
 }

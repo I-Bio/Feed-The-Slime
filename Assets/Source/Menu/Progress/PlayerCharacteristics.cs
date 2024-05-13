@@ -15,5 +15,6 @@ namespace Menu
         [field: SerializeField] public bool DidObtainSpit { get; set; }
         [field: SerializeField] public bool IsAllowedShowInter { get; set; }
         [field: SerializeField] public bool DidPassGuide { get; set; }
+        [field: SerializeField] public bool IsAllowedSound { get; set; }
     }
 }

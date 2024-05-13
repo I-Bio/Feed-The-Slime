@@ -36,7 +36,7 @@ namespace Players
 
         [Space, Header("Sounds")] 
         [SerializeField] private AudioSource[] _sources;
-        
+
         [Space, Header("Effects")]
         [SerializeField] private ParticleSystem[] _effects;
         
@@ -71,8 +71,7 @@ namespace Players
         private EatableSpawner _spawner;
         private Transform _transform;
 
-        private Goop _model;
-        private BoosterEjector _ejector;
+        private Player _model;
         private BoosterService _service;
         private BoosterVisualizer _boosterVisualizer;
         private PlayerToxins _playerToxins;
@@ -96,22 +95,21 @@ namespace Players
             _spawner = GetComponent<EatableSpawner>();
             _transform = transform;
 
-            _model = new Goop(calculableScore, _levelConfig.StartStage, _levelConfig.ScoreScaler,
+            _model = new Player(calculableScore, _levelConfig.StartStage, _levelConfig.ScoreScaler,
                 _levelConfig.StartMaxScore, _levelConfig.LevelsPerStage);
-            _ejector = new BoosterEjector(movable, calculableScore);
             _service = new BoosterService();
             _playerToxins = new PlayerToxins(_levelConfig.MaxToxinsCount, _levelConfig.MinToxinsCount);
 
             _playerPresenter = new PlayerPresenter(_model, _collisionDetector, _scanner, _sizeScaler, _levelBar,
                 _stageBar, _service, _animation, _abilityCaster, _mover, _effectReproducer, _soundReproducer, game);
-            _boosterPresenter = new BoosterPresenter(_model, _mover, _service, _boosterVisualizer, _ejector);
+            _boosterPresenter = new BoosterPresenter(_model, _mover, _service, _boosterVisualizer);
             _toxinPresenter = new ToxinPresenter(_playerToxins, _toxinBar, _ticker, _collisionDetector);
-
+            
             _levelBar.Initialize(_levelConfig.StartScore, _levelConfig.StartMaxScore);
             _stageBar.Initialize(_levelConfig.StartMaxScore, _levelConfig.LevelsPerStage, _levelConfig.ScoreScaler);
             _scanner.SetStage(_levelConfig.StartStage);
             _sizeScaler.Initialize(_transform, _virtualCamera, _levelConfig.ScaleFactor, _levelConfig.CameraScale);
-            _mover.Initialize(movable, _rotationPoint, _transform.forward);
+            _mover.Initialize(movable, new MoverScalerFactory(movable, _levelConfig.ScaleFactor), _rotationPoint, _transform.forward);
             _boosterVisualizer.Initialize(_updateDelay, new Dictionary<Type, Action>
             {
                 {typeof(IMovable), () => {_effectReproducer.PlayEffect(EffectType.SpeedBoost);}},
@@ -133,9 +131,9 @@ namespace Players
 
         private void OnDestroy()
         {
-            _playerPresenter.Disable();
-            _boosterPresenter.Disable();
-            _toxinPresenter.Disable();
+            _playerPresenter?.Disable();
+            _boosterPresenter?.Disable();
+            _toxinPresenter?.Disable();
         }
     }
 }

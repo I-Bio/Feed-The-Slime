@@ -4,20 +4,31 @@ namespace Menu
 {
     public class Screen : MonoBehaviour
     {
-        [SerializeField] private GameObject[] _windows;
+        [SerializeField] private Window[] _windows;
+        
+        private Window _current;
 
-        private int _currentActiveId;
+        public void Initialize(Stopper stopper)
+        {
+            foreach (Window window in _windows)
+                window.Initialize(stopper);
+        }
         
         public void SetWindow(int id)
         {
-            _windows[_currentActiveId].SetActive(false);
-            _windows[id].SetActive(true);
-            _currentActiveId = id;
+            if (_current != null) 
+                _current.Close();
+            
+            _current = _windows[id];
+            _current.Open();
         }
-        
+
         public void Hide()
         {
-            _windows[_currentActiveId].SetActive(false);
+            if (_current != null) 
+                _current.Close();
+
+            _current = null;
         }
     }
 }

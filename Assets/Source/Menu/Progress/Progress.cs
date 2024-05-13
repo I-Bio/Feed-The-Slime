@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Linq;
-using Agava.YandexGames;
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 
 namespace Menu
 {
     public class Progress
     {
-        private readonly SerializedPair<int, int>[] _rewardSteps;
-        private readonly int _advertAccumulationStep;
+        private readonly SerializedPair<int, int>[] RewardSteps;
+        private readonly int AdvertAccumulationStep;
 
         private PlayerCharacteristics _characteristics;
 
@@ -17,14 +16,14 @@ namespace Menu
             int advertAccumulationStep)
         {
             _characteristics = startCharacteristics;
-            _rewardSteps = rewardSteps;
-            _advertAccumulationStep = advertAccumulationStep;
+            RewardSteps = rewardSteps;
+            AdvertAccumulationStep = advertAccumulationStep;
         }
 
-        public event Action<IReadOnlyCharacteristics> Loaded;
+        public event Action<PlayerCharacteristics> GoingSave;
         public event Action<int> CrystalsChanged;
-        public event Action<int> RewardReceived;
         public event Action<int> LevelsIncreased;
+        public event Action<IReadOnlyCharacteristics, int> RewardPrepared;
 
         public void SetSpeed(object speed)
         {
@@ -54,10 +53,10 @@ namespace Menu
             _characteristics.IsAllowedShowInter = false;
             _characteristics.AdvertAccumulation++;
 
-            if (_characteristics.AdvertAccumulation != _advertAccumulationStep)
+            if (_characteristics.AdvertAccumulation != AdvertAccumulationStep)
                 return;
 
-            _characteristics.AdvertAccumulation = 0;
+            _characteristics.AdvertAccumulation = (int)ValueConstants.Zero;
             _characteristics.IsAllowedShowInter = true;
         }
 
@@ -67,58 +66,47 @@ namespace Menu
             CrystalsChanged?.Invoke(_characteristics.CrystalsCount);
         }
 
-        public void RewardReceive(int value)
+        public void PrepareReward()
         {
-            CompleteGuide();
-            ChangeCrystals(value);
-        }
-
-        public void StartGame()
-        {
-            int rewardValue = _rewardSteps
-                .Where(pair => pair.Key <= _characteristics.CompletedLevels || pair == _rewardSteps[^1])
+            int rewardValue = RewardSteps
+                .Where(pair => pair.Key <= _characteristics.CompletedLevels || pair == RewardSteps[^1])
                 .Select(pair => pair.Value).FirstOrDefault();
+            
+            RewardPrepared?.Invoke(_characteristics, rewardValue);
+        }
+        
+        public void Load(IReadOnlyCharacteristics characteristics)
+        {
+            _characteristics = characteristics as PlayerCharacteristics;
 
-            TransferService.Instance.SetStats(rewardValue, _characteristics);
+            if (_characteristics == null)
+                throw new NullReferenceException(nameof(_characteristics));
 
             if (_characteristics.DidPassGuide == true)
-                SceneManager.LoadScene((int)SceneNames.Game);
-            else
-                SceneManager.LoadScene((int)SceneNames.Guide);
-        }
+                return;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-        public void UpdateLeaderboardScore(Action<int> onUpdated)
-        {
-            onUpdated?.Invoke(_characteristics.CompletedLevels);
+            if (PlayerPrefs.GetString(nameof(CharacteristicConstants.DidPassGuide)) == string.Empty)
+            {
+                SceneManager.LoadScene((int)SceneNames.Guide);
+                return;
+            }
+                
+            _characteristics.DidPassGuide = true;
         }
         
         public void Save()
         {
-            PlayerAccount.SetCloudSaveData(JsonUtility.ToJson(_characteristics));
+            GoingSave?.Invoke(_characteristics);
         }
 
-        public void Load()
+        public void ChangeSound(bool isAllowed)
         {
-            PlayerAccount.GetCloudSaveData(OnLoaded);
+            _characteristics.IsAllowedSound = isAllowed;
         }
 
-        private void OnLoaded(string jsonData)
+        public void UpdateLeaderboardScore(Action<int> onUpdated)
         {
-            PlayerCharacteristics characteristics = JsonUtility.FromJson<PlayerCharacteristics>(jsonData);
-
-            if (characteristics != null && characteristics.Speed >= _characteristics.Speed)
-                _characteristics = JsonUtility.FromJson<PlayerCharacteristics>(jsonData);
-
-            Loaded?.Invoke(_characteristics);
-        }
-#endif
-        private void CompleteGuide()
-        {
-            if (_characteristics.DidPassGuide == true)
-                return;
-
-            _characteristics.DidPassGuide = true;
+            onUpdated?.Invoke(_characteristics.CompletedLevels);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Cameras;
 using Spawners;
 using UnityEngine;
 
@@ -34,7 +35,7 @@ namespace Foods
 
             _ediblePart.Initialize(float.IsNaN(scorePerEat) ? _scorePerEat : scorePerEat);
 
-            if (TryGetComponent(out FadingObject fadingObject) == true)
+            if (TryGetComponent(out ObjectFader fadingObject) == true)
                 fadingObject.Initialize();
             
             _highlighter.Initialize(_deselectValue, _selectValue);
@@ -44,7 +45,7 @@ namespace Foods
 
         private void OnDestroy()
         {
-            _presenter.Disable();
+            _presenter?.Disable();
             _onDestroyCallback?.Invoke();
         }
     }

@@ -1,33 +1,26 @@
-﻿using Menu;
-using TMPro;
+﻿using System.Collections.Generic;
+using Menu;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Screen = Menu.Screen;
+using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 
 namespace Guide
 {
     [RequireComponent(typeof(Stopper))]
     [RequireComponent(typeof(Screen))]
-    public class Guide : MonoBehaviour, IGame, ILoader, IGuide
+    public class Guide : MonoBehaviour, IGame, IGuide
     {
-        private ITransferService _transferService;
-        private CanvasGroup _fadeBackground;
-        private CanvasGroup _mainUi;
-        private CanvasGroup _endGame;
-        private TextMeshProUGUI[] _rewards;
         private Screen _screen;
         private Stopper _stopper;
 
         private int _pointer;
         private Button[] _nextButtons;
         private Button[] _releaseButtons;
-        private Button _win;
+        private Button[] _loadButtons;
         private Button _pause;
-
-        private float _offAlpha;
-        private float _onAlpha;
-        private bool _canReceive;
+        private ObjectFiller _filler;
 
         private void OnDestroy()
         {
@@ -37,27 +30,26 @@ namespace Guide
             foreach (Button release in _releaseButtons)
                 release.onClick.RemoveListener(Release);
 
-            _win.onClick.RemoveListener(Win);
+            foreach (Button load in _loadButtons)
+                load.onClick.RemoveListener(Load);
+
             _pause.onClick.RemoveListener(Pause);
         }
 
-        public void Initialize(ITransferService transferService, CanvasGroup fadeBackground, CanvasGroup endGame, CanvasGroup mainUi,
-            Button[] nextButtons, Button[] releaseButtons, Button win, Button pause, float offAlpha, float onAlpha, TextMeshProUGUI[] rewards)
+        public void Initialize(Button[] nextButtons, Button[] releaseButtons, Button[] loadButtons, Button pause,
+            ObjectFiller filler, Sprite onIcon, Sprite offIcon, Button volume, Image icon, List<AudioSource> sources, AudioSource music)
         {
-            _transferService = transferService;
-            _fadeBackground = fadeBackground;
-            _endGame = endGame;
-            _mainUi = mainUi;
             _nextButtons = nextButtons;
             _releaseButtons = releaseButtons;
-            _win = win;
+            _loadButtons = loadButtons;
             _pause = pause;
-            _offAlpha = offAlpha;
-            _onAlpha = onAlpha;
-            _rewards = rewards;
+            _filler = filler;
 
             _stopper = GetComponent<Stopper>();
             _screen = GetComponent<Screen>();
+
+            _stopper.Initialize(onIcon, offIcon, volume, icon, sources, music);
+            _screen.Initialize(_stopper);
 
             foreach (Button next in _nextButtons)
                 next.onClick.AddListener(Next);
@@ -65,18 +57,17 @@ namespace Guide
             foreach (Button release in _releaseButtons)
                 release.onClick.AddListener(Release);
 
-            _win.onClick.AddListener(Win);
+            foreach (Button load in _loadButtons)
+                load.onClick.AddListener(Load);
+
             _pause.onClick.AddListener(Pause);
 
             SetStage(SatietyStage.Exhaustion);
-            Open();
+            Next();
+            _filler.EmptyUp();
         }
 
-        public void SetStage(SatietyStage stage)
-        {
-            foreach (TextMeshProUGUI reward in _rewards)
-                reward.SetText(_transferService.Reward.ToString());
-        }
+        public void SetStage(SatietyStage stage) {}
 
         public void Win()
         {
@@ -90,60 +81,30 @@ namespace Guide
 
         public void ChangeWindow(GuideWindows window)
         {
-            _stopper.Pause();
-            _mainUi.alpha = _offAlpha;
-            _mainUi.blocksRaycasts = false;
             _screen.SetWindow((int)window);
-            _canReceive = false;
-
-            if (window != GuideWindows.Lose && window != GuideWindows.Win && window != GuideWindows.Pause)
-                return;
-
-            _fadeBackground.alpha = _offAlpha;
-            _endGame.alpha = _onAlpha;
-
-            if (window == GuideWindows.Pause)
-                return;
-            
-            _canReceive = true;
-            _transferService.PassLevel();
         }
 
         public void Load()
         {
-            _stopper.Release();
-            
-            if (_canReceive == true)
-                _transferService.AllowReceive();
-            
-            SceneManager.LoadScene((int)SceneNames.Menu);
+            PlayerPrefs.SetString(nameof(CharacteristicConstants.DidPassGuide),
+                nameof(CharacteristicConstants.DidPassGuide));
+            _filler.FillUp(() => SceneManager.LoadScene((int)SceneNames.Game));
         }
 
         public void Release()
         {
-            _fadeBackground.alpha = _offAlpha;
-            _endGame.alpha = _offAlpha;
-            _screen.Hide();
-            _mainUi.alpha = _onAlpha;
-            _mainUi.blocksRaycasts = true;
-            _stopper.Release();
-        }
-
-        public void Open()
-        {
-            _fadeBackground.alpha = _onAlpha;
-            Next();
-        }
-
-        private void Pause()
-        {
-            ChangeWindow(GuideWindows.Pause);
+            ChangeWindow(GuideWindows.Main);
         }
 
         private void Next()
         {
             ChangeWindow((GuideWindows)_pointer);
             _pointer++;
+        }
+
+        private void Pause()
+        {
+            ChangeWindow(GuideWindows.Pause);
         }
     }
 }

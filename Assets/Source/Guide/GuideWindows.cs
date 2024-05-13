@@ -7,10 +7,10 @@
         DialogUISecond,
         DialogUIThird,
         DialogUIComplete,
-        DialogEnd,
         Win,
         Lose,
         Enemy,
-        Pause
+        Pause,
+        Main
     }
 }

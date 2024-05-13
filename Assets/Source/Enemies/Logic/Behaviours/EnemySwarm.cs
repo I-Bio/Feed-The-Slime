@@ -4,11 +4,13 @@ using UnityEngine;
 
 namespace Enemies
 {
+    [RequireComponent(typeof(AudioSource))]
     public class EnemySwarm : EnemyBehaviour
     {
         [SerializeField] private Swarm _swarm;
         
         private IPlayerVisitor _player;
+        private AudioSource _source;
         private bool _didHide;
 
         private void OnDestroy()
@@ -18,11 +20,12 @@ namespace Enemies
 
         public void Initialize(float delay, IPlayerVisitor player)
         {
+            _source = GetComponent<AudioSource>();
             _player = player;
-            _swarm.Initialize(delay);
+            _swarm.Initialize(delay, _source);
             _swarm.Hide();
             _didHide = true;
-            base.Initialize(delay);
+            Initialize(delay);
         }
 
         public override void Accept(IEnemyVisitor visitor, float thinkDelay)

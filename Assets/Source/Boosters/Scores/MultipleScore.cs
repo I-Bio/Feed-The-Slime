@@ -2,31 +2,24 @@
 
 namespace Boosters
 {
-    public class MultipleScore : ICalculableScore
+    public class MultipleScore : CalculableScore, IInsertable<ICalculableScore>
     {
-        private readonly ICalculableScore _calculable;
-        private readonly float _scaler;
-        
-        
-        public MultipleScore(ICalculableScore calculable, float scaler, float lifeTime, Sprite icon)
+        private ICalculableScore _calculable;
+
+        public MultipleScore(ICalculableScore calculable, float scaler, float lifeTime = 0f,
+            Sprite icon = null, string sign = "") : base(scaler, lifeTime, icon, sign)
         {
             _calculable = calculable;
-            _scaler = scaler;
-            LifeTime = lifeTime;
-            Icon = icon;
-        }
-        
-        public float LifeTime { get; }
-        public Sprite Icon { get; }
-
-        public void Accept(IBoosterVisitor visitor)
-        {
-            visitor.Visit(this);
         }
 
-        public float CalculateScore(float score)
+        public void Insert(ICalculableScore stat)
         {
-            return _calculable.CalculateScore(score) * _scaler;
+            _calculable = stat;
+        }
+
+        public override float CalculateScore(float score)
+        {
+            return _calculable.CalculateScore(score) * Value;
         }
     }
 }

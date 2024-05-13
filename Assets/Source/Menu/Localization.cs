@@ -14,7 +14,7 @@ namespace Menu
         private const string Turkish = "tr";
 
         [SerializeField] private LeanLocalization _localization;
-#if UNITY_WEBGL && !UNITY_EDITOR
+
         private void Awake()
         {
             ChangeLanguage();
@@ -22,6 +22,10 @@ namespace Menu
         
         private void ChangeLanguage()
         {
+#if UNITY_EDITOR
+            _localization.SetCurrentLanguage(RussianCode);
+#endif
+#if UNITY_WEBGL && !UNITY_EDITOR
             string languageCode = YandexGamesSdk.Environment.i18n.lang;
 
             switch (languageCode)
@@ -38,7 +42,7 @@ namespace Menu
                     _localization.SetCurrentLanguage(TurkishCode);
                     break;
             }
-        }
 #endif
+        }
     }
 }

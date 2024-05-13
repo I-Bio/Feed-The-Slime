@@ -2,23 +2,11 @@
 
 namespace Boosters
 {
-    public class Score : ICalculableScore
+    public class Score : CalculableScore
     {
-        public Score(float lifeTime = 0f, Sprite icon = null)
-        {
-            LifeTime = lifeTime;
-            Icon = icon;
-        }
+        public Score(float value = 0f, float lifeTime = 0f, Sprite icon = null, string sign = "") : base(value, lifeTime, icon, sign) {}
         
-        public float LifeTime { get; }
-        public Sprite Icon { get; }
-
-        public void Accept(IBoosterVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
-
-        public float CalculateScore(float score)
+        public override float CalculateScore(float score)
         {
             return score;
         }

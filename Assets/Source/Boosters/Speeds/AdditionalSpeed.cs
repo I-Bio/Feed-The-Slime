@@ -2,30 +2,23 @@
 
 namespace Boosters
 {
-    public class AdditionalSpeed : IMovable
+    public class AdditionalSpeed : Movable, IInsertable<IMovable>
     {
-        private readonly IMovable _movable;
-        private readonly float _additionValue;
+        private IMovable _movable;
 
-        public AdditionalSpeed(IMovable movable, float additionValue, float lifeTime, Sprite icon)
+        public AdditionalSpeed(IMovable movable, float additionValue, float lifeTime = 0f, Sprite icon = null, string sign = "") : base(additionValue, lifeTime, icon, sign)
         {
             _movable = movable;
-            _additionValue = additionValue;
-            LifeTime = lifeTime;
-            Icon = icon;
         }
         
-        public float LifeTime { get; }
-        public Sprite Icon { get; }
-
-        public void Accept(IBoosterVisitor visitor)
+        public void Insert(IMovable stat)
         {
-            visitor.Visit(this);
+            _movable = stat;
         }
 
-        public float GetSpeed()
+        public override float GetSpeed()
         {
-            return _movable.GetSpeed() + _additionValue;
+            return _movable.GetSpeed() + Value;
         }
     }
 }

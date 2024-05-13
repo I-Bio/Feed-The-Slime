@@ -1,103 +1,145 @@
 ﻿using System;
+using Agava.YandexGames.Utility;
+using Spawners;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Menu
 {
     public class ProgressPresenter : IPresenter
     {
-        private readonly Progress _model;
-        private readonly IProgressionBar[] _bars;
-        private readonly Button _play;
-        private readonly TextMeshProUGUI _level;
-        private readonly TextMeshProUGUI _crystals;
-        private readonly RewardReproducer _reward;
-        private readonly WindowSwitcher _switcher;
-        private readonly YandexLeaderboard _leaderboard;
-        private readonly TransferService _transferService;
+        private readonly Progress Model;
+        private readonly IProgressionBar[] Bars;
+        private readonly Button Play;
+        private readonly TextMeshProUGUI Level;
+        private readonly TextMeshProUGUI Crystals;
+        private readonly RewardReproducer Reward;
+        private readonly WindowSwitcher Switcher;
+        private readonly ObjectFiller Filler;
+        private readonly YandexLeaderboard Leaderboard;
+        private readonly LevelBootstrap Bootstrap;
+        private readonly Stopper Stopper;
+        private readonly IRewardCollector EndGame;
+        private readonly SaveService SaveService;
 
         public ProgressPresenter(Progress model, IProgressionBar[] bars, Button play, TextMeshProUGUI level,
-            TextMeshProUGUI crystals, RewardReproducer reward, WindowSwitcher switcher, YandexLeaderboard leaderboard,
-            TransferService transferService)
+            TextMeshProUGUI crystals, RewardReproducer reward, WindowSwitcher switcher, ObjectFiller filler,
+            YandexLeaderboard leaderboard,
+            LevelBootstrap bootstrap, Stopper stopper, IRewardCollector endGame,
+            PlayerCharacteristics characteristics)
         {
-            _model = model;
-            _bars = bars;
-            _play = play;
-            _level = level;
-            _crystals = crystals;
-            _reward = reward;
-            _switcher = switcher;
-            _leaderboard = leaderboard;
-            _transferService = transferService;
+            Model = model;
+            Bars = bars;
+            Play = play;
+            Level = level;
+            Crystals = crystals;
+            Reward = reward;
+            Switcher = switcher;
+            Filler = filler;
+            Leaderboard = leaderboard;
+            Bootstrap = bootstrap;
+            Stopper = stopper;
+            EndGame = endGame;
+            SaveService = new SaveService(OnLoaded, characteristics);
         }
 
         public void Enable()
         {
-            _model.Loaded += OnLoaded;
-            _model.CrystalsChanged += OnCrystalsChanged;
-            _model.LevelsIncreased += OnLevelsIncreased;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            _switcher.LeaderboardOpened += OnLeaderboardOpened;
-#endif
-            foreach (IProgressionBar bar in _bars)
+            Model.CrystalsChanged += OnCrystalsChanged;
+            Model.LevelsIncreased += OnLevelsIncreased;
+            Model.GoingSave += OnGoingSave;
+            Model.RewardPrepared += OnRewardPrepared;
+
+            foreach (IProgressionBar bar in Bars)
                 bar.Bought += OnBought;
 
-            _play.onClick.AddListener(_model.StartGame);
+            EndGame.GoingCollect += OnGoingCollect;
+            Stopper.SoundChanged += OnSoundChanged;
+            Switcher.LeaderboardOpened += OnLeaderboardOpened;
+            Play.onClick.AddListener(OnGameLaunched);
+
+            SaveService.Load();
         }
 
         public void Disable()
         {
-            _model.Loaded -= OnLoaded;
-            _model.CrystalsChanged -= OnCrystalsChanged;
-            _model.LevelsIncreased -= OnLevelsIncreased;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            _switcher.LeaderboardOpened -= OnLeaderboardOpened;
-#endif
-            foreach (IProgressionBar bar in _bars)
+            Model.CrystalsChanged -= OnCrystalsChanged;
+            Model.LevelsIncreased -= OnLevelsIncreased;
+            Model.GoingSave -= OnGoingSave;
+            Model.RewardPrepared -= OnRewardPrepared;
+
+            foreach (IProgressionBar bar in Bars)
                 bar.Bought -= OnBought;
 
-            _play.onClick.RemoveListener(_model.StartGame);
+            EndGame.GoingCollect -= OnGoingCollect;
+            Stopper.SoundChanged -= OnSoundChanged;
+            Switcher.LeaderboardOpened -= OnLeaderboardOpened;
+            Play.onClick.RemoveListener(OnGameLaunched);
         }
-
+        
         private void OnLoaded(IReadOnlyCharacteristics characteristics)
         {
-            _bars[(int)PurchaseNames.Speed].Initialize(characteristics.Speed);
-            _bars[(int)PurchaseNames.Score].Initialize(characteristics.ScorePerEat);
-            _bars[(int)PurchaseNames.Life].Initialize(characteristics.LifeCount);
-            _bars[(int)PurchaseNames.Spit].Initialize(characteristics.DidObtainSpit);
+            Debug.Log("Start LOAD PROGRESS");
+            Model.Load(characteristics);
 
+            Bars[(int)PurchaseNames.Speed].Initialize(characteristics.Speed);
+            Bars[(int)PurchaseNames.Score].Initialize(characteristics.ScorePerEat);
+            Bars[(int)PurchaseNames.Life].Initialize(characteristics.LifeCount);
+            Bars[(int)PurchaseNames.Spit].Initialize(characteristics.DidObtainSpit);
+            Debug.Log("BARS LOADED");
+            Bootstrap.Initialize(characteristics.CompletedLevels, Stopper);
+            Stopper.Load(characteristics.IsAllowedSound);
+            Debug.Log("SOUND LOAD COMPLETE");
             OnLevelsIncreased(characteristics.CompletedLevels);
-
-            if (_transferService.DidLevelPassed == true)
-                _model.IncreaseLevels();
-
             OnCrystalsChanged(characteristics.CrystalsCount);
-            _switcher.ShowMain();
-            
-            if (_transferService.TryGetReward(out int value) == false)
-                return;
-
-            _switcher.Hide();
-            _reward.Reproduce(_switcher.ShowMain);
-            _model.RewardReceive(value);
+            Switcher.ShowMain();
+            Debug.Log("WINDOW SWITCHED");
+            Filler.EmptyUp();
+            Debug.Log("END LOAD PROGRESS");
         }
 
         private void OnCrystalsChanged(int crystalsCount)
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            _model.Save();
-#endif
-            _crystals.SetText(crystalsCount.ToString());
+            Model.Save();
+            Crystals.SetText(crystalsCount.ToString());
 
-            foreach (IProgressionBar bar in _bars)
+            foreach (IProgressionBar bar in Bars)
                 bar.CompareCrystals(crystalsCount);
         }
 
         private void OnLevelsIncreased(int value)
         {
-            _leaderboard.SetPlayerScore(value);
-            _leaderboard.Fill();
-            _level.SetText(value.ToString());
+#if UNITY_WEBGL && !UNITY_EDITOR
+            Leaderboard.SetPlayerScore(value);
+            Leaderboard.Fill();
+#endif
+            Level.SetText(value.ToString());
+        }
+
+        private void OnGoingCollect(int rewardCount, bool didPass, Action callBack)
+        {
+            if (didPass == true)
+                Model.IncreaseLevels();
+
+            Model.ChangeCrystals(rewardCount);
+            Reward.Reproduce(rewardCount,() => Filler.FillUp(callBack));
+        }
+
+        private void OnGoingSave(IReadOnlyCharacteristics characteristics)
+        {
+            SaveService.Save(characteristics);
+        }
+
+        private void OnRewardPrepared(IReadOnlyCharacteristics characteristics, int rewardCount)
+        {
+            Model.Save();
+            Bootstrap.Launch(characteristics, Switcher, rewardCount);
+        }
+
+        private void OnSoundChanged(bool isAllowed)
+        {
+            Model.ChangeSound(isAllowed);
         }
 
         private void OnBought(int spendCount, PurchaseNames progression, object value)
@@ -105,33 +147,36 @@ namespace Menu
             switch (progression)
             {
                 case PurchaseNames.Speed:
-                    _model.SetSpeed(value);
+                    Model.SetSpeed(value);
                     break;
 
                 case PurchaseNames.Score:
-                    _model.SetScore(value);
+                    Model.SetScore(value);
                     break;
 
                 case PurchaseNames.Life:
-                    _model.SetLifeCount(value);
+                    Model.SetLifeCount(value);
                     break;
 
                 case PurchaseNames.Spit:
-                    _model.ObtainSpit(value);
+                    Model.ObtainSpit(value);
                     break;
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(progression), progression, null);
             }
 
-            _model.ChangeCrystals(-spendCount);
+            Model.ChangeCrystals(-spendCount);
         }
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+        private void OnGameLaunched()
+        {
+            Model.PrepareReward();
+        }
+        
         private void OnLeaderboardOpened()
         {
-            _model.UpdateLeaderboardScore(OnLevelsIncreased);
+            Model.UpdateLeaderboardScore(OnLevelsIncreased);
         }
-#endif
     }
 }

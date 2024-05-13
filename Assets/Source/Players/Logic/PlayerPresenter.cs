@@ -5,7 +5,7 @@ namespace Players
 {
     public class PlayerPresenter : IPresenter
     {
-        private readonly Goop Model;
+        private readonly Player Model;
         private readonly PlayerCollisionDetector CollisionDetector;
         private readonly PlayerScanner Scanner;
         private readonly SizeScaler SizeScaler;
@@ -15,12 +15,12 @@ namespace Players
         private readonly AbilityCaster Caster;
         private readonly EffectReproducer EffectReproducer;
         private readonly SoundReproducer SoundReproducer;
-        private readonly IInsertable BoosterService;
+        private readonly IUsable BoosterService;
         private readonly IMover Mover;
         private readonly IGame Game;
 
-        public PlayerPresenter(Goop model, PlayerCollisionDetector collisionDetector, PlayerScanner scanner,
-            SizeScaler sizeScaler, LevelBar levelBar, StageBar stageBar, IInsertable boosterService,
+        public PlayerPresenter(Player model, PlayerCollisionDetector collisionDetector, PlayerScanner scanner,
+            SizeScaler sizeScaler, LevelBar levelBar, StageBar stageBar, IUsable boosterService,
             PlayerAnimation animation, AbilityCaster caster, IMover mover, EffectReproducer effectReproducer,
             SoundReproducer soundReproducer, IGame game)
         {
@@ -69,10 +69,10 @@ namespace Players
             Caster.SpitCasted -= OnSpitCasted;
         }
 
-        private void OnScoreChanged(float score, int maxScore, float value)
+        private void OnScoreChanged(float score, int maxScore)
         {
             SoundReproducer.PlayClip(SoundType.ScoreGain);
-            LevelBar.SetScore(score, maxScore, value);
+            LevelBar.ChangeScore(score, maxScore);
             StageBar.ChangeValue(score);
         }
 

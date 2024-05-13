@@ -2,28 +2,13 @@
 
 namespace Boosters
 {
-    public class Speed : IMovable
+    public class Speed : Movable
     {
-        private readonly float _value;
-
-        public Speed(float value, float lifeTime = 0f, Sprite icon = null)
-        {
-            _value = value;
-            LifeTime = lifeTime;
-            Icon = icon;
-        }
+        public Speed(float value, float lifeTime = 0f, Sprite icon = null, string sign = "") : base(value, lifeTime, icon, sign) {}
         
-        public float LifeTime { get; }
-        public Sprite Icon { get; }
-
-        public void Accept(IBoosterVisitor visitor)
+        public override float GetSpeed()
         {
-            visitor.Visit(this);
-        }
-
-        public float GetSpeed()
-        {
-            return _value;
+            return Value;
         }
     }
 }

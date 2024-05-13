@@ -22,7 +22,7 @@ namespace Enemies
         {
             _player = player;
             _source = GetComponent<AudioSource>();
-            base.Initialize(delay);
+            Initialize(delay);
         }
 
         public override void Accept(IEnemyVisitor visitor, float thinkDelay)

@@ -2,30 +2,24 @@
 
 namespace Boosters
 {
-    public class AdditionalScore : ICalculableScore
+    public class AdditionalScore : CalculableScore, IInsertable<ICalculableScore>
     {
-        private readonly ICalculableScore _calculable;
-        private readonly float _additionValue;
+        private ICalculableScore _calculable;
 
-        public AdditionalScore(ICalculableScore calculable, float additionValue, float lifeTime, Sprite icon)
+        public AdditionalScore(ICalculableScore calculable, float additionValue, float lifeTime = 0f,
+            Sprite icon = null, string sign = "") : base(additionValue, lifeTime, icon, sign)
         {
             _calculable = calculable;
-            _additionValue = additionValue;
-            LifeTime = lifeTime;
-            Icon = icon;
-        }
-        
-        public float LifeTime { get; }
-        public Sprite Icon { get; }
-
-        public void Accept(IBoosterVisitor visitor)
-        {
-            visitor.Visit(this);
         }
 
-        public float CalculateScore(float score)
+        public void Insert(ICalculableScore stat)
         {
-            return _calculable.CalculateScore(score) + _additionValue;
+            _calculable = stat;
+        }
+
+        public override float CalculateScore(float score)
+        {
+            return _calculable.CalculateScore(score) + Value;
         }
     }
 }

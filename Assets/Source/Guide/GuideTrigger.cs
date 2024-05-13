@@ -13,8 +13,8 @@ namespace Guide
         private Transform _enemy;
         private bool _didPlay;
 
-        private event Action OnStarted;
-        private event Action OnCompleted;
+        private Action OnStarted;
+        private Action OnCompleted;
         
         private void OnTriggerEnter(Collider other)
         {

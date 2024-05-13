@@ -19,7 +19,7 @@ namespace Menu
 
         private void OnInitialize()
         {
-            SceneManager.LoadScene((int)SceneNames.Menu);
+            SceneManager.LoadScene((int)SceneNames.Game);
             YandexGamesSdk.GameReady();
         }
     }

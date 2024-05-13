@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
 namespace Input
@@ -8,20 +7,16 @@ namespace Input
     {
         [SerializeField] private Camera _camera;
         [SerializeField] private RectTransform _parent;
-        [SerializeField] private RectTransform _knob;
         [SerializeField] private RectTransform _holderTransform;
-        [SerializeField] private GameObject _holder;
+        [SerializeField] private CanvasGroup _fade;
         
         private Coroutine _coroutine;
+        private bool _isEnabled;
 
         public event Action Released;
+        public bool IsEnabled => _isEnabled;
 
-        private void Start()
-        {
-            Release();
-        }
-
-        public void Activate(Vector2 position)
+        public void CalculatePosition(Vector2 position)
         {
             if (RectTransformUtility.RectangleContainsScreenPoint(_parent, position, _camera) == false)
                 return;
@@ -31,31 +26,21 @@ namespace Input
                 return;
 
             _holderTransform.anchoredPosition = localPosition;
-            _holder.SetActive(true);
-
-            if (_coroutine != null)
-                StopCoroutine(_coroutine);
+        }
+        
+        public void Activate(bool canShow = true)
+        {
+            if (canShow == true)
+                _fade.alpha = 1f;
             
-            _coroutine = StartCoroutine(ReleaseRoutine());
+            _isEnabled = true;
         }
 
-        private void Release()
+        public void Release()
         {
+            _isEnabled = false;
+            _fade.alpha = 0f;
             Released?.Invoke();
-            _holder.SetActive(false);
-        }
-
-        private IEnumerator ReleaseRoutine()
-        {
-            Vector2 lastPosition = Vector2.zero;
-
-            while (_knob.anchoredPosition != Vector2.zero || lastPosition == Vector2.zero)
-            {
-                lastPosition = _knob.anchoredPosition;
-                yield return null;
-            }
-            
-            Release();
         }
     }
 }

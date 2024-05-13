@@ -26,10 +26,7 @@ namespace Players
         public void Initialize(Transform transform, SatietyStage stage, int pointsCount, float castStrength,
             Vector3 castOffset, EatableSpawner spawner, AbilityButton spitButton, Projectile projectile)
         {
-            _line = GetComponent<LineRenderer>();
             Initialize(projectile);
-            _line.positionCount = _pointsCount;
-            _line.enabled = false;
             _transform = transform;
             Stage = stage;
             _pointsCount = pointsCount;
@@ -37,6 +34,9 @@ namespace Players
             _castOffset = castOffset;
             _spawner = spawner;
             _spitButton = spitButton;
+            _line = GetComponent<LineRenderer>();
+            _line.positionCount = _pointsCount;
+            _line.enabled = false;
             IsHidden = false;
         }
 

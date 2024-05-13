@@ -4,29 +4,29 @@ using System.Linq;
 
 namespace Boosters
 {
-    public class BoosterService : IBoosterVisitor, IInsertable
+    public class BoosterService : IBoosterVisitor, IUsable
     {
-        private readonly List<SerializedPair<IStatBuffer, float>> _currentBoosters = new();
-        private readonly List<SerializedPair<IStatBuffer, float>> _toDeleteBoosters = new();
+        private readonly List<SerializedPair<IStat, float>> _currentBoosters = new();
+        private readonly List<SerializedPair<IStat, float>> _toDeleteBoosters = new();
 
         private bool _isAllowBoost;
 
-        public event Action<IStatBuffer> Ejected; 
-        public event Action<IStatBuffer> Injected; 
+        public event Action<IStat> Ejected; 
+        public event Action<IStat> Injected; 
 
         public void Update(float delay)
         {
             for (int i = 0; i < _currentBoosters.Count; i++)
             {
-                var unPacked = _currentBoosters[i];
-                unPacked.Value -= delay;
-                _currentBoosters[i] = unPacked;
+                var unpacked = _currentBoosters[i];
+                unpacked.Value -= delay;
+                _currentBoosters[i] = unpacked;
                 
                 if (_currentBoosters[i].Value <= 0f)
                     _toDeleteBoosters.Add(_currentBoosters[i]);
             }
 
-            foreach (SerializedPair<IStatBuffer, float> pair in _toDeleteBoosters)
+            foreach (SerializedPair<IStat, float> pair in _toDeleteBoosters)
             {
                 Ejected?.Invoke(pair.Key);
                 _currentBoosters.Remove(pair);
@@ -37,7 +37,7 @@ namespace Boosters
 
         public bool TryInsert(IBooster booster)
         {
-            IStatBuffer boost = booster.GetBoost();
+            IStat boost = booster.GetBoost();
             
             boost.Accept(this);
 
@@ -47,7 +47,7 @@ namespace Boosters
             _isAllowBoost = false;
             
             booster.Use();
-            _currentBoosters.Add(new SerializedPair<IStatBuffer, float>(boost, boost.LifeTime));
+            _currentBoosters.Add(new SerializedPair<IStat, float>(boost, boost.LifeTime));
             Injected?.Invoke(boost);
             return true;
         }
