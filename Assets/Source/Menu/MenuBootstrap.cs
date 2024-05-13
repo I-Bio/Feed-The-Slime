@@ -1,6 +1,6 @@
-﻿using Spawners;
+﻿using System.Collections.Generic;
+using Spawners;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.UI;
 
 namespace Menu
@@ -8,7 +8,6 @@ namespace Menu
     [RequireComponent(typeof(YandexLeaderboard))]
     [RequireComponent(typeof(LeaderboardView))]
     [RequireComponent(typeof(Stopper))]
-    [RequireComponent(typeof(SoundChanger))]
     public class MenuBootstrap : MonoBehaviour
     {
         [SerializeField] private string _leaderboardName = "Leaderboard";
@@ -21,34 +20,26 @@ namespace Menu
         [SerializeField] private Game _endGame;
 
         [Space, Header("Sound")] 
-        [SerializeField] private AudioMixer _mixer;
-        [SerializeField] private Slider _gameVolume;
-        [SerializeField] private Slider _musicVolume;
+        [SerializeField] private Sprite _onIcon;
+        [SerializeField] private Sprite _offIcon;
+        [SerializeField] private Button _volume;
+        [SerializeField] private Image _icon;
+        [SerializeField] private List<AudioSource> _sources;
         [SerializeField] private AudioSource _music;
-
-        [Space, Header(nameof(SubWindowSwitcher))] 
-        [SerializeField] private SubWindowSwitcher _subSwitcher;
-        [SerializeField] private Button[] _subCloseButtons;
-        [SerializeField] private Button[] _subVolumeButtons;
-        [SerializeField] private Window[] _subParents;
 
         private YandexLeaderboard _yandexLeaderboard;
         private LeaderboardView _leaderboard;
         private Stopper _stopper;
-        private SoundChanger _sound;
 
         private void Awake()
         {
             _yandexLeaderboard = GetComponent<YandexLeaderboard>();
             _leaderboard = GetComponent<LeaderboardView>();
             _stopper = GetComponent<Stopper>();
-            _sound = GetComponent<SoundChanger>();
             
             _yandexLeaderboard.Initialize(_leaderboard, _leaderboardName, _anonymous, _container, _template);
-            _sound.Initialize(_mixer, _gameVolume, _musicVolume, _music);
-            _stopper.Initialize(_sound.Mute, _sound.Release);
-            _progress.Initialize(_yandexLeaderboard, _bootstrap, _stopper, _sound, _endGame);
-            _subSwitcher.Initialize(_stopper, _subCloseButtons, _subVolumeButtons, _subParents);
+            _stopper.Initialize(_onIcon, _offIcon, _volume, _icon, _sources, _music);
+            _progress.Initialize(_yandexLeaderboard, _bootstrap, _stopper, _endGame);
         }
     }
 }
