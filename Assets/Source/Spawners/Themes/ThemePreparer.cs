@@ -12,13 +12,21 @@ namespace Spawners
         [SerializeField] private EnemyPolicies _behaviour;
         [SerializeField] private EnemySetup[] _enemies;
 
-        public void Initialize(IHidden player, EnemyDependencyVisitor visitor)
+        public void Initialize(IHidden player, EnemyDependencyVisitor visitor, Action<AudioSource> onAudioFound = null)
         {
             foreach (FoodSetup food in _foods)
                 food.Initialize(float.NaN);
             
             foreach (EnemySetup enemy in _enemies)
+            {
                 enemy.Initialize(player, visitor, CreatePolicy());
+                
+                if (onAudioFound == null)
+                    continue;
+                
+                if (enemy.TryGetComponent(out AudioSource source) == true)
+                    onAudioFound?.Invoke(source);
+            }
         }
 
         private IEnemyPolicy CreatePolicy()

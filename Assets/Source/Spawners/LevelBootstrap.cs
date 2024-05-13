@@ -52,9 +52,11 @@ namespace Spawners
 
         private Revival _revival;
         private FadeCaster _fadeCaster;
+        private Stopper _stopper;
 
-        public void Initialize(int completedLevels)
+        public void Initialize(int completedLevels, Stopper stopper)
         {
+            _stopper = stopper;
             _revival = GetComponent<Revival>();
             _fadeCaster = GetComponent<FadeCaster>();
             
@@ -80,10 +82,10 @@ namespace Spawners
 
             foreach (Transform zonePoint in _zonePoints)
                 Instantiate(_zoneTemplates[id].Value.GetRandom(), zonePoint)
-                    .Initialize(hidden, visitor);
+                    .Initialize(hidden, visitor, _stopper.AddMuted);
         }
 
-        public void Launch(IReadOnlyCharacteristics characteristics, WindowSwitcher switcher, Stopper stopper, int reward)
+        public void Launch(IReadOnlyCharacteristics characteristics, WindowSwitcher switcher, int reward)
         {
             IMovable movable = new Speed(characteristics.Speed);
             ICalculableScore calculableScore = new AdditionalScore(new Score(), characteristics.ScorePerEat);
@@ -97,7 +99,7 @@ namespace Spawners
             _boosterSpawner.Initialize(new BoosterStatFactory(_scaleValues, _additionalValues,
                 _speedIcon, _scoreIcon, _maxLifeTime, _minLifeTime), _pointsHolder, _offSet, _spawnDelay, _template);
             
-            _game.Initialize(_revival, switcher, stopper, reward);
+            _game.Initialize(_revival, switcher, _stopper, reward);
         }
     }
 }

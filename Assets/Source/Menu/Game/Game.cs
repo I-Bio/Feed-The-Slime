@@ -31,7 +31,7 @@ namespace Menu
         {
             _winAdvert.onClick.RemoveListener(ShowWinAdvert);
             _loseAdvert.onClick.RemoveListener(ShowLoseAdvert);
-            
+
             foreach (Button load in _loadButtons)
                 load.onClick.RemoveListener(Load);
         }
@@ -50,7 +50,7 @@ namespace Menu
 
             foreach (Button load in _loadButtons)
                 load.onClick.AddListener(Load);
-            
+
             _switcher.ChangeWindow(Windows.Play);
         }
 
@@ -79,12 +79,16 @@ namespace Menu
 
         private void ShowWinAdvert()
         {
-            ShowRewardAdvert(DoubleReward, null);
+            ShowRewardAdvert(DoubleReward, _stopper.FocusRelease);
         }
 
         private void ShowLoseAdvert()
         {
-            ShowRewardAdvert(Respawn, _switcher.ResumeScreen);
+            ShowRewardAdvert(Respawn, () =>
+            {
+                _switcher.ResumeScreen();
+                _stopper.FocusRelease();
+            });
         }
 
         private void ShowRewardAdvert(Action onReward, Action onClose)
@@ -94,7 +98,7 @@ namespace Menu
             onClose?.Invoke();
 #endif
 #if UNITY_WEBGL && !UNITY_EDITOR
-            VideoAd.Show(_stopper.Pause, onReward, onClose);
+            VideoAd.Show(_stopper.FocusPause, onReward, onClose);
 #endif
         }
 
@@ -114,7 +118,7 @@ namespace Menu
         private void UpdateReward()
         {
             _stageScale = _stage == (int)SatietyStage.Exhaustion ? _minPercent : _stage / _maxStage;
-            
+
             foreach (TextMeshProUGUI reward in _rewards)
                 reward.SetText(Mathf.CeilToInt(_rewardCount * _stageScale).ToString());
         }
