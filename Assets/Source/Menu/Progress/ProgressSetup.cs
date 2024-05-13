@@ -44,7 +44,7 @@ namespace Menu
             _presenter.Disable();
         }
         
-        public void Initialize(YandexLeaderboard leaderboard, LevelBootstrap bootstrap, Stopper stopper, SoundChanger sound, IRewardCollector endGame)
+        public void Initialize(YandexLeaderboard leaderboard, LevelBootstrap bootstrap, Stopper stopper, IRewardCollector endGame)
         {
             _bars = new IProgressionBar[Enum.GetValues(typeof(PurchaseNames)).Length];
             _bars[(int)PurchaseNames.Speed] = _speedBar;
@@ -54,7 +54,7 @@ namespace Menu
 
             _model = new Progress(_startCharacteristics, _rewardSteps, _advertStep);
             _presenter = new ProgressPresenter(_model, _bars, _play, _level, _crystals, _reward, _switcher, _filler,
-                leaderboard, bootstrap, stopper, sound, endGame, _startCharacteristics);
+                leaderboard, bootstrap, stopper, endGame, _startCharacteristics);
             _switcher.Initialize(stopper, _upgrade, _leader, _authorize, _pause, _resume, _closeButtons);
             _reward.Initialize(_gemTemplate);
             _filler.Initialize();

@@ -99,16 +99,11 @@ namespace Menu
             GoingSave?.Invoke(_characteristics);
         }
 
-        public void ChangeGameVolume(float volume)
+        public void ChangeSound(bool isAllowed)
         {
-            _characteristics.GameVolume = volume;
+            _characteristics.IsAllowedSound = isAllowed;
         }
 
-        public void ChangeMusicVolume(float volume)
-        {
-            _characteristics.MusicVolume = volume;
-        }
-        
         public void UpdateLeaderboardScore(Action<int> onUpdated)
         {
             onUpdated?.Invoke(_characteristics.CompletedLevels);

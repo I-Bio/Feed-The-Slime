@@ -2,6 +2,7 @@
 using Agava.YandexGames.Utility;
 using Spawners;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Menu
@@ -19,14 +20,13 @@ namespace Menu
         private readonly YandexLeaderboard Leaderboard;
         private readonly LevelBootstrap Bootstrap;
         private readonly Stopper Stopper;
-        private readonly SoundChanger Sound;
         private readonly IRewardCollector EndGame;
         private readonly SaveService SaveService;
 
         public ProgressPresenter(Progress model, IProgressionBar[] bars, Button play, TextMeshProUGUI level,
             TextMeshProUGUI crystals, RewardReproducer reward, WindowSwitcher switcher, ObjectFiller filler,
             YandexLeaderboard leaderboard,
-            LevelBootstrap bootstrap, Stopper stopper, SoundChanger sound, IRewardCollector endGame,
+            LevelBootstrap bootstrap, Stopper stopper, IRewardCollector endGame,
             PlayerCharacteristics characteristics)
         {
             Model = model;
@@ -40,7 +40,6 @@ namespace Menu
             Leaderboard = leaderboard;
             Bootstrap = bootstrap;
             Stopper = stopper;
-            Sound = sound;
             EndGame = endGame;
             SaveService = new SaveService(OnLoaded, characteristics);
         }
@@ -56,8 +55,7 @@ namespace Menu
                 bar.Bought += OnBought;
 
             EndGame.GoingCollect += OnGoingCollect;
-            Sound.GameVolumeChanged += OnGameVolumeChanged;
-            Sound.MusicVolumeChanged += OnMusicVolumeChanged;
+            Stopper.SoundChanged += OnSoundChanged;
             Switcher.LeaderboardOpened += OnLeaderboardOpened;
             Play.onClick.AddListener(OnGameLaunched);
 
@@ -75,27 +73,30 @@ namespace Menu
                 bar.Bought -= OnBought;
 
             EndGame.GoingCollect -= OnGoingCollect;
-            Sound.GameVolumeChanged -= OnGameVolumeChanged;
-            Sound.MusicVolumeChanged -= OnMusicVolumeChanged;
+            Stopper.SoundChanged -= OnSoundChanged;
             Switcher.LeaderboardOpened -= OnLeaderboardOpened;
             Play.onClick.RemoveListener(OnGameLaunched);
         }
         
         private void OnLoaded(IReadOnlyCharacteristics characteristics)
         {
+            Debug.Log("Start LOAD PROGRESS");
             Model.Load(characteristics);
 
             Bars[(int)PurchaseNames.Speed].Initialize(characteristics.Speed);
             Bars[(int)PurchaseNames.Score].Initialize(characteristics.ScorePerEat);
             Bars[(int)PurchaseNames.Life].Initialize(characteristics.LifeCount);
             Bars[(int)PurchaseNames.Spit].Initialize(characteristics.DidObtainSpit);
-
-            Bootstrap.Initialize(characteristics.CompletedLevels);
-            Sound.Load(characteristics.GameVolume, characteristics.MusicVolume);
+            Debug.Log("BARS LOADED");
+            Bootstrap.Initialize(characteristics.CompletedLevels, Stopper);
+            Stopper.Load(characteristics.IsAllowedSound);
+            Debug.Log("SOUND LOAD COMPLETE");
             OnLevelsIncreased(characteristics.CompletedLevels);
             OnCrystalsChanged(characteristics.CrystalsCount);
             Switcher.ShowMain();
+            Debug.Log("WINDOW SWITCHED");
             Filler.EmptyUp();
+            Debug.Log("END LOAD PROGRESS");
         }
 
         private void OnCrystalsChanged(int crystalsCount)
@@ -133,17 +134,12 @@ namespace Menu
         private void OnRewardPrepared(IReadOnlyCharacteristics characteristics, int rewardCount)
         {
             Model.Save();
-            Bootstrap.Launch(characteristics, Switcher, Stopper, rewardCount);
+            Bootstrap.Launch(characteristics, Switcher, rewardCount);
         }
 
-        private void OnGameVolumeChanged(float volume)
+        private void OnSoundChanged(bool isAllowed)
         {
-            Model.ChangeGameVolume(volume);
-        }
-
-        private void OnMusicVolumeChanged(float volume)
-        {
-            Model.ChangeMusicVolume(volume);
+            Model.ChangeSound(isAllowed);
         }
 
         private void OnBought(int spendCount, PurchaseNames progression, object value)
