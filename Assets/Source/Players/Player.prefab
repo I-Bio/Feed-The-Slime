@@ -64,7 +64,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7056064188858395761}
-  - component: {fileID: 9150376926234741396}
+  - component: {fileID: 2494650563092898820}
   m_Layer: 3
   m_Name: Music
   m_TagString: Untagged
@@ -87,7 +87,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3765090333748425613}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &9150376926234741396
+--- !u!82 &2494650563092898820
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,9 +96,9 @@ AudioSource:
   m_GameObject: {fileID: 393870160225600124}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 3296122455109364448, guid: 7a22732e72f714c41a48b2ede0d4f121, type: 2}
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: ac81e521cc4fffd4cb560d4ddc70d306, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -974,6 +974,7 @@ MonoBehaviour:
   - {fileID: 4214564066194336688}
   - {fileID: 230933007255033372}
   - {fileID: 3478401223446558986}
+  _music: {fileID: 2494650563092898820}
   _effects:
   - {fileID: 128805715783533292}
   - {fileID: 7392423093631593798}
