@@ -17,7 +17,7 @@ namespace Players
         private int _maxLevel;
         private int _currentLevel;
 
-        public Player(ICalculableScore calculableScore, SatietyStage stage, float scoreScaler, float maxScore,
+        public Player(ICalculableScore calculableScore, SatietyStage stage, float scoreScaler, float startScore, float maxScore,
             int levelsPerStage)
         {
             Combiner = new StatCombiner<ICalculableScore>(new CombinedScore());
@@ -25,16 +25,55 @@ namespace Players
             _calculableScore = Combiner.GetRecombined();
             _stage = stage;
             ScoreScaler = scoreScaler;
+            _score = startScore;
             _maxScore = maxScore;
             LevelsPerStage = levelsPerStage;
             _maxLevel = LevelsPerStage;
         }
 
+        public event Action<SatietyStage, int, float, int> Loaded;
         public event Action<float, int> ScoreChanged;
         public event Action<SatietyStage> SizeIncreased;
         public event Action<int> LevelIncreased;
         public event Action Winning;
+        
+        public void Load()
+        {
+            if (_score <= (float)ValueConstants.Zero)
+                return;
 
+            float score = 0;
+            float maxScore = _maxScore;
+            int level = 0;
+            int maxLevel = _maxLevel;
+            SatietyStage stage = _stage;
+            float step = 0.1f;
+
+            while (score < _score)
+            {
+                score += step;
+
+                if (score < maxScore && Mathf.Approximately(score, maxScore) == false)
+                    continue;
+                
+                maxScore = Mathf.FloorToInt(maxScore * ScoreScaler);
+                level++;
+
+                if (level < maxLevel)
+                    continue;
+                
+                maxLevel += LevelsPerStage;
+                stage++;
+            }
+
+            _maxScore = maxScore;
+            _currentLevel = level;
+            _maxLevel = maxLevel;
+            _stage = stage;
+            Debug.Log($"Score: {score}, MaxScore {maxScore}, Level {level}, MaxLevel {maxLevel}, Stage {stage}");
+            Loaded?.Invoke(_stage, _currentLevel, _score, (int)_maxScore);
+        }
+        
         public void SetBoost(ICalculableScore boost)
         {
             Combiner.ChangeBoost(boost);
@@ -45,8 +84,8 @@ namespace Players
         {
             value = _calculableScore.CalculateScore(value);
             _score += value;
-            
-            if (_score >= _maxScore || Mathf.Approximately(_score, _maxScore))
+
+            while (_score >= _maxScore || Mathf.Approximately(_score, _maxScore))
                 RaiseLevel();
 
             ScoreChanged?.Invoke(_score, (int)_maxScore);

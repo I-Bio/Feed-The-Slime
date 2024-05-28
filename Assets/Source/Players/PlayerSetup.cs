@@ -39,6 +39,7 @@ namespace Players
 
         [Space, Header("Effects")]
         [SerializeField] private ParticleSystem[] _effects;
+        [SerializeField] private Transform _cameraFrontPoint;
         
         [Space, Header("Booster Effects")] 
         [SerializeField] private float _updateDelay;
@@ -79,8 +80,16 @@ namespace Players
         private PlayerPresenter _playerPresenter;
         private BoosterPresenter _boosterPresenter;
         private ToxinPresenter _toxinPresenter;
-
-        public void Initialize(IMovable movable, ICalculableScore calculableScore, IGame game)
+        
+        private void OnDestroy()
+        {
+            _playerPresenter?.Disable();
+            _boosterPresenter?.Disable();
+            _toxinPresenter?.Disable();
+        }
+        
+        public void Initialize(IMovable movable, ICalculableScore calculableScore, float startScore,
+            IGame game, IRevival revival, Action<float> progressChangedCallback)
         {
             _collisionDetector = GetComponent<PlayerCollisionDetector>();
             _scanner = GetComponent<PlayerScanner>();
@@ -94,14 +103,17 @@ namespace Players
             _ticker = GetComponent<Ticker>();
             _spawner = GetComponent<EatableSpawner>();
             _transform = transform;
+            
+            startScore = startScore > (float)ValueConstants.Zero ? startScore : _levelConfig.StartScore;
 
             _model = new Player(calculableScore, _levelConfig.StartStage, _levelConfig.ScoreScaler,
-                _levelConfig.StartMaxScore, _levelConfig.LevelsPerStage);
+                startScore, _levelConfig.StartMaxScore, _levelConfig.LevelsPerStage);
             _service = new BoosterService();
             _playerToxins = new PlayerToxins(_levelConfig.MaxToxinsCount, _levelConfig.MinToxinsCount);
 
             _playerPresenter = new PlayerPresenter(_model, _collisionDetector, _scanner, _sizeScaler, _levelBar,
-                _stageBar, _service, _animation, _abilityCaster, _mover, _effectReproducer, _soundReproducer, game);
+                _stageBar, _service, _animation, _abilityCaster, _mover, _effectReproducer, _soundReproducer,
+                game, revival, progressChangedCallback);
             _boosterPresenter = new BoosterPresenter(_model, _mover, _service, _boosterVisualizer);
             _toxinPresenter = new ToxinPresenter(_playerToxins, _toxinBar, _ticker, _collisionDetector);
             
@@ -112,8 +124,8 @@ namespace Players
             _mover.Initialize(movable, new MoverScalerFactory(movable, _levelConfig.ScaleFactor), _rotationPoint, _transform.forward);
             _boosterVisualizer.Initialize(_updateDelay, new Dictionary<Type, Action>
             {
-                {typeof(IMovable), () => {_effectReproducer.PlayEffect(EffectType.SpeedBoost);}},
-                {typeof(ICalculableScore), () => {_effectReproducer.PlayEffect(EffectType.ScoreBoost);}},
+                {typeof(IMovable), () => {_effectReproducer.Play(EffectType.SpeedBoost);}},
+                {typeof(ICalculableScore), () => {_effectReproducer.Play(EffectType.ScoreBoost);}},
             }, _holder, _icon);
             _animation.Initialize(_animator, _eat, _idle, _hide);
             _abilityCaster.Initialize(_rotationPoint, _levelConfig.StartStage, _pointsCount, _castStrength, _castOffset, _spawner, _spitButton, _projectile);
@@ -127,13 +139,6 @@ namespace Players
             _playerPresenter.Enable();
             _boosterPresenter.Enable();
             _toxinPresenter.Enable();
-        }
-
-        private void OnDestroy()
-        {
-            _playerPresenter?.Disable();
-            _boosterPresenter?.Disable();
-            _toxinPresenter?.Disable();
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using Boosters;
+﻿using System;
+using Boosters;
 using Menu;
+using UnityEngine;
 
 namespace Players
 {
@@ -18,11 +20,13 @@ namespace Players
         private readonly IUsable BoosterService;
         private readonly IMover Mover;
         private readonly IGame Game;
+        private readonly IRevival Revival;
+        private readonly Action<float> ProgressChangedCallback;
 
         public PlayerPresenter(Player model, PlayerCollisionDetector collisionDetector, PlayerScanner scanner,
             SizeScaler sizeScaler, LevelBar levelBar, StageBar stageBar, IUsable boosterService,
             PlayerAnimation animation, AbilityCaster caster, IMover mover, EffectReproducer effectReproducer,
-            SoundReproducer soundReproducer, IGame game)
+            SoundReproducer soundReproducer, IGame game, IRevival revival, Action<float> progressChangedCallback)
         {
             Model = model;
             CollisionDetector = collisionDetector;
@@ -37,10 +41,13 @@ namespace Players
             EffectReproducer = effectReproducer;
             SoundReproducer = soundReproducer;
             Game = game;
+            Revival = revival;
+            ProgressChangedCallback = progressChangedCallback;
         }
 
         public void Enable()
         {
+            Model.Loaded += OnLoaded;
             Model.ScoreChanged += OnScoreChanged;
             Model.LevelIncreased += OnLevelIncreased;
             Model.SizeIncreased += OnSizeIncreased;
@@ -52,10 +59,14 @@ namespace Players
             Caster.Hid += OnHid;
             Caster.Showed += OnShowed;
             Caster.SpitCasted += OnSpitCasted;
+            Revival.Revived += OnRevived;
+            
+            Model.Load();
         }
 
         public void Disable()
         {
+            Model.Loaded -= OnLoaded;
             Model.ScoreChanged -= OnScoreChanged;
             Model.LevelIncreased -= OnLevelIncreased;
             Model.SizeIncreased -= OnSizeIncreased;
@@ -67,13 +78,31 @@ namespace Players
             Caster.Hid -= OnHid;
             Caster.Showed -= OnShowed;
             Caster.SpitCasted -= OnSpitCasted;
+            Revival.Revived -= OnRevived;
         }
 
+        private void OnLoaded(SatietyStage stage, int level, float score, int maxScore)
+        {
+            LevelBar.ChangeScore(score, maxScore);
+            LevelBar.SetLevel(level);
+
+            for (int i = 0; i < (int)stage; i++)
+                StageBar.Increase();
+            
+            StageBar.ChangeValue(score);
+            Caster.SetStage(stage);
+            Scanner.SetStage(stage);
+            CollisionDetector.SetStage(stage);
+            Game.SetStage(stage);
+            SizeScaler.Scale(stage);
+        }
+        
         private void OnScoreChanged(float score, int maxScore)
         {
             SoundReproducer.PlayClip(SoundType.ScoreGain);
             LevelBar.ChangeScore(score, maxScore);
             StageBar.ChangeValue(score);
+            ProgressChangedCallback?.Invoke(score);
         }
 
         private void OnLevelIncreased(int level)
@@ -84,15 +113,18 @@ namespace Players
 
         private void OnSizeIncreased(SatietyStage stage)
         {
-            SoundReproducer.PlayClip(SoundType.StageUp);
-            EffectReproducer.PlayEffect(EffectType.StageUp);
+            SizeScaler.Scale(stage, OnScaled);
             Caster.SetStage(stage);
             Scanner.SetStage(stage);
             CollisionDetector.SetStage(stage);
             Game.SetStage(stage);
             StageBar.Increase();
-            Scanner.Rescan();
-            SizeScaler.Scale(stage);
+        }
+
+        private void OnScaled(Vector3 position)
+        {
+            EffectReproducer.PlayAt(EffectType.StageUp, position);
+            SoundReproducer.PlayClip(SoundType.StageUp);
         }
 
         private void OnWinning()
@@ -108,6 +140,7 @@ namespace Players
         private void OnScoreGained(float value)
         {
             Animation.PlayAttack();
+            EffectReproducer.Play(EffectType.WaterDrop);
             Model.IncreaseScore(value);
         }
 
@@ -121,7 +154,7 @@ namespace Players
         {
             Mover.ProhibitMove();
             Animation.PlayHide();
-            EffectReproducer.PlayEffect(EffectType.Hide);
+            EffectReproducer.Play(EffectType.Hide);
             SoundReproducer.PlayClip(SoundType.Hide);
         }
 
@@ -135,6 +168,12 @@ namespace Players
         {
             SoundReproducer.PlayClip(SoundType.Spit);
             Animation.PlayAttack();
+        }
+
+        private void OnRevived()
+        {
+            EffectReproducer.Play(EffectType.Heal);
+            SoundReproducer.PlayClip(SoundType.StageUp);
         }
     }
 }
