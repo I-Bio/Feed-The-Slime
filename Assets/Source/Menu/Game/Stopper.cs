@@ -38,9 +38,7 @@ namespace Menu
             _icon = icon;
             _sources = sources;
             _music = music;
-            
-            Debug.Log($"Ignore volume:{_music.ignoreListenerVolume}, ignore pause:{_music.ignoreListenerPause}");
-            
+
             Application.focusChanged += OnFocusChangedApp;
             WebApplication.InBackgroundChangeEvent += OnFocusChangedWeb;
 

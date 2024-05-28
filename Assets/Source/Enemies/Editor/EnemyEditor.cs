@@ -5,7 +5,6 @@ using UnityEngine;
 namespace Enemies
 {
     [CustomEditor(typeof(EnemySetup))]
-    [CanEditMultipleObjects]
     public class EnemyEditor : Editor
     {
         private SerializedProperty _followDistance;
