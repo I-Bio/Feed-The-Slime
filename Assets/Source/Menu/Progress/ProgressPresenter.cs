@@ -1,6 +1,6 @@
 ﻿using System;
+using Agava.YandexGames;
 using Agava.YandexGames.Utility;
-using Spawners;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +17,7 @@ namespace Menu
         private readonly RewardReproducer Reward;
         private readonly WindowSwitcher Switcher;
         private readonly ObjectFiller Filler;
+        private readonly AutoSaveRequester Requester;
         private readonly YandexLeaderboard Leaderboard;
         private readonly LevelBootstrap Bootstrap;
         private readonly Stopper Stopper;
@@ -25,9 +26,8 @@ namespace Menu
 
         public ProgressPresenter(Progress model, IProgressionBar[] bars, Button play, TextMeshProUGUI level,
             TextMeshProUGUI crystals, RewardReproducer reward, WindowSwitcher switcher, ObjectFiller filler,
-            YandexLeaderboard leaderboard,
-            LevelBootstrap bootstrap, Stopper stopper, IRewardCollector endGame,
-            PlayerCharacteristics characteristics)
+            AutoSaveRequester requester, YandexLeaderboard leaderboard, LevelBootstrap bootstrap, Stopper stopper,
+            IRewardCollector endGame, PlayerCharacteristics characteristics)
         {
             Model = model;
             Bars = bars;
@@ -37,6 +37,7 @@ namespace Menu
             Reward = reward;
             Switcher = switcher;
             Filler = filler;
+            Requester = requester;
             Leaderboard = leaderboard;
             Bootstrap = bootstrap;
             Stopper = stopper;
@@ -54,6 +55,7 @@ namespace Menu
             foreach (IProgressionBar bar in Bars)
                 bar.Bought += OnBought;
 
+            Requester.SaveRequested += OnSaveRequested;
             EndGame.GoingCollect += OnGoingCollect;
             Stopper.SoundChanged += OnSoundChanged;
             Switcher.LeaderboardOpened += OnLeaderboardOpened;
@@ -72,6 +74,7 @@ namespace Menu
             foreach (IProgressionBar bar in Bars)
                 bar.Bought -= OnBought;
 
+            Requester.SaveRequested -= OnSaveRequested;
             EndGame.GoingCollect -= OnGoingCollect;
             Stopper.SoundChanged -= OnSoundChanged;
             Switcher.LeaderboardOpened -= OnLeaderboardOpened;
@@ -80,23 +83,22 @@ namespace Menu
         
         private void OnLoaded(IReadOnlyCharacteristics characteristics)
         {
-            Debug.Log("Start LOAD PROGRESS");
             Model.Load(characteristics);
+            
+            if (characteristics.IsAllowedShowInter)
+                InterstitialAd.Show(() => Stopper.FocusPause(true), _ => Stopper.FocusRelease(true));
 
             Bars[(int)PurchaseNames.Speed].Initialize(characteristics.Speed);
             Bars[(int)PurchaseNames.Score].Initialize(characteristics.ScorePerEat);
             Bars[(int)PurchaseNames.Life].Initialize(characteristics.LifeCount);
             Bars[(int)PurchaseNames.Spit].Initialize(characteristics.DidObtainSpit);
-            Debug.Log("BARS LOADED");
-            Bootstrap.Initialize(characteristics.CompletedLevels, Stopper);
+
+            Switcher.ShowMain();
+            Bootstrap.Initialize(characteristics.CompletedLevels);
             Stopper.Load(characteristics.IsAllowedSound);
-            Debug.Log("SOUND LOAD COMPLETE");
             OnLevelsIncreased(characteristics.CompletedLevels);
             OnCrystalsChanged(characteristics.CrystalsCount);
-            Switcher.ShowMain();
-            Debug.Log("WINDOW SWITCHED");
             Filler.EmptyUp();
-            Debug.Log("END LOAD PROGRESS");
         }
 
         private void OnCrystalsChanged(int crystalsCount)
@@ -117,11 +119,21 @@ namespace Menu
             Level.SetText(value.ToString());
         }
 
+        private void OnSaveRequested()
+        {
+            Model.Save();
+            Debug.Log($"Auto Save");
+        }
+
         private void OnGoingCollect(int rewardCount, bool didPass, Action callBack)
         {
             if (didPass == true)
+            {
                 Model.IncreaseLevels();
-
+                Model.ChangeScore((float)ValueConstants.Zero);
+            }
+            
+            Model.AccumulateAdvert();
             Model.ChangeCrystals(rewardCount);
             Reward.Reproduce(rewardCount,() => Filler.FillUp(callBack));
         }
@@ -134,7 +146,7 @@ namespace Menu
         private void OnRewardPrepared(IReadOnlyCharacteristics characteristics, int rewardCount)
         {
             Model.Save();
-            Bootstrap.Launch(characteristics, Switcher, rewardCount);
+            Bootstrap.Launch(characteristics, rewardCount, Model.ChangeScore);
         }
 
         private void OnSoundChanged(bool isAllowed)
@@ -151,7 +163,7 @@ namespace Menu
                     break;
 
                 case PurchaseNames.Score:
-                    Model.SetScore(value);
+                    Model.SetScorePerEat(value);
                     break;
 
                 case PurchaseNames.Life:

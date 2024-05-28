@@ -30,7 +30,7 @@ namespace Menu
             _characteristics.Speed = speed as float? ?? throw new NullReferenceException();
         }
 
-        public void SetScore(object score)
+        public void SetScorePerEat(object score)
         {
             _characteristics.ScorePerEat = score as float? ?? throw new NullReferenceException();
         }
@@ -49,7 +49,10 @@ namespace Menu
         {
             _characteristics.CompletedLevels++;
             LevelsIncreased?.Invoke(_characteristics.CompletedLevels);
+        }
 
+        public void AccumulateAdvert()
+        {
             _characteristics.IsAllowedShowInter = false;
             _characteristics.AdvertAccumulation++;
 
@@ -60,6 +63,11 @@ namespace Menu
             _characteristics.IsAllowedShowInter = true;
         }
 
+        public void ChangeScore(float score)
+        {
+            _characteristics.ProgressScore = score;
+        }
+
         public void ChangeCrystals(int value)
         {
             _characteristics.CrystalsCount += value;
@@ -68,10 +76,7 @@ namespace Menu
 
         public void PrepareReward()
         {
-            int rewardValue = RewardSteps
-                .Where(pair => pair.Key <= _characteristics.CompletedLevels || pair == RewardSteps[^1])
-                .Select(pair => pair.Value).FirstOrDefault();
-            
+            int rewardValue = RewardSteps.Last(pair => pair.Key <= _characteristics.CompletedLevels).Value;
             RewardPrepared?.Invoke(_characteristics, rewardValue);
         }
         

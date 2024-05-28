@@ -9,6 +9,8 @@
         Pause,
         Lose,
         Win,
-        Play
+        Play,
+        ExitWarning,
+        Exit
     }
 }
