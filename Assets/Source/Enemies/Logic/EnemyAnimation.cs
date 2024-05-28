@@ -1,34 +1,30 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Enemies
 {
     public class EnemyAnimation : MonoBehaviour
     {
         private Animator _animator;
-        private string _move;
-        private string _idle;
-        private bool _isMoved;
+        private Action OnAnimationPlayedCallback;
 
-        public void Initialize(Animator animator, string idle, string move)
+        public void Initialize(Animator animator, Action onInitializeCallback)
         {
             _animator = animator;
-            _idle = idle;
-            _move = move;
+            onInitializeCallback?.Invoke();
+            _animator.ResetTrigger(EnemyAnimations.Idle.ToString());
         }
 
-        public void PlayMove()
+        public void Play(EnemyAnimations animation, Action onAnimationPlayedCallback = null)
         {
-            if (_isMoved == true)
-                return;
-
-            _isMoved = true;
-            _animator.SetTrigger(_move);
+            OnAnimationPlayedCallback = onAnimationPlayedCallback;
+            _animator.SetTrigger(animation.ToString());
         }
 
-        public void PlayIdle()
+        public void InvokeCallback()
         {
-            _isMoved = false;
-            _animator.SetTrigger(_idle);
+            OnAnimationPlayedCallback?.Invoke();
+            OnAnimationPlayedCallback = null;
         }
     }
 }
