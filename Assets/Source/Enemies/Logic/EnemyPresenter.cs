@@ -1,64 +1,34 @@
-﻿using UnityEngine;
-
-namespace Enemies
+﻿namespace Enemies
 {
     public class EnemyPresenter : IPresenter
     {
-        private readonly Enemy _model;
-        private readonly EnemyBehaviour _behaviour;
-        private readonly EnemyAnimation _animation;
-        private readonly EnemyCollisionDetector _detector;
+        private readonly FinalStateMachine Model;
+        private readonly EnemyThinker Thinker;
 
-        public EnemyPresenter(Enemy model, EnemyBehaviour behaviour, EnemyAnimation animation,
-            EnemyCollisionDetector detector)
+        public EnemyPresenter(FinalStateMachine model, EnemyThinker thinker)
         {
-            _model = model;
-            _behaviour = behaviour;
-            _animation = animation;
-            _detector = detector;
+            Model = model;
+            Thinker = thinker;
         }
 
         public void Enable()
         {
-            _model.GoingInteract += OnGoingInteract;
-            _model.Canceled += OnCanceled;
-            _model.Avoided += OnAvoided;
-
-            _behaviour.GoingThink += OnGoingThink;
+            Thinker.GoingThink += OnGoingThink;
+            
+            Thinker.StartThink();
         }
 
         public void Disable()
         {
-            _model.GoingInteract -= OnGoingInteract;
-            _model.Canceled -= OnCanceled;
-            _model.Avoided -= OnAvoided;
-
-            _behaviour.GoingThink -= OnGoingThink;
-        }
-
-        private void OnGoingInteract(Vector3 position)
-        {
-            _animation.PlayMove();
-            _behaviour.InteractInClose(position);
-        }
-
-        private void OnCanceled()
-        {
-            _animation.PlayIdle();
-            _behaviour.CancelInteraction();
-        }
-
-        private void OnAvoided(Vector3 position)
-        {
-            if (_model.IsAvoiding == false)
-                _detector.DisallowContact();
+            Thinker.GoingThink -= OnGoingThink;
             
-            _behaviour.AvoidInteraction(position, _animation.PlayMove);
+            Thinker.StopThink();
+            Model.Exit();
         }
-
+        
         private void OnGoingThink()
         {
-            _model.CompareDistance();
+            Model.Update();
         }
     }
 }
