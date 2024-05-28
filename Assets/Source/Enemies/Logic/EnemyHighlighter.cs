@@ -5,8 +5,8 @@ namespace Enemies
 {
     public class EnemyHighlighter : ObjectHighlighter
     {
-        [SerializeField] private Color _color = Color.white;
-
+        private readonly Color Color = Color.white;
+        
         private bool _didColorChange;
         
         public override void Select(SatietyStage playerStage)
@@ -23,7 +23,7 @@ namespace Enemies
                 return;
 
             _didColorChange = true;
-            Outline.OutlineColor = _color;
+            Outline.OutlineColor = Color;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Players
         public void ChangeScore(float score, int maxScore)
         {
             _slider.value = score / maxScore;
-            _score.SetText($"{score:0.0}{_slash}{maxScore:0.0}");
+            _score.SetText($"{score:F1}{_slash}{maxScore:F1}");
         }
     }
 }

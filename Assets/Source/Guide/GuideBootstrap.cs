@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Boosters;
-using Cameras;
 using Cinemachine;
 using Enemies;
 using Foods;
@@ -15,6 +14,7 @@ using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 namespace Guide
 {
     [RequireComponent(typeof(FadeCaster))]
+    [RequireComponent(typeof(Revival))]
     public class GuideBootstrap : MonoBehaviour
     {
         [SerializeField] private InputSetup _input;
@@ -66,6 +66,7 @@ namespace Guide
         [SerializeField] private ObjectFiller _filler;
 
         private FadeCaster _fadeCaster;
+        private IRevival _revival;
         private SaveService _saveService;
         
         private void Awake()
@@ -79,13 +80,14 @@ namespace Guide
             IMovable movable = new Speed(characteristics.Speed);
             ICalculableScore calculableScore = new AdditionalScore(new Score(), characteristics.ScorePerEat);
             IHidden hidden = _player.GetComponent<IHidden>();
-            EnemyDependencyVisitor visitor = new EnemyDependencyVisitor(_player.GetComponent<IPlayerVisitor>());
+            IPlayerVisitor visitor = _player.GetComponent<IPlayerVisitor>();
             PlayerPrefs.SetString(nameof(PlayerCharacteristics.IsAllowedSound), characteristics.IsAllowedSound.ToString());
             
             _fadeCaster = GetComponent<FadeCaster>();
+            _revival = GetComponent<IRevival>();
 
             _input.Initialize();
-            _player.Initialize(movable, calculableScore, _guide);
+            _player.Initialize(movable, calculableScore, (float)ValueConstants.Zero, _guide, _revival, null);
             _boosterSpawner.Initialize(new BoosterStatFactory(_scaleValues, _additionalValues,
                 _speedIcon, _scoreIcon, _maxLifeTime, _minLifeTime), _pointsHolder, _offSet, _spawnDelay, _template);
             _theme.Initialize(hidden, visitor);

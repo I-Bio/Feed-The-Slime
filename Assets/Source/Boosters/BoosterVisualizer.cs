@@ -13,7 +13,7 @@ namespace Boosters
         
         private float _delay;
         private Transform _holder;
-        private  Dictionary<Type, Action> _effects;
+        private Dictionary<Type, Action> _effects;
 
         public event Action<float> Updated;
 

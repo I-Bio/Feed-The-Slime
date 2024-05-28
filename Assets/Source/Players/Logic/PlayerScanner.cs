@@ -10,17 +10,6 @@ namespace Players
         private Coroutine _routine;
         private SatietyStage _stage;
         
-        public void SetStage(SatietyStage stage)
-        {
-            _stage = stage;
-        }
-
-        public void Rescan()
-        {
-            foreach (ISelectable selectable in _selectables)
-                selectable.Select(_stage);
-        }
-
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out ISelectable selectable) == false)
@@ -37,6 +26,18 @@ namespace Players
 
             _selectables.Remove(selectable);
             selectable.Deselect();
+        }
+        
+        public void SetStage(SatietyStage stage)
+        {
+            _stage = stage;
+            Rescan();
+        }
+
+        private void Rescan()
+        {
+            foreach (ISelectable selectable in _selectables)
+                selectable.Select(_stage);
         }
     }
 }
