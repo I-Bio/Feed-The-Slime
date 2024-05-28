@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3194842813226839369}
   - component: {fileID: 1257675850269767175}
-  - component: {fileID: 2866170741074984078}
   - component: {fileID: 5182600723138512786}
   m_Layer: 0
   m_Name: Swarm
@@ -57,18 +56,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2866170741074984078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5938559642164433671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09bd5a3f70874eacb7a6cebf69774bdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5182600723138512786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,7 +264,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddaede2b07054881916bfb853d24d306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &8195613950930100901
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,10 +274,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3939995308519331891}
   - component: {fileID: 4139927321890655734}
-  - component: {fileID: 5920742016014542984}
   - component: {fileID: 6439051073671981494}
   - component: {fileID: 1688592437177663018}
   - component: {fileID: 1080705829018036815}
+  - component: {fileID: 7874815197358071785}
   m_Layer: 0
   m_Name: Evil_Stump
   m_TagString: Untagged
@@ -330,23 +316,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _followDistance: 7
   _animator: {fileID: 1688592437177663018}
-  _idle: Idle
-  _move: Dance
   _thinkDelay: 1
+  _idleOffset: 0.1
   _detector: {fileID: 175161902284510490}
   _foodPart: {fileID: 6131008069601840134}
---- !u!114 &5920742016014542984
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8195613950930100901}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcb62437212940479e7ba227c57616f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _type: 2
+  _agent: {fileID: 1257675850269767175}
+  _sound: {fileID: 1080705829018036815}
+  _particle: {fileID: 0}
   _swarm: {fileID: 5182600723138512786}
 --- !u!114 &6439051073671981494
 MonoBehaviour:
@@ -477,6 +454,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7874815197358071785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8195613950930100901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd6a8bea4f54d68afd688d5403ef3c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4911629931562280506
 PrefabInstance:
   m_ObjectHideFlags: 0

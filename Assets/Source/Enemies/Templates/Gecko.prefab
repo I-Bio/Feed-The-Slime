@@ -160,6 +160,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gecko
       objectReference: {fileID: 0}
+    - target: {fileID: 3748359892381204692, guid: f6ba3f6a030fdfb41bb3b15470242c58, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3748359892381204692, guid: f6ba3f6a030fdfb41bb3b15470242c58, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3748359892381204692, guid: f6ba3f6a030fdfb41bb3b15470242c58, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3748359892381204692, guid: f6ba3f6a030fdfb41bb3b15470242c58, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
     - target: {fileID: 4042940087036422592, guid: f6ba3f6a030fdfb41bb3b15470242c58, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -89.98021
@@ -180,10 +196,10 @@ PrefabInstance:
       addedObject: {fileID: 5976448458247896470}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f6ba3f6a030fdfb41bb3b15470242c58, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3891218544809348910}
+      addedObject: {fileID: 4438095563002918238}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f6ba3f6a030fdfb41bb3b15470242c58, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4438095563002918238}
+      addedObject: {fileID: 1651283872812337044}
     - targetCorrespondingSourceObject: {fileID: 3743993344710040121, guid: f6ba3f6a030fdfb41bb3b15470242c58, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5402232300892823142}
@@ -192,10 +208,13 @@ PrefabInstance:
       addedObject: {fileID: 761171016433595158}
     - targetCorrespondingSourceObject: {fileID: 3743993344710040121, guid: f6ba3f6a030fdfb41bb3b15470242c58, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2378779006561393679}
+      addedObject: {fileID: 1597355666122826797}
     - targetCorrespondingSourceObject: {fileID: 3743993344710040121, guid: f6ba3f6a030fdfb41bb3b15470242c58, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5700492971846536545}
+    - targetCorrespondingSourceObject: {fileID: 3743993344710040121, guid: f6ba3f6a030fdfb41bb3b15470242c58, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2378779006561393679}
     - targetCorrespondingSourceObject: {fileID: 3743993344710040121, guid: f6ba3f6a030fdfb41bb3b15470242c58, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6417668396627193431}
@@ -227,11 +246,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _followDistance: 10
   _animator: {fileID: 460935607149947752}
-  _idle: Idle
-  _move: Move
   _thinkDelay: 1
+  _idleOffset: 0.1
   _detector: {fileID: 6417668396627193431}
   _foodPart: {fileID: 5402232300892823142}
+  _type: 0
+  _agent: {fileID: 5976448458247896470}
+  _sound: {fileID: 0}
+  _particle: {fileID: 0}
+  _swarm: {fileID: 0}
 --- !u!195 &5976448458247896470
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -254,18 +277,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3891218544809348910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6615345874825243560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09bd5a3f70874eacb7a6cebf69774bdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4438095563002918238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,6 +287,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bda877a5b03248caa5ddc3f4da041eb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1651283872812337044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6615345874825243560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd6a8bea4f54d68afd688d5403ef3c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7276218083169963200 stripped
@@ -314,21 +337,35 @@ MonoBehaviour:
   outlineMode: 0
   outlineColor: {r: 1, g: 0.27058825, b: 0.27058825, a: 1}
   outlineWidth: 4
-  precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!114 &2378779006561393679
-MonoBehaviour:
+--- !u!54 &1597355666122826797
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7276218083169963200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05cdbefe13c64a3886217211f0308959, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!65 &5700492971846536545
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -350,6 +387,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.009409271, y: 0.034864385, z: 0.012529814}
   m_Center: {x: 0, y: 0.002642868, z: 0.006285732}
+--- !u!114 &2378779006561393679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7276218083169963200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05cdbefe13c64a3886217211f0308959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6417668396627193431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,4 +423,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddaede2b07054881916bfb853d24d306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _color: {r: 1, g: 1, b: 1, a: 1}

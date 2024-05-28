@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6844465209943700171}
   - component: {fileID: 5364391282847956611}
-  - component: {fileID: 1116205222744872306}
   - component: {fileID: 3253357568846672633}
   - component: {fileID: 7057029556861903581}
   - component: {fileID: 2955572360135807601}
+  - component: {fileID: 5159113914401318499}
   m_Layer: 0
   m_Name: Lava Flower
   m_TagString: Untagged
@@ -53,24 +53,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _followDistance: 6
   _animator: {fileID: 7057029556861903581}
-  _idle: Idle
-  _move: Dance
   _thinkDelay: 0.15
+  _idleOffset: 0.1
   _detector: {fileID: 5959788019094962613}
   _foodPart: {fileID: 8012244472923535702}
---- !u!114 &1116205222744872306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 910092586738725612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67c71d2624de45bda152957a37f07abd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _type: 1
+  _agent: {fileID: 0}
+  _sound: {fileID: 3253357568846672633}
   _particle: {fileID: 3662320023656912623}
+  _swarm: {fileID: 0}
 --- !u!82 &3253357568846672633
 AudioSource:
   m_ObjectHideFlags: 0
@@ -200,6 +191,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bda877a5b03248caa5ddc3f4da041eb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5159113914401318499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910092586738725612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd6a8bea4f54d68afd688d5403ef3c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7285328643676549485
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,7 +301,7 @@ GameObject:
   - component: {fileID: 7163080586148207983}
   - component: {fileID: 875057101815947287}
   - component: {fileID: 2223466335716005707}
-  - component: {fileID: 4392237758463487977}
+  - component: {fileID: 6589079682779871730}
   - component: {fileID: 2769653285119139188}
   - component: {fileID: 5959788019094962613}
   m_Layer: 0
@@ -437,12 +440,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
   outlineWidth: 4
-  precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!114 &4392237758463487977
+--- !u!114 &6589079682779871730
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -451,7 +453,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8513055126492428663}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f379dd332d54aff9358d4df5cc4d953, type: 3}
+  m_Script: {fileID: 11500000, guid: ddaede2b07054881916bfb853d24d306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!208 &2769653285119139188

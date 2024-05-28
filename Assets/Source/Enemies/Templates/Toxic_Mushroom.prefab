@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6417499940868377936}
-  - component: {fileID: 8880299288962676525}
   - component: {fileID: 7835526845999924396}
   - component: {fileID: 8771530900987806628}
   - component: {fileID: 3794890590388505245}
   - component: {fileID: 474687649830023229}
+  - component: {fileID: 5188669504948469124}
   m_Layer: 0
   m_Name: Toxic_Mushroom
   m_TagString: Untagged
@@ -38,19 +38,6 @@ Transform:
   - {fileID: 2330055574080410904}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8880299288962676525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 392933664172302373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67c71d2624de45bda152957a37f07abd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _particle: {fileID: 6777593454188561729}
 --- !u!114 &7835526845999924396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,11 +52,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _followDistance: 6.5
   _animator: {fileID: 8771530900987806628}
-  _idle: Idle
-  _move: Pull
   _thinkDelay: 0.5
+  _idleOffset: 0.1
   _detector: {fileID: 1441684218018404076}
   _foodPart: {fileID: 8883340709936717591}
+  _type: 1
+  _agent: {fileID: 0}
+  _sound: {fileID: 3794890590388505245}
+  _particle: {fileID: 6777593454188561729}
+  _swarm: {fileID: 0}
 --- !u!95 &8771530900987806628
 Animator:
   serializedVersion: 5
@@ -197,6 +188,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bda877a5b03248caa5ddc3f4da041eb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5188669504948469124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392933664172302373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bd6a8bea4f54d68afd688d5403ef3c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8929500950238152051
@@ -395,7 +398,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddaede2b07054881916bfb853d24d306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &6402479621733105409
 PrefabInstance:
   m_ObjectHideFlags: 0
