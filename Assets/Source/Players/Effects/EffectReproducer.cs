@@ -11,8 +11,14 @@ namespace Players
             _effects = effects;
         }
         
-        public void PlayEffect(EffectType effect)
+        public void Play(EffectType effect)
         {
+            _effects[(int)effect].Play();
+        }
+
+        public void PlayAt(EffectType effect, Vector3 position)
+        {
+            _effects[(int)effect].transform.position = position;
             _effects[(int)effect].Play();
         }
     }

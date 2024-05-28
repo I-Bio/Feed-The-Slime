@@ -6,5 +6,7 @@
         SpeedBoost,
         StageUp,
         Hide,
+        Heal,
+        WaterDrop
     }
 }
