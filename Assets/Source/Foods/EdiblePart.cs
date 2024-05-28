@@ -6,6 +6,7 @@ namespace Foods
     {
         private float _scorePerEat;
         private bool _isAllowed;
+        private bool _isEaten;
         
         public virtual void Initialize(float scorePerEat)
         {
@@ -24,6 +25,10 @@ namespace Foods
             if (_isAllowed == false)
                 return false;
 
+            if (_isEaten == true)
+                return false;
+
+            _isEaten = true;
             score = _scorePerEat;
             OnEat();
             return true;
