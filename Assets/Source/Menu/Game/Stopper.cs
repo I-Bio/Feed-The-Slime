@@ -10,7 +10,8 @@ namespace Menu
 {
     public class Stopper : MonoBehaviour
     {
-        private bool _isGamePaused;
+        private bool _isGamePause;
+        private bool _isForcePause;
         private bool _isAllowed = true;
         private Sprite _onIcon;
         private Sprite _offIcon;
@@ -66,7 +67,7 @@ namespace Menu
 
         public void Pause()
         {
-            _isGamePaused = true;
+            _isGamePause = true;
             Time.timeScale = (float)ValueConstants.Zero;
 
             foreach (var source in _sources.Where(source => source))
@@ -75,24 +76,33 @@ namespace Menu
 
         public void Release()
         {
-            _isGamePaused = false;
+            _isGamePause = false;
             Time.timeScale = (float)ValueConstants.One;
 
             foreach (var source in _sources.Where(source => source))
                 source.UnPause();
         }
         
-        public void FocusPause()
+        public void FocusPause(bool isForce = false)
         {
+            if (isForce == true)
+                _isForcePause = true;
+            
             Time.timeScale = (float)ValueConstants.Zero;
             AudioListener.pause = true;
         }
 
-        public void FocusRelease()
+        public void FocusRelease(bool isForce = false)
         {
+            if (isForce == true)
+                _isForcePause = false;
+            
+            if (_isForcePause == true)
+                return;
+            
             AudioListener.pause = false;
             
-            if (_isGamePaused == true)
+            if (_isGamePause == true)
                 return;
             
             Time.timeScale = (float)ValueConstants.One;
