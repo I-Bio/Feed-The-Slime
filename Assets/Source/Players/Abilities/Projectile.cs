@@ -18,7 +18,8 @@ namespace Players
             {
                 food.Allow();
                 food.TryEat(out float score);
-                _spawner.Spawn(collision.transform.position, score);
+                Vector3 position = collision.transform.position;
+                _spawner.Spawn(new Vector3(position.x, (float)ValueConstants.Zero, position.z), score);
             }
             
             _rigidbody.velocity = Vector3.zero;
