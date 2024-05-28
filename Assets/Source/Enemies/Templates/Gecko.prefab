@@ -247,7 +247,7 @@ MonoBehaviour:
   _followDistance: 10
   _animator: {fileID: 460935607149947752}
   _thinkDelay: 1
-  _idleOffset: 0.1
+  _idleOffset: 0.2
   _detector: {fileID: 6417668396627193431}
   _foodPart: {fileID: 5402232300892823142}
   _type: 0
