@@ -1,6 +1,4 @@
 ﻿using System;
-using Agava.YandexGames;
-using Agava.YandexGames.Utility;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +21,7 @@ namespace Menu
         private readonly Stopper Stopper;
         private readonly IRewardCollector EndGame;
         private readonly SaveService SaveService;
+        private readonly Advert Advert;
 
         public ProgressPresenter(Progress model, IProgressionBar[] bars, Button play, TextMeshProUGUI level,
             TextMeshProUGUI crystals, RewardReproducer reward, WindowSwitcher switcher, ObjectFiller filler,
@@ -43,6 +42,7 @@ namespace Menu
             Stopper = stopper;
             EndGame = endGame;
             SaveService = new SaveService(OnLoaded, characteristics);
+            Advert = new Advert(Stopper);
         }
 
         public void Enable()
@@ -86,7 +86,7 @@ namespace Menu
             Model.Load(characteristics);
             
             if (characteristics.IsAllowedShowInter)
-                InterstitialAd.Show(() => Stopper.FocusPause(true), _ => Stopper.FocusRelease(true));
+                Advert.ShowInter();
 
             Bars[(int)PurchaseNames.Speed].Initialize(characteristics.Speed);
             Bars[(int)PurchaseNames.Score].Initialize(characteristics.ScorePerEat);

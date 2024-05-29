@@ -19,6 +19,7 @@ namespace Menu
         private WindowSwitcher _switcher;
         private Stopper _stopper;
         private AutoSaveRequester _requester;
+        private Advert _advert;
         private Revival _revival;
         private SatietyStage _stage;
         private int _rewardCount;
@@ -30,8 +31,8 @@ namespace Menu
 
         private void OnDestroy()
         {
-            _winAdvert.onClick.RemoveListener(ShowWinAdvert);
-            _loseAdvert.onClick.RemoveListener(ShowLoseAdvert);
+            _winAdvert.onClick.RemoveListener(OnWinAdvert);
+            _loseAdvert.onClick.RemoveListener(OnLoseAdvert);
 
             foreach (Button load in _loadButtons)
                 load.onClick.RemoveListener(Load);
@@ -40,15 +41,16 @@ namespace Menu
         public void Initialize(Revival revival, WindowSwitcher switcher, Stopper stopper, AutoSaveRequester requester, int rewardCount)
         {
             _revival = revival;
+            _switcher = switcher;
+            _requester = requester;
             _rewardCount = rewardCount;
+            _stopper = stopper;
             _maxStage = Enum.GetValues(typeof(SatietyStage)).Length - 1;
             SetStage(SatietyStage.Exhaustion);
-            _switcher = switcher;
-            _stopper = stopper;
-            _requester = requester;
+            _advert = new Advert(_stopper);
 
-            _winAdvert.onClick.AddListener(ShowWinAdvert);
-            _loseAdvert.onClick.AddListener(ShowLoseAdvert);
+            _winAdvert.onClick.AddListener(OnWinAdvert);
+            _loseAdvert.onClick.AddListener(OnLoseAdvert);
 
             foreach (Button load in _loadButtons)
                 load.onClick.AddListener(Load);
@@ -86,10 +88,9 @@ namespace Menu
             GoingCollect?.Invoke(_rewardCount, _didPass, () => { SceneManager.LoadScene((int)SceneNames.Game); });
         }
 
-        private void ShowWinAdvert()
+        private void OnWinAdvert()
         {
-            ShowRewardAdvert(
-                onReward: () =>
+            _advert.ShowReward(onReward: () =>
                 {
                     _winAdvert.gameObject.SetActive(false);
                     _rewardCount = Mathf.CeilToInt(_rewardCount * _double);
@@ -98,9 +99,9 @@ namespace Menu
                 onClose: () => _stopper.FocusRelease(true));
         }
 
-        private void ShowLoseAdvert()
+        private void OnLoseAdvert()
         {
-            ShowRewardAdvert(
+            _advert.ShowReward(
                 onReward: () => _loseAdvert.gameObject.SetActive(false),
                 onClose:
                 () =>
@@ -109,17 +110,6 @@ namespace Menu
                     _requester.StartRequests();
                     _stopper.FocusRelease(true);
                 });
-        }
-
-        private void ShowRewardAdvert(Action onReward, Action onClose)
-        {
-#if UNITY_EDITOR
-            onReward?.Invoke();
-            onClose?.Invoke();
-#endif
-#if UNITY_WEBGL && !UNITY_EDITOR
-            VideoAd.Show((() => _stopper.FocusPause(true)), onReward, onClose);
-#endif
         }
 
         private void UpdateReward()
