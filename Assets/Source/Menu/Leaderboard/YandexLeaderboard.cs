@@ -45,7 +45,7 @@ namespace Menu
                 foreach (var entry in result.entries)
                     Players.Add(new LeaderboardPlayer(
                         entry.rank,
-                        entry.player.publicName ?? _anonymous.Label,
+                        string.IsNullOrEmpty(entry.player.publicName) ? _anonymous.Label : entry.player.publicName,
                         entry.score));
 
                 _leaderboard.Construct(Players);
