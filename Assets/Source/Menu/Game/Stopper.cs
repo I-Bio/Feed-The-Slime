@@ -4,7 +4,6 @@ using System.Linq;
 using Agava.WebUtility;
 using UnityEngine;
 using UnityEngine.UI;
-using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 
 namespace Menu
 {

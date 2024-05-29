@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 
 namespace Menu
 {
@@ -66,6 +66,8 @@ namespace Menu
         public void ChangeScore(float score)
         {
             _characteristics.ProgressScore = score;
+            PlayerPrefs.SetFloat(nameof(PlayerCharacteristics.ProgressScore), _characteristics.ProgressScore);
+            PlayerPrefs.Save();
         }
 
         public void ChangeCrystals(int value)
@@ -87,10 +89,15 @@ namespace Menu
             if (_characteristics == null)
                 throw new NullReferenceException(nameof(_characteristics));
 
+            float prefsScore = PlayerPrefs.HasKey(nameof(PlayerCharacteristics.ProgressScore))
+                ? PlayerPrefs.GetFloat(nameof(PlayerCharacteristics.ProgressScore))
+                : (float)ValueConstants.Zero;
+            _characteristics.ProgressScore = Mathf.Max(_characteristics.ProgressScore, prefsScore);
+            
             if (_characteristics.DidPassGuide == true)
                 return;
 
-            if (PlayerPrefs.GetString(nameof(CharacteristicConstants.DidPassGuide)) == string.Empty)
+            if (PlayerPrefs.HasKey(nameof(CharacteristicConstants.DidPassGuide)) == false)
             {
                 SceneManager.LoadScene((int)SceneNames.Guide);
                 return;

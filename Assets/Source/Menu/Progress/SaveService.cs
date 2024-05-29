@@ -1,7 +1,6 @@
 ﻿using System;
 using Agava.YandexGames;
 using UnityEngine;
-using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 
 namespace Menu
 {
@@ -21,6 +20,7 @@ namespace Menu
         {
 #if UNITY_EDITOR
             PlayerPrefs.SetString(nameof(PlayerCharacteristics), JsonUtility.ToJson(characteristics));
+            PlayerPrefs.Save();
 #endif
 #if UNITY_WEBGL && !UNITY_EDITOR
             PlayerAccount.SetCloudSaveData(JsonUtility.ToJson(characteristics));
@@ -31,9 +31,6 @@ namespace Menu
         {
             if (PlayerPrefs.HasKey(nameof(CharacteristicConstants.CanShowAdvert)) == false)
                 PlayerPrefs.SetString(nameof(CharacteristicConstants.CanShowAdvert), string.Empty);
-
-            if (PlayerPrefs.HasKey(nameof(CharacteristicConstants.DidPassGuide)) == false)
-                PlayerPrefs.SetString(nameof(CharacteristicConstants.DidPassGuide), string.Empty);
 
 #if UNITY_EDITOR
             OnLoaded(PlayerPrefs.GetString(nameof(PlayerCharacteristics)));

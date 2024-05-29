@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Screen = Menu.Screen;
-using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 
 namespace Guide
 {

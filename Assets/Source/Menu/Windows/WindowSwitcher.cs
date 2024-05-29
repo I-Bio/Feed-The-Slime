@@ -2,7 +2,6 @@
 using Agava.YandexGames;
 using UnityEngine;
 using UnityEngine.UI;
-using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 
 namespace Menu
 {
@@ -113,7 +112,11 @@ namespace Menu
 #endif
 #if UNITY_EDITOR
             if (PlayerPrefs.HasKey(nameof(Authorize)))
+            {
                 LeaderboardOpened?.Invoke();
+                _screen.SetWindow((int)Windows.Leader);
+                return;
+            }
 #endif
             _screen.SetWindow((int)Windows.Authorize);
         }
