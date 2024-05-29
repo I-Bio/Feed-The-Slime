@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using Agava.WebUtility;
 using Boosters;
 using Cinemachine;
-using Enemies;
 using Foods;
 using Input;
 using Menu;
@@ -9,7 +9,6 @@ using Players;
 using Spawners;
 using UnityEngine;
 using UnityEngine.UI;
-using PlayerPrefs = Agava.YandexGames.Utility.PlayerPrefs;
 
 namespace Guide
 {
@@ -65,6 +64,10 @@ namespace Guide
         [SerializeField] private Button[] _loadButtons;
         [SerializeField] private ObjectFiller _filler;
 
+        [Space, Header("Depend on device")] 
+        [SerializeField] private GameObject _mobile;
+        [SerializeField] private GameObject _desktop;
+
         private FadeCaster _fadeCaster;
         private IRevival _revival;
         private SaveService _saveService;
@@ -77,20 +80,38 @@ namespace Guide
 
         private void Launch(IReadOnlyCharacteristics characteristics)
         {
+            PrepareComponents();
+            InitializeLevel(characteristics);
+            InitializeGuide();
+        }
+
+        private void PrepareComponents()
+        {
+            _fadeCaster = GetComponent<FadeCaster>();
+            _revival = GetComponent<IRevival>();
+        }
+        
+        private void InitializeLevel(IReadOnlyCharacteristics characteristics)
+        {
             IMovable movable = new Speed(characteristics.Speed);
             ICalculableScore calculableScore = new AdditionalScore(new Score(), characteristics.ScorePerEat);
             IHidden hidden = _player.GetComponent<IHidden>();
             IPlayerVisitor visitor = _player.GetComponent<IPlayerVisitor>();
             PlayerPrefs.SetString(nameof(PlayerCharacteristics.IsAllowedSound), characteristics.IsAllowedSound.ToString());
             
-            _fadeCaster = GetComponent<FadeCaster>();
-            _revival = GetComponent<IRevival>();
-
             _input.Initialize();
             _player.Initialize(movable, calculableScore, (float)ValueConstants.Zero, _guide, _revival, null);
             _boosterSpawner.Initialize(new BoosterStatFactory(_scaleValues, _additionalValues,
                 _speedIcon, _scoreIcon, _maxLifeTime, _minLifeTime), _pointsHolder, _offSet, _spawnDelay, _template);
             _theme.Initialize(hidden, visitor);
+        }
+        
+        private void InitializeGuide()
+        {
+            if (Device.IsMobile)
+                _mobile.SetActive(true);
+            else
+                _desktop.SetActive(true);
             
             _beacon.Initialize(_guide);
             _trigger.Initialize(_camera, _close, _player.transform, _enemy,
