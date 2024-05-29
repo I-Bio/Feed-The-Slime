@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Menu
 {
-    public class ProgressionBar<T> : MonoBehaviour, IProgressionBar
+    public class ProgressionBar<T> : LeanLocalizedBehaviour, IProgressionBar
     {
         
         [SerializeField] private Button _buyButton;
@@ -23,20 +23,21 @@ namespace Menu
 
         public event Action<int, PurchaseNames, object> Bought;
 
-        private void OnEnable()
+        private new void OnEnable()
         {
             _buyButton.onClick.AddListener(Buy);
+            base.OnEnable();
         }
 
-        private void OnDisable()
+        private new void OnDisable()
         {
             _buyButton.onClick.RemoveListener(Buy);
+            base.OnDisable();
         }
 
         public void Initialize(object value)
         {
             int id = 0;
-            _maxText = LeanLocalization.GetTranslationText(_maxText);
 
             for (int i = 1; i <= _purchases.Length; i++)
                 if (_purchases[i - 1].Value.Equals(value))
@@ -63,6 +64,17 @@ namespace Menu
                 return;
 
             _buyButton.interactable = false;
+        }
+        
+        public override void UpdateTranslation(LeanTranslation translation)
+        {
+            if (translation == null)
+                return;
+            
+            if (translation.Data is string == false)
+                return;
+            
+            _maxText = translation.Data as string;
         }
 
         private void Buy()
