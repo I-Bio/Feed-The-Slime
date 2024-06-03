@@ -13,9 +13,7 @@ namespace Enemies
             Destination = Player.IsHidden == false && Vector3.Distance(Transform.position, Player.Position) <= FollowDistance
                 ? Player.Position
                 : StartPosition;
-
-            OnInteract();
-
+            
             if (Player.Stage >= Stage)
             {
                 Machine.SetState(EnemyStates.Avoid);
@@ -23,7 +21,12 @@ namespace Enemies
             }
 
             if (Destination == StartPosition && Vector3.Distance(Transform.position, StartPosition) < IdleOffset)
+            {
                 Machine.SetState(EnemyStates.Idle);
+                return;
+            }
+
+            OnInteract();
         }
         
         public virtual void OnInteract() {}
