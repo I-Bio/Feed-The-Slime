@@ -39,7 +39,6 @@ namespace Players
 
         [Space, Header("Effects")]
         [SerializeField] private ParticleSystem[] _effects;
-        [SerializeField] private Transform _cameraFrontPoint;
         
         [Space, Header("Booster Effects")] 
         [SerializeField] private float _updateDelay;
@@ -51,6 +50,12 @@ namespace Players
         [SerializeField] private string _eat;
         [SerializeField] private string _idle;
         [SerializeField] private string _hide;
+
+        [Space, Header("Scanner")] 
+        [SerializeField] private float _distance = 5f;
+
+        [Space, Header("Detector")]
+        [SerializeField] private Collider _collider;
         
         [Space, Header("Ability")] 
         [SerializeField] private int _pointsCount;
@@ -59,7 +64,7 @@ namespace Players
         [SerializeField] private FoodSetup _dissolved;
         [SerializeField] private Projectile _projectile;
         [SerializeField] private AbilityButton _spitButton;
-
+        
         private PlayerCollisionDetector _collisionDetector;
         private PlayerScanner _scanner;
         private SizeScaler _sizeScaler;
@@ -89,7 +94,20 @@ namespace Players
         }
         
         public void Initialize(IMovable movable, ICalculableScore calculableScore, float startScore,
-            IGame game, IRevival revival, Action<float> progressChangedCallback)
+            IGame game, IRevival revival, List<Contactable> contactableObjects, List<ISelectable> selectables,
+            Action<float> progressChangedCallback)
+        {
+            PrepareComponents();
+            InitializePlayer(movable, calculableScore, startScore, game, revival, contactableObjects, selectables, progressChangedCallback);
+            InitializeBoosters();
+            InitializeToxins(revival);
+            
+            _playerPresenter.Enable();
+            _boosterPresenter.Enable();
+            _toxinPresenter.Enable();
+        }
+
+        private void PrepareComponents()
         {
             _collisionDetector = GetComponent<PlayerCollisionDetector>();
             _scanner = GetComponent<PlayerScanner>();
@@ -103,42 +121,53 @@ namespace Players
             _ticker = GetComponent<Ticker>();
             _spawner = GetComponent<EatableSpawner>();
             _transform = transform;
-            
-            startScore = startScore > (float)ValueConstants.Zero ? startScore : _levelConfig.StartScore;
+        }
 
+        private void InitializePlayer(IMovable movable, ICalculableScore calculableScore, float startScore,
+            IGame game, IRevival revival, List<Contactable> contactableObjects, List<ISelectable> selectables,
+            Action<float> progressChangedCallback)
+        {
+            startScore = startScore > (float)ValueConstants.Zero ? startScore : _levelConfig.StartScore;
+            
             _model = new Player(calculableScore, _levelConfig.StartStage, _levelConfig.ScoreScaler,
                 startScore, _levelConfig.StartMaxScore, _levelConfig.LevelsPerStage);
             _service = new BoosterService();
-            _playerToxins = new PlayerToxins(_levelConfig.MaxToxinsCount, _levelConfig.MinToxinsCount);
-
             _playerPresenter = new PlayerPresenter(_model, _collisionDetector, _scanner, _sizeScaler, _levelBar,
-                _stageBar, _service, _animation, _abilityCaster, _mover, _effectReproducer, _soundReproducer,
+                _stageBar, _service, _animation, _abilityCaster, _mover, _effectReproducer, _soundReproducer, _spawner,
                 game, revival, progressChangedCallback);
-            _boosterPresenter = new BoosterPresenter(_model, _mover, _service, _boosterVisualizer);
-            _toxinPresenter = new ToxinPresenter(_playerToxins, _toxinBar, _ticker, _collisionDetector);
             
             _levelBar.Initialize(_levelConfig.StartScore, _levelConfig.StartMaxScore);
             _stageBar.Initialize(_levelConfig.StartMaxScore, _levelConfig.LevelsPerStage, _levelConfig.ScoreScaler);
-            _scanner.SetStage(_levelConfig.StartStage);
             _sizeScaler.Initialize(_transform, _virtualCamera, _levelConfig.ScaleFactor, _levelConfig.CameraScale);
-            _mover.Initialize(movable, new MoverScalerFactory(movable, _levelConfig.ScaleFactor), _rotationPoint, _transform.forward);
+            _mover.Initialize(movable, new MoverScalerFactory(movable, _levelConfig.CameraScale), _rotationPoint, _transform.forward);
+            _animation.Initialize(_animator, _eat, _idle, _hide);
+            _abilityCaster.Initialize(_rotationPoint, _levelConfig.StartStage, _pointsCount, _castStrength, _castOffset,
+                _spawner, _spitButton, _projectile);
+            _effectReproducer.Initialize(_effects);
+            _soundReproducer.Initialize(_sources);
+            _spawner.Initialize(_dissolved, _collisionDetector);
+            _scanner.Initialize(selectables, _levelConfig.StartStage, _transform, _distance, _levelConfig.ScaleFactor);
+            _collisionDetector.Initialize(contactableObjects, _levelConfig.StartStage, _collider);
+        }
+        
+        private void InitializeBoosters()
+        {
+            _boosterPresenter = new BoosterPresenter(_model, _mover, _service, _boosterVisualizer);
+            
             _boosterVisualizer.Initialize(_updateDelay, new Dictionary<Type, Action>
             {
                 {typeof(IMovable), () => {_effectReproducer.Play(EffectType.SpeedBoost);}},
                 {typeof(ICalculableScore), () => {_effectReproducer.Play(EffectType.ScoreBoost);}},
             }, _holder, _icon);
-            _animation.Initialize(_animator, _eat, _idle, _hide);
-            _abilityCaster.Initialize(_rotationPoint, _levelConfig.StartStage, _pointsCount, _castStrength, _castOffset, _spawner, _spitButton, _projectile);
-            _toxinBar.Initialize(_levelConfig.MaxToxinsCount, _levelConfig.MinToxinsCount);
-            _effectReproducer.Initialize(_effects);
-            _soundReproducer.Initialize(_sources);
-            _ticker.Initialize();
-            _spawner.Initialize(_dissolved);
-            _collisionDetector.SetStage(_levelConfig.StartStage);
+        }
+        
+        private void InitializeToxins(IRevival revival)
+        {
+            _playerToxins = new PlayerToxins(_levelConfig.MaxToxinsCount, _levelConfig.MinToxinsCount);
+            _toxinPresenter = new ToxinPresenter(_playerToxins, _toxinBar, _ticker, _collisionDetector, revival);
             
-            _playerPresenter.Enable();
-            _boosterPresenter.Enable();
-            _toxinPresenter.Enable();
+            _toxinBar.Initialize(_levelConfig.MaxToxinsCount, _levelConfig.MinToxinsCount);
+            _ticker.Initialize();
         }
     }
 }
