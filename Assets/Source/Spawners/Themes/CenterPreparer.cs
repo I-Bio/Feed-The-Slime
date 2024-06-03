@@ -1,4 +1,4 @@
-﻿using Enemies;
+﻿using System.Collections.Generic;
 using Players;
 using UnityEngine;
 
@@ -8,10 +8,10 @@ namespace Spawners
     {
         [SerializeField] private Material _material;
 
-        public void Initialize(IHidden player, IPlayerVisitor visitor, Renderer ground)
+        public List<Contactable> Initialize(IHidden player, IPlayerVisitor visitor, out List<ISelectable> selectables, Renderer ground)
         {
             ground.material = _material;
-            base.Initialize(player, visitor);
+            return base.Initialize(player, visitor, out selectables);
         }
     }
 }

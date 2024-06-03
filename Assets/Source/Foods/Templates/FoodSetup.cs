@@ -1,4 +1,5 @@
 ﻿using System;
+using Players;
 using Spawners;
 using UnityEngine;
 
@@ -18,12 +19,19 @@ namespace Foods
 
         private Food _model;
         private FoodPresenter _presenter;
-
+        
         private Action _onDestroyCallback;
 
         public SatietyStage Stage => _stage;
-
-        public void Initialize(float scorePerEat, Action onDestroyCallback = null)
+        
+        private void OnDestroy()
+        {
+            _presenter?.Disable();
+            _onDestroyCallback?.Invoke();
+        }
+        
+        public Contactable Initialize(float scorePerEat, IPlayerVisitor player, out ISelectable selectable,
+            Action onDestroyCallback = null)
         {
             _ediblePart = GetComponent<EdiblePart>();
             _highlighter = GetComponent<ObjectHighlighter>();
@@ -32,20 +40,16 @@ namespace Foods
             _model = new Food(_stage);
             _presenter = new FoodPresenter(_model, _ediblePart, _highlighter);
 
-            _ediblePart.Initialize(float.IsNaN(scorePerEat) ? _scorePerEat : scorePerEat);
+            _ediblePart.Initialize(float.IsNaN(scorePerEat) ? _scorePerEat : scorePerEat, player, transform);
 
             if (TryGetComponent(out ObjectFader fadingObject) == true)
                 fadingObject.Initialize();
             
-            _highlighter.Initialize(_deselectValue, _selectValue);
+            _highlighter.Initialize(_deselectValue, _selectValue, transform);
             _presenter.Enable();
-            _highlighter.Deselect();
-        }
 
-        private void OnDestroy()
-        {
-            _presenter?.Disable();
-            _onDestroyCallback?.Invoke();
+            selectable = _highlighter;
+            return _ediblePart;
         }
     }
 }

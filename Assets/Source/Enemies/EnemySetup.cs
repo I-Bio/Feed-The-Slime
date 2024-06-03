@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Foods;
 using Players;
 using UnityEngine;
@@ -15,10 +16,9 @@ namespace Enemies
         [SerializeField] private Animator _animator;
         [SerializeField] private float _thinkDelay;
         [SerializeField] private float _idleOffset = 0.1f;
-        [SerializeField] private EnemyCollisionDetector _detector;
         [SerializeField] private FoodSetup _foodPart;
+        [SerializeField] private EnemyCollisionDetector _detector;
         
-
         [Space, Header("Enemy Type")] 
         [SerializeField] private EnemyTypes _type;
         [SerializeField] private NavMeshAgent _agent;
@@ -44,7 +44,7 @@ namespace Enemies
             _presenter?.Disable();
         }
         
-        public void Initialize(IHidden player, IPlayerVisitor visitor)
+        public List<Contactable> Initialize(IHidden player, IPlayerVisitor visitor, out ISelectable selectable)
         {
             _transform = transform;
             _thinker = GetComponent<EnemyThinker>();
@@ -59,10 +59,13 @@ namespace Enemies
             
             _thinker.Initialize(_thinkDelay);
             _animation.Initialize(_animator, () => _model.SetState(EnemyStates.Idle));
-            _foodPart.Initialize(float.NaN, () => Destroy(gameObject));
-            _detector.Initialize(_foodPart.Stage);
+            _detector.Initialize(_foodPart.Stage, visitor);
+            Contactable contactable = _foodPart.Initialize(float.NaN, visitor, out selectable,
+                () => Destroy(gameObject));
 
             _presenter.Enable();
+
+            return new List<Contactable>{_detector, contactable};
         }
     }
 }

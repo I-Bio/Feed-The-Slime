@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Boosters;
 using Cinemachine;
-using Enemies;
 using Input;
 using Players;
 using Spawners;
+using TMPro;
 using UnityEngine;
 
 namespace Menu
@@ -36,7 +37,7 @@ namespace Menu
         [SerializeField] private float[] _scaleValues;
         [SerializeField] private float[] _additionalValues;
 
-        [Space, Header("FadeCaster")] 
+        [Space, Header(nameof(FadeCaster))] 
         [SerializeField] private LayerMask _fadeMask;
         [SerializeField] private float _castDelay = 0.01f;
         [SerializeField] private int _hitsCapacity = 10;
@@ -53,8 +54,14 @@ namespace Menu
         [SerializeField] private CinemachineVirtualCamera _camera;
         [SerializeField] private Vector3 _gameViewPosition;
 
+        [Space, Header(nameof(Revival))]
+        [SerializeField] private GameObject _holder;
+        [SerializeField] private TextMeshProUGUI _holderText;
+
         private Revival _revival;
         private FadeCaster _fadeCaster;
+        private List<Contactable> _contactableObjects;
+        private List<ISelectable> _selectables;
 
         public void Initialize(int completedLevels)
         {
@@ -77,13 +84,19 @@ namespace Menu
 
             IHidden hidden = _player.GetComponent<IHidden>();
             IPlayerVisitor visitor = _player.GetComponent<IPlayerVisitor>();
-
-            Instantiate(_centerTemplates[id].Value.GetRandom(), _center)
-                .Initialize(hidden, visitor, _ground);
+            _contactableObjects = new List<Contactable>();
+            
+            _contactableObjects.AddRange(
+                Instantiate(_centerTemplates[id].Value.GetRandom(), _center)
+                    .Initialize(hidden, visitor, out _selectables, _ground));
 
             foreach (Transform zonePoint in _zonePoints)
-                Instantiate(_zoneTemplates[id].Value.GetRandom(), zonePoint)
-                    .Initialize(hidden, visitor, _stopper.AddMuted);
+            {
+                _contactableObjects.AddRange(
+                    Instantiate(_zoneTemplates[id].Value.GetRandom(), zonePoint)
+                        .Initialize(hidden, visitor, out List<ISelectable> selectables, _stopper.AddMuted));
+                _selectables.AddRange(selectables);
+            }
         }
 
         public void Launch(IReadOnlyCharacteristics characteristics, int reward, Action<float> progressChangedCallback)
@@ -95,11 +108,12 @@ namespace Menu
                 _spit.SetActive(true);
 
             _setter.ChangeToGameView();
-            _revival.Initialize(_player.transform, characteristics.LifeCount);
+            _revival.Initialize(_player.transform, characteristics.LifeCount, _holder, _holderText);
             _boosterSpawner.Initialize(new BoosterStatFactory(_scaleValues, _additionalValues,
                 _speedIcon, _scoreIcon, _maxLifeTime, _minLifeTime), _pointsHolder, _offSet, _spawnDelay, _template);
             _game.Initialize(_revival, _switcher, _stopper, _requester, reward);
-            _player.Initialize(movable, calculableScore, characteristics.ProgressScore, _game, _revival, progressChangedCallback);
+            _player.Initialize(movable, calculableScore, characteristics.ProgressScore, _game, _revival,
+                _contactableObjects, _selectables, progressChangedCallback);
         }
     }
 }
