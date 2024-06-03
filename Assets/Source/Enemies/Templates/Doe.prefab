@@ -268,19 +268,16 @@ PrefabInstance:
       addedObject: {fileID: 6099918384847191511}
     - targetCorrespondingSourceObject: {fileID: 3743993344710040121, guid: 4b60f39d1f696dd4db7bd987f185e074, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2288878299858208551}
-    - targetCorrespondingSourceObject: {fileID: 3743993344710040121, guid: 4b60f39d1f696dd4db7bd987f185e074, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 702962734439840996}
+      addedObject: {fileID: 5254052125863784285}
     - targetCorrespondingSourceObject: {fileID: 3743993344710040121, guid: 4b60f39d1f696dd4db7bd987f185e074, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7152166240504059622}
     - targetCorrespondingSourceObject: {fileID: 3743993344710040121, guid: 4b60f39d1f696dd4db7bd987f185e074, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5006771994128397223}
+      addedObject: {fileID: 1978641311062062569}
     - targetCorrespondingSourceObject: {fileID: 3743993344710040121, guid: 4b60f39d1f696dd4db7bd987f185e074, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1978641311062062569}
+      addedObject: {fileID: 924851989699050310}
   m_SourcePrefab: {fileID: 100100000, guid: 4b60f39d1f696dd4db7bd987f185e074, type: 3}
 --- !u!95 &1797139767082398729 stripped
 Animator:
@@ -306,10 +303,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _followDistance: 12
   _animator: {fileID: 1797139767082398729}
-  _thinkDelay: 2
+  _thinkDelay: 1
   _idleOffset: 0.2
-  _detector: {fileID: 5006771994128397223}
   _foodPart: {fileID: 4817625925296332944}
+  _detector: {fileID: 924851989699050310}
   _type: 0
   _agent: {fileID: 5750770008763227357}
   _sound: {fileID: 0}
@@ -399,35 +396,8 @@ MonoBehaviour:
   outlineWidth: 4
   bakeKeys: []
   bakeValues: []
---- !u!54 &2288878299858208551
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8822405078619149217}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!136 &702962734439840996
-CapsuleCollider:
+--- !u!65 &5254052125863784285
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -444,11 +414,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.01381992
-  m_Height: 0.033810306
-  m_Direction: 1
-  m_Center: {x: -0.000000001192093, y: -0.0029809668, z: 0.013421933}
+  serializedVersion: 3
+  m_Size: {x: 0.009743183, y: 0.017085336, z: 0.027945768}
+  m_Center: {x: -0.00014360817, y: -0.0006392033, z: 0.01326897}
 --- !u!114 &7152166240504059622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,18 +429,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05cdbefe13c64a3886217211f0308959, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5006771994128397223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8822405078619149217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35ab406e39ff469c8fb07b1082d35e25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1978641311062062569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,5 +439,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddaede2b07054881916bfb853d24d306, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &924851989699050310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8822405078619149217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ab406e39ff469c8fb07b1082d35e25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

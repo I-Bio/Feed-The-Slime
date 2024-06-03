@@ -84,8 +84,8 @@ GameObject:
   - component: {fileID: 744978917048489168}
   - component: {fileID: 6965861200991018762}
   - component: {fileID: 7969666477862564750}
-  - component: {fileID: 175161902284510490}
   - component: {fileID: 8492792155102917360}
+  - component: {fileID: 569192788835659981}
   m_Layer: 0
   m_Name: Stump_1
   m_TagString: Untagged
@@ -222,8 +222,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.64708936, y: 0.8126262, z: 0.55212176}
-  m_Center: {x: -0.04216495, y: 0.4063131, z: 0.00079646707}
+  m_Size: {x: 0.5384231, y: 0.8126262, z: 0.50807935}
+  m_Center: {x: -0.009657121, y: 0.4063131, z: 0.0014816284}
 --- !u!208 &7969666477862564750
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -240,18 +240,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: -0.042000003, y: 0.40600002, z: 0.001}
   m_TimeToStationary: 0.5
---- !u!114 &175161902284510490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6276858331758314227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35ab406e39ff469c8fb07b1082d35e25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8492792155102917360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,6 +250,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddaede2b07054881916bfb853d24d306, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &569192788835659981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6276858331758314227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ab406e39ff469c8fb07b1082d35e25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8195613950930100901
@@ -318,8 +318,8 @@ MonoBehaviour:
   _animator: {fileID: 1688592437177663018}
   _thinkDelay: 1
   _idleOffset: 0.2
-  _detector: {fileID: 175161902284510490}
   _foodPart: {fileID: 6131008069601840134}
+  _detector: {fileID: 569192788835659981}
   _type: 2
   _agent: {fileID: 1257675850269767175}
   _sound: {fileID: 1080705829018036815}
