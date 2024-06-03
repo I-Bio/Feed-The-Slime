@@ -5,39 +5,62 @@ namespace Players
 {
     public class PlayerScanner : MonoBehaviour
     {
-        private readonly List<ISelectable> _selectables = new();
-
-        private Coroutine _routine;
+        private List<ISelectable> _selectables;
         private SatietyStage _stage;
-        
-        private void OnTriggerEnter(Collider other)
+        private Transform _transform;
+        private float _startDistance;
+        private float _distance;
+        private float _scaleFactor;
+        private bool _didInitialize;
+
+        private void FixedUpdate() => Scan();
+
+        private void OnDrawGizmos()
         {
-            if (other.TryGetComponent(out ISelectable selectable) == false)
-                return;
-            
-            _selectables.Add(selectable);
-            selectable.Select(_stage);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, _distance);
         }
 
-        private void OnTriggerExit(Collider other)
+        public void Initialize(List<ISelectable> selectables, SatietyStage stage, Transform transform, float distance, float scaleFactor)
         {
-            if (other.TryGetComponent(out ISelectable selectable) == false)
-                return;
-
-            _selectables.Remove(selectable);
-            selectable.Deselect();
+            _selectables = selectables;
+            _stage = stage;
+            _transform = transform;
+            _startDistance = distance;
+            _distance = _startDistance;
+            _scaleFactor = scaleFactor;
+            _didInitialize = true;
         }
-        
+
         public void SetStage(SatietyStage stage)
         {
             _stage = stage;
-            Rescan();
+            _distance = _stage != SatietyStage.Exhaustion ? _startDistance * (_scaleFactor * (int)stage) : _startDistance;
         }
 
-        private void Rescan()
+        public void AddSelectable(ISelectable selectable)
         {
+            _selectables.Add(selectable);
+        }
+
+        private void Scan()
+        {
+            if (_didInitialize == false)
+                return;
+            
             foreach (ISelectable selectable in _selectables)
-                selectable.Select(_stage);
+            {
+                if (selectable.Equals(null))
+                {
+                    _selectables.Remove(null);
+                    continue;
+                }
+                
+                if (Vector3.Distance(_transform.position, selectable.Position) <= _distance)
+                    selectable.Select(_stage);
+                else
+                    selectable.Deselect();
+            }
         }
     }
 }
