@@ -1,72 +1,80 @@
-﻿using Enemies;
-
-namespace Players
+﻿namespace Players
 {
     public class ToxinPresenter : IPresenter
     {
-        private readonly PlayerToxins _model;
-        private readonly ToxinBar _bar;
-        private readonly Ticker _ticker;
-        private readonly IPlayerVisitor _visitor;
+        private readonly PlayerToxins Model;
+        private readonly ToxinBar Bar;
+        private readonly Ticker Ticker;
+        private readonly IPlayerVisitor Visitor;
+        private readonly IRevival Revival;
         
-        public ToxinPresenter(PlayerToxins model, ToxinBar bar, Ticker ticker, IPlayerVisitor visitor)
+        public ToxinPresenter(PlayerToxins model, ToxinBar bar, Ticker ticker, IPlayerVisitor visitor, IRevival revival)
         {
-            _model = model;
-            _bar = bar;
-            _ticker = ticker;
-            _visitor = visitor;
+            Model = model;
+            Bar = bar;
+            Ticker = ticker;
+            Visitor = visitor;
+            Revival = revival;
         }
 
         public void Enable()
         {
-            _model.ToxinsChanged += OnToxinsChanged;
-            _model.GoingDie += OnGoingDie;
-
-            _ticker.Ticked += OnTicked;
-            _visitor.ToxinContacted += OnToxinContacted;
-            _visitor.ContactStopped += OnContactStopped;
+            Model.ToxinsChanged += OnToxinsChanged;
+            Model.GoingDie += OnGoingDie;
+            
+            Bar.Hid += OnHid;
+            Ticker.Ticked += OnTicked;
+            Visitor.ToxinContacted += OnToxinContacted;
+            Visitor.ContactStopped += OnContactStopped;
+            Revival.Revived += OnRevived;
         }
 
         public void Disable()
         {
-            _model.ToxinsChanged -= OnToxinsChanged;
-            _model.GoingDie -= OnGoingDie;
+            Model.ToxinsChanged -= OnToxinsChanged;
+            Model.GoingDie -= OnGoingDie;
 
-            _bar.Hid -= OnHid;
-            _ticker.Ticked -= OnTicked;
-            _visitor.ToxinContacted -= OnToxinContacted;
-            _visitor.ContactStopped -= OnContactStopped;
-        }
-
-        private void OnToxinContacted()
-        {
-            _model.Increase();
-            _ticker.Stop();
-        }
-        
-        private void OnGoingDie()
-        {
-            _visitor.Visit(null, SatietyStage.Overeat);
-        }
-
-        private void OnHid()
-        {
-            _ticker.Stop();
-        }
-        
-        private void OnTicked()
-        {
-            _model.Decrease();
+            Bar.Hid -= OnHid;
+            Ticker.Ticked -= OnTicked;
+            Visitor.ToxinContacted -= OnToxinContacted;
+            Visitor.ContactStopped -= OnContactStopped;
+            Revival.Revived -= OnRevived;
         }
 
         private void OnToxinsChanged(int value)
         {
-            _bar.ChangeValue(value);
+            Bar.ChangeValue(value);
+        }
+        
+        private void OnGoingDie()
+        {
+            Visitor.Visit(null, SatietyStage.Overeat);
+        }
+
+        private void OnHid()
+        {
+            Ticker.Stop();
+        }
+        
+        private void OnTicked()
+        {
+            Model.Decrease();
+        }
+        
+        private void OnToxinContacted()
+        {
+            Model.Increase();
+            Ticker.Stop();
         }
 
         private void OnContactStopped()
         {
-            _ticker.StartTick();
+            Ticker.StartTick();
+        }
+
+        private void OnRevived()
+        {
+            Model.Drop();
         }
     }
 }

@@ -37,6 +37,12 @@ namespace Players
             CompareAccumulation();
         }
 
+        public void Drop()
+        {
+            _currentValue = (int)ValueConstants.Zero;
+            CompareAccumulation();
+        }
+
         private void CompareAccumulation()
         {
             ToxinsChanged?.Invoke(_currentValue);
