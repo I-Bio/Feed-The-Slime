@@ -5,14 +5,13 @@ namespace Foods
     public class DissolvedEdible : EdiblePart
     {
         private SpawnableObject _spawnable;
-
-        public override void Initialize(float scorePerEat)
+        
+        public override void OnInitialize()
         {
             _spawnable = GetComponent<SpawnableObject>();
-            base.Initialize(scorePerEat);
         }
         
-        protected override void OnEat()
+        public override void OnEatingCompletion()
         {
             _spawnable.Push();
         }
