@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Boosters;
 using Enemies;
 using UnityEngine;
@@ -7,14 +8,35 @@ namespace Players
 {
     public class PlayerCollisionDetector : MonoBehaviour, IPlayerVisitor
     {
+        private List<Contactable> _contactableObjects;
+        private Collider _collider;
         private SatietyStage _stage;
-        
+        private bool _didInitialize;
+
         public event Action<float> ScoreGained;
         public event Action<IBooster> BoosterEntered;
         public event Action EnemyContacted;
         public event Action ToxinContacted;
         public event Action ContactStopped;
 
+        private void FixedUpdate() => Detect();
+        
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out IBooster booster) == false)
+                return;
+            
+            BoosterEntered?.Invoke(booster);
+        }
+
+        public void Initialize(List<Contactable> contactableObjects, SatietyStage stage, Collider collider)
+        {
+            _contactableObjects = contactableObjects;
+            _collider = collider;
+            _stage = stage;
+            _didInitialize = true;
+        }
+        
         public void Visit(EnemyKiller killer, SatietyStage stage)
         {
             if (stage <= _stage)
@@ -33,28 +55,36 @@ namespace Players
             ContactStopped?.Invoke();
         }
 
+        public void Visit(IEatable edible, float score)
+        {
+            ScoreGained?.Invoke(score);
+        }
+
         public void SetStage(SatietyStage stage)
         {
             _stage = stage;
         }
 
-        private void OnCollisionEnter(Collision collision)
+        public void AddContactable(Contactable contactable)
         {
-            if (collision.collider.TryGetComponent(out IEatable eatable) == false)
-                return;
-            
-            if (eatable.TryEat(out float score) == false)
-                return;
-            
-            ScoreGained?.Invoke(score);
+            _contactableObjects.Add(contactable);
         }
-
-        private void OnTriggerEnter(Collider other)
+        
+        private void Detect()
         {
-            if (other.TryGetComponent(out IBooster booster) == false)
+            if (_didInitialize == false)
                 return;
             
-            BoosterEntered?.Invoke(booster);
+            foreach (Contactable contactable in _contactableObjects)
+            {
+                if (contactable == null)
+                {
+                    _contactableObjects.Remove(null);
+                    continue;
+                }
+                
+                contactable.TryContact(_collider.bounds);
+            }
         }
     }
 }
