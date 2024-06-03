@@ -9,7 +9,7 @@ namespace Players
         private Rigidbody _rigidbody;
         private IMovable _movable;
         private StatCombiner<IMovable> _combiner;
-        private IFactory<IMovable> _factory;
+        private MoverScalerFactory _factory;
         private Transform _rotationPoint;
         private Vector2 _input;
         private Vector3 _forward;
@@ -26,7 +26,7 @@ namespace Players
             RotateAlongMove();
         }
 
-        public void Initialize(IMovable movable, IFactory<IMovable> factory, Transform rotationPoint, Vector3 forward)
+        public void Initialize(IMovable movable, MoverScalerFactory factory, Transform rotationPoint, Vector3 forward)
         {
             _rigidbody = GetComponent<Rigidbody>();
             _forward = forward;
@@ -62,13 +62,16 @@ namespace Players
 
         public void Scale(SatietyStage stage)
         {
-            _combiner.AddAfterFirst(_factory.Create());
+            if (stage == SatietyStage.Exhaustion)
+                return;
+            
+            _combiner.AddAfterFirst(_factory.Create(stage));
             _movable = _combiner.GetRecombined();
         }
 
         private void Move()
         {
-            if (_canMove == false && _input != Vector2.zero && _rigidbody.velocity == Vector3.zero)
+            if (_canMove == false)
             {
                 _rigidbody.velocity = Vector3.zero;
                 return;
