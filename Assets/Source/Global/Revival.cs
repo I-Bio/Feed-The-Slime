@@ -1,4 +1,6 @@
 ﻿using System;
+using Menu;
+using TMPro;
 using UnityEngine;
 
 public class Revival : MonoBehaviour, IRevival
@@ -7,14 +9,24 @@ public class Revival : MonoBehaviour, IRevival
     private Vector3 _startPosition;
     private int _maxLifeCount;
     private int _currentLifeCount;
+    private GameObject _holder;
+    private TextMeshProUGUI _holderText;
 
     public event Action Revived;
 
-    public void Initialize(Transform player, int maxLifeCount)
+    public void Initialize(Transform player, int maxLifeCount, GameObject holder, TextMeshProUGUI holderText)
     {
         _player = player;
         _startPosition = _player.position;
         _maxLifeCount = maxLifeCount;
+        _holder = holder;
+        _holderText = holderText;
+
+        if (_maxLifeCount <= 0) 
+            return;
+        
+        _holder.SetActive(true);
+        _holderText.SetText((_maxLifeCount - _currentLifeCount).ToString());
     }
 
     public bool TryRevive()
@@ -22,7 +34,12 @@ public class Revival : MonoBehaviour, IRevival
         if (_currentLifeCount >= _maxLifeCount)
             return false;
 
+        _holderText.SetText((_maxLifeCount - _currentLifeCount).ToString());
         _currentLifeCount++;
+        
+        if (_holder.activeSelf == true && _currentLifeCount >= _maxLifeCount)
+            _holder.SetActive(false);
+            
         Revive();
         return true;
     }
