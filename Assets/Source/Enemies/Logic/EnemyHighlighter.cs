@@ -9,16 +9,13 @@ namespace Enemies
         
         private bool _didColorChange;
         
-        public override void Select(SatietyStage playerStage)
+        public override void OnSelecting()
         {
-            Outline.OutlineWidth = SelectValue;
-            base.Select(playerStage);
+            Highlight();
         }
         
-        public override void SetSelection()
+        public override void OnSetSelection()
         {
-            base.SetSelection();
-            
             if (_didColorChange == true)
                 return;
 
