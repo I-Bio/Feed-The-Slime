@@ -1,6 +1,7 @@
 ﻿using System;
 using Boosters;
 using Menu;
+using Spawners;
 using UnityEngine;
 
 namespace Players
@@ -17,6 +18,7 @@ namespace Players
         private readonly AbilityCaster Caster;
         private readonly EffectReproducer EffectReproducer;
         private readonly SoundReproducer SoundReproducer;
+        private readonly EatableSpawner Spawner;
         private readonly IUsable BoosterService;
         private readonly IMover Mover;
         private readonly IGame Game;
@@ -26,7 +28,7 @@ namespace Players
         public PlayerPresenter(Player model, PlayerCollisionDetector collisionDetector, PlayerScanner scanner,
             SizeScaler sizeScaler, LevelBar levelBar, StageBar stageBar, IUsable boosterService,
             PlayerAnimation animation, AbilityCaster caster, IMover mover, EffectReproducer effectReproducer,
-            SoundReproducer soundReproducer, IGame game, IRevival revival, Action<float> progressChangedCallback)
+            SoundReproducer soundReproducer, EatableSpawner spawner, IGame game, IRevival revival, Action<float> progressChangedCallback)
         {
             Model = model;
             CollisionDetector = collisionDetector;
@@ -40,6 +42,7 @@ namespace Players
             Mover = mover;
             EffectReproducer = effectReproducer;
             SoundReproducer = soundReproducer;
+            Spawner = spawner;
             Game = game;
             Revival = revival;
             ProgressChangedCallback = progressChangedCallback;
@@ -59,6 +62,7 @@ namespace Players
             Caster.Hid += OnHid;
             Caster.Showed += OnShowed;
             Caster.SpitCasted += OnSpitCasted;
+            Spawner.Spawned += OnSpawned;
             Revival.Revived += OnRevived;
             
             Model.Load();
@@ -78,6 +82,7 @@ namespace Players
             Caster.Hid -= OnHid;
             Caster.Showed -= OnShowed;
             Caster.SpitCasted -= OnSpitCasted;
+            Spawner.Spawned -= OnSpawned;
             Revival.Revived -= OnRevived;
         }
 
@@ -95,6 +100,7 @@ namespace Players
             CollisionDetector.SetStage(stage);
             Game.SetStage(stage);
             SizeScaler.Scale(stage);
+            Mover.Scale(stage);
         }
         
         private void OnScoreChanged(float score, int maxScore)
@@ -119,6 +125,7 @@ namespace Players
             CollisionDetector.SetStage(stage);
             Game.SetStage(stage);
             StageBar.Increase();
+            Mover.Scale(stage);
         }
 
         private void OnScaled(Vector3 position)
@@ -129,11 +136,13 @@ namespace Players
 
         private void OnWinning()
         {
+            ProgressChangedCallback?.Invoke((float)ValueConstants.Zero);
             Game.Win();
         }
 
         private void OnEnemyContacted()
         {
+            ProgressChangedCallback?.Invoke((float)ValueConstants.Zero);
             Game.Lose();
         }
 
@@ -168,6 +177,12 @@ namespace Players
         {
             SoundReproducer.PlayClip(SoundType.Spit);
             Animation.PlayAttack();
+        }
+
+        private void OnSpawned(Contactable contactable, ISelectable selectable)
+        {
+            CollisionDetector.AddContactable(contactable);
+            Scanner.AddSelectable(selectable);
         }
 
         private void OnRevived()

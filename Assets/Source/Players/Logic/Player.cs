@@ -42,7 +42,18 @@ namespace Players
             if (_score <= (float)ValueConstants.Zero)
                 return;
 
-            float score = 0;
+            float max = _maxScore;
+            
+            for (int i = 1; i < LevelsPerStage; i++)
+                max = Mathf.FloorToInt(_maxScore * ScoreScaler);
+            
+            if (_score >= max)
+            {
+                _score = 0f;
+                return;
+            }
+
+            float score = 0f;
             float maxScore = _maxScore;
             int level = 0;
             int maxLevel = _maxLevel;
@@ -70,7 +81,6 @@ namespace Players
             _currentLevel = level;
             _maxLevel = maxLevel;
             _stage = stage;
-            Debug.Log($"Score: {score}, MaxScore {maxScore}, Level {level}, MaxLevel {maxLevel}, Stage {stage}");
             Loaded?.Invoke(_stage, _currentLevel, _score, (int)_maxScore);
         }
         
