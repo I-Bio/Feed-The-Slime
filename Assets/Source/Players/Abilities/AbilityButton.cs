@@ -19,7 +19,7 @@ namespace Players
         
         public bool CanUse { get; private set; } = true;
 
-        private void Start()
+        public void Initialize()
         {
             _localized = GetComponent<LocalizedText>();
             _text.SetText(_localized.Label);

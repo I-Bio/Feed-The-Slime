@@ -34,6 +34,7 @@ namespace Players
             _castOffset = castOffset;
             _spawner = spawner;
             _spitButton = spitButton;
+            _spitButton.Initialize();
             _line = GetComponent<LineRenderer>();
             _line.positionCount = _pointsCount;
             _line.enabled = false;
