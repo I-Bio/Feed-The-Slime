@@ -7,7 +7,7 @@ namespace Spawners
     {
         private readonly Queue<SpawnableObject> SpawnQueue = new();
         
-        [SerializeField] private SpawnableObject _spawnableObject;
+        private SpawnableObject _spawnableObject;
         
         public virtual void Push(SpawnableObject spawnableObject)
         {

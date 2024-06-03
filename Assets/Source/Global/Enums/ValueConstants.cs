@@ -3,4 +3,5 @@
     Zero,
     One,
     Two,
+    Three,
 }

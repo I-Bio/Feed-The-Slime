@@ -4,8 +4,8 @@ namespace Spawners
 {
     public class SpawnableObject : MonoBehaviour
     {
-        private GameObject _gameObject;
         private Transform _transform;
+        private GameObject _gameObject;
         private IPushable _spawner;
 
         public SpawnableObject Initialize(IPushable spawner)

@@ -8,9 +8,9 @@ namespace Menu
     [RequireComponent(typeof(Image))]
     public class ObjectFiller : MonoBehaviour
     {
-        [SerializeField] private float _duration;
-        [SerializeField] private float _minValue;
-        [SerializeField] private float _maxValue;
+        [SerializeField] private float _duration = 1f;
+        [SerializeField] private float _minValue = 0f;
+        [SerializeField] private float _maxValue = 1f;
         
         private Image _image;
 
