@@ -1,18 +1,25 @@
-﻿using Foods;
+﻿using System;
+using Foods;
+using Players;
 using UnityEngine;
 
 namespace Spawners
 {
     public class EatableSpawner : ObjectPool
     {
-        public void Initialize(FoodSetup dissolved)
+        private IPlayerVisitor _player;
+
+        public event Action<Contactable, ISelectable> Spawned;
+        
+        public void Initialize(FoodSetup dissolved, IPlayerVisitor player)
         {
-            Initialize(dissolved as SpawnableObject);
+            Initialize(dissolved);
+            _player = player;
         }
         
         public void Spawn(Vector3 position, float score)
         {
-            Pull<FoodSetup>(position).Initialize(score);
+            Spawned?.Invoke(Pull<FoodSetup>(position).Initialize(score, _player, out ISelectable selectable), selectable);
         }
     }
 }

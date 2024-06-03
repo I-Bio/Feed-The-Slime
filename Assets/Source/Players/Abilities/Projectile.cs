@@ -7,8 +7,6 @@ namespace Players
     [RequireComponent(typeof(Rigidbody))]
     public class Projectile : SpawnableObject
     {
-        [SerializeField] private FoodSetup _template;
-
         private EatableSpawner _spawner;
         private Rigidbody _rigidbody;
 
@@ -16,8 +14,8 @@ namespace Players
         {
             if (collision.collider.TryGetComponent(out EdiblePart food))
             {
-                food.Allow();
-                food.TryEat(out float score);
+                float score = food.Score;
+                food.OnEatingCompletion();
                 Vector3 position = collision.transform.position;
                 _spawner.Spawn(new Vector3(position.x, (float)ValueConstants.Zero, position.z), score);
             }
