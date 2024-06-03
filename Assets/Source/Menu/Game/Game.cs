@@ -78,8 +78,6 @@ namespace Menu
             
             if (_revival.TryRevive() == false)
                 _switcher.ChangeWindow(Windows.Lose);
-            
-            _revival.Revive();
         }
 
         public void Load()
@@ -101,15 +99,17 @@ namespace Menu
 
         private void OnLoseAdvert()
         {
+            _revival.Revive();
+            
             _advert.ShowReward(
-                onReward: () => _loseAdvert.gameObject.SetActive(false),
-                onClose:
-                () =>
+                onReward: () =>
                 {
+                    _loseAdvert.gameObject.SetActive(false);
                     _switcher.ResumeScreen();
                     _requester.StartRequests();
-                    _stopper.FocusRelease(true);
-                });
+                },
+                onClose:
+                () => _stopper.FocusRelease(true));
         }
 
         private void UpdateReward()
