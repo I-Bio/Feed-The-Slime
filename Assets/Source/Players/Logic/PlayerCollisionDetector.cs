@@ -67,6 +67,9 @@ namespace Players
 
         public void AddContactable(Contactable contactable)
         {
+            if (_contactableObjects.Contains(contactable))
+                return;
+
             _contactableObjects.Add(contactable);
         }
         

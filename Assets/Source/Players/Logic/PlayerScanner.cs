@@ -40,6 +40,9 @@ namespace Players
 
         public void AddSelectable(ISelectable selectable)
         {
+            if (_selectables.Contains(selectable))
+                return;
+            
             _selectables.Add(selectable);
         }
 
