@@ -79,10 +79,10 @@ namespace Menu
 
         private void Buy()
         {
-            Bought?.Invoke(_purchases[_stage].Key, _name, _purchases[_stage].Value);
             _stage++;
-            Display();
             DeactivateBuyButton();
+            Bought?.Invoke(_purchases[_stage - 1].Key, _name, _purchases[_stage - 1].Value);
+            Display();
         }
 
         private void Load(int id)
