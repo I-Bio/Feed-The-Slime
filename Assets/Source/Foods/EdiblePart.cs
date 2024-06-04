@@ -24,6 +24,9 @@ namespace Foods
             _player = player;
             _transform = transform;
             _collider = GetComponent<Collider>();
+            _collider.enabled = true;
+            _isEaten = false;
+            _isAllowed = false;
             OnInitialize();
         }
         

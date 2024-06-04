@@ -13,6 +13,7 @@ namespace Foods
         private float _deselectValue;
         private float _selectValue;
         private bool _isSelect;
+        private bool _didInitialize;
         
         public event Action<SatietyStage> GoingSelect;
 
@@ -20,6 +21,9 @@ namespace Foods
         
         public void Initialize(float deselectValue, float selectValue, Transform transform)
         {
+            if (_didInitialize == true)
+                return;
+
             Outline = GetComponent<Outline>();
             _deselectValue = deselectValue;
             _selectValue = selectValue;
@@ -27,6 +31,7 @@ namespace Foods
             Outline.Initialize();
             _isSelect = true;
             Deselect();
+            _didInitialize = true;
         }
 
         public void Select(SatietyStage playerStage)
