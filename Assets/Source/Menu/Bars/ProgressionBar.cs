@@ -75,6 +75,7 @@ namespace Menu
                 return;
             
             _maxText = translation.Data as string;
+            Display();
         }
 
         private void Buy()

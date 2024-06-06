@@ -1,4 +1,5 @@
-﻿using Lean.Localization;
+﻿using System;
+using Lean.Localization;
 using UnityEngine;
 
 public class LocalizedText : LeanLocalizedBehaviour
@@ -6,6 +7,8 @@ public class LocalizedText : LeanLocalizedBehaviour
     [SerializeField] private string _label;
 
     public string Label => _label;
+    
+    public event Action Updated;
         
     public override void UpdateTranslation(LeanTranslation translation)
     {
@@ -16,5 +19,6 @@ public class LocalizedText : LeanLocalizedBehaviour
             return;
             
         _label = translation.Data as string;
+        Updated?.Invoke();
     }
 }

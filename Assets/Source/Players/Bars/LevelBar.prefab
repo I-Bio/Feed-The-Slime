@@ -316,6 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96550607fa634437a961969b04b23e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  translationName: Lvl
   _slider: {fileID: 2054180320817579186}
   _slash: /
   _score: {fileID: 3015177832972330422}
@@ -333,7 +334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   translationName: Lvl
-  _label: "\u0423\u0440."
+  _label: Lvl.
 --- !u!1 &4364647489833048962
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,7 +634,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u0423\u0440. 0"
+  m_text: Lvl. 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b99a6d312945d9648a3de1dd010a39dd, type: 2}
   m_sharedMaterial: {fileID: 6661379711801168483, guid: b99a6d312945d9648a3de1dd010a39dd, type: 2}

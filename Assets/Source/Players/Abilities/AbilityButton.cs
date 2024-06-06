@@ -19,9 +19,15 @@ namespace Players
         
         public bool CanUse { get; private set; } = true;
 
+        private void OnDestroy()
+        {
+            _localized.Updated -= OnUpdated;
+        }
+
         public void Initialize()
         {
             _localized = GetComponent<LocalizedText>();
+            _localized.Updated += OnUpdated;
             _text.SetText(_localized.Label);
         }
 
@@ -49,6 +55,14 @@ namespace Players
             _text.SetText(_localized.Label);
             CanUse = true;
             _button.interactable = true;
+        }
+
+        private void OnUpdated()
+        {
+            if (CanUse == false)
+                return;
+            
+            _text.SetText(_localized.Label);
         }
     }
 }
