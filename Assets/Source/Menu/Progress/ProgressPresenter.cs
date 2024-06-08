@@ -22,6 +22,7 @@ namespace Menu
         private readonly IRewardCollector EndGame;
         private readonly SaveService SaveService;
         private readonly Advert Advert;
+        private readonly SDKReadyCaller Caller;
 
         public ProgressPresenter(Progress model, IProgressionBar[] bars, Button play, TextMeshProUGUI level,
             TextMeshProUGUI crystals, RewardReproducer reward, WindowSwitcher switcher, ObjectFiller filler,
@@ -43,6 +44,7 @@ namespace Menu
             EndGame = endGame;
             SaveService = new SaveService(OnLoaded, characteristics);
             Advert = new Advert(Stopper);
+            Caller = new SDKReadyCaller();
         }
 
         public void Enable()
@@ -99,6 +101,7 @@ namespace Menu
             OnLevelsIncreased(characteristics.CompletedLevels);
             OnCrystalsChanged(characteristics.CrystalsCount);
             Filler.EmptyUp();
+            Caller.CallGameReady();
         }
 
         private void OnCrystalsChanged(int crystalsCount)

@@ -64,6 +64,7 @@ namespace Guide
             SetStage(SatietyStage.Exhaustion);
             Next();
             _filler.EmptyUp();
+            new SDKReadyCaller().CallGameReady();
         }
 
         public void SetStage(SatietyStage stage) {}

@@ -19,8 +19,10 @@ namespace Menu
 
         private void OnInitialize()
         {
+            if (PlayerPrefs.HasKey(nameof(YandexGamesSdk.GameReady)))
+                PlayerPrefs.DeleteKey(nameof(YandexGamesSdk.GameReady));
+            
             SceneManager.LoadScene((int)SceneNames.Game);
-            YandexGamesSdk.GameReady();
         }
     }
 }

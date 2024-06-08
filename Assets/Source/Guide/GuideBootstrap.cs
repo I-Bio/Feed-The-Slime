@@ -98,7 +98,7 @@ namespace Guide
             IHidden hidden = _player.GetComponent<IHidden>();
             IPlayerVisitor visitor = _player.GetComponent<IPlayerVisitor>();
             PlayerPrefs.SetString(nameof(PlayerCharacteristics.IsAllowedSound), characteristics.IsAllowedSound.ToString());
-            
+
             _input.Initialize();
             _player.Initialize(movable, calculableScore, (float)ValueConstants.Zero, _guide, _revival,
                 _theme.Initialize(hidden, visitor, out List<ISelectable> selectables), selectables, null);
