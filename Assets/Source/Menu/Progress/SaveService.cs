@@ -18,6 +18,9 @@ namespace Menu
         
         public void Save(IReadOnlyCharacteristics characteristics)
         {
+            if (PlayerPrefs.HasKey(nameof(PlayerCharacteristics.IsAllowedSound)) == true)
+                PlayerPrefs.DeleteKey(nameof(PlayerCharacteristics.IsAllowedSound));
+            
 #if UNITY_EDITOR
             PlayerPrefs.SetString(nameof(PlayerCharacteristics), JsonUtility.ToJson(characteristics));
             PlayerPrefs.Save();

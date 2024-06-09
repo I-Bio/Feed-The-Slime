@@ -111,8 +111,8 @@ namespace Menu
             ChangeVolume();
             SoundChanged?.Invoke(_isAllowed);
             
-            if (PlayerPrefs.HasKey(nameof(PlayerCharacteristics.IsAllowedSound)) == true)
-                PlayerPrefs.SetString(nameof(PlayerCharacteristics.IsAllowedSound), _isAllowed.ToString());
+            PlayerPrefs.SetString(nameof(PlayerCharacteristics.IsAllowedSound), _isAllowed.ToString());
+            PlayerPrefs.Save();
         }
 
         private void ChangeVolume()
