@@ -29,7 +29,7 @@ namespace Menu
         [SerializeField] private Vector3 _offSet;
         [SerializeField] private float _spawnDelay = 5f;
 
-        [Space, Header(nameof(BoosterStatFactory))] 
+        [Space, Header(nameof(BoosterFactory))] 
         [SerializeField] private Sprite _speedIcon;
         [SerializeField] private Sprite _scoreIcon;
         [SerializeField] private float _maxLifeTime = 10f;
@@ -58,6 +58,7 @@ namespace Menu
         [SerializeField] private GameObject _holder;
         [SerializeField] private TextMeshProUGUI _holderText;
 
+        private IThemeFactory _factory;
         private Revival _revival;
         private FadeCaster _fadeCaster;
         private List<Contactable> _contactableObjects;
@@ -71,30 +72,15 @@ namespace Menu
             _input.Initialize();
             _fadeCaster.Initialize(_fadeMask, _player.transform, _camera.transform, _castDelay, _hitsCapacity);
             _setter.Initialize(_camera, _gameViewPosition);
-
-            int id = 0;
-
-            for (int i = 0; i < _zoneTemplates.Length; i++)
-            {
-                if (_zoneTemplates[i].Key > completedLevels)
-                    break;
-
-                id = i;
-            }
-
-            IHidden hidden = _player.GetComponent<IHidden>();
-            IPlayerVisitor visitor = _player.GetComponent<IPlayerVisitor>();
-            _contactableObjects = new List<Contactable>();
             
-            _contactableObjects.AddRange(
-                Instantiate(_centerTemplates[id].Value.GetRandom(), _center)
-                    .Initialize(hidden, visitor, out _selectables, _ground));
+            _factory = new ThemeFactory(_zoneTemplates, _centerTemplates, _ground, _player.GetComponent<IHidden>(),
+                _player.GetComponent<IPlayerVisitor>(), completedLevels, _stopper.AddMuted);
+
+            _contactableObjects = _factory.CreateCenter(_center, out _selectables);
 
             foreach (Transform zonePoint in _zonePoints)
             {
-                _contactableObjects.AddRange(
-                    Instantiate(_zoneTemplates[id].Value.GetRandom(), zonePoint)
-                        .Initialize(hidden, visitor, out List<ISelectable> selectables, _stopper.AddMuted));
+                _contactableObjects.AddRange(_factory.CreateTheme(zonePoint, out List<ISelectable> selectables));
                 _selectables.AddRange(selectables);
             }
         }
@@ -109,8 +95,9 @@ namespace Menu
 
             _setter.ChangeToGameView();
             _revival.Initialize(_player.transform, characteristics.LifeCount, _holder, _holderText);
-            _boosterSpawner.Initialize(new BoosterStatFactory(_scaleValues, _additionalValues,
-                _speedIcon, _scoreIcon, _maxLifeTime, _minLifeTime), _pointsHolder, _offSet, _spawnDelay, _template);
+            _boosterSpawner.Initialize(new BoosterFactory(_scaleValues, _additionalValues,
+                _speedIcon, _scoreIcon, _maxLifeTime, _minLifeTime, _pointsHolder, _offSet, _boosterSpawner.Pull<Booster>), 
+                _spawnDelay, _template);
             _game.Initialize(_revival, _switcher, _stopper, _requester, reward);
             _player.Initialize(movable, calculableScore, characteristics.ProgressScore, _game, _revival,
                 _contactableObjects, _selectables, progressChangedCallback);
