@@ -29,7 +29,8 @@ namespace Menu
             _volume.onClick.RemoveListener(ChangeSound);
         }
 
-        public void Initialize(Sprite onIcon, Sprite offIcon, Button volume, Image icon, List<AudioSource> sources, AudioSource music)
+        public void Initialize(Sprite onIcon, Sprite offIcon, Button volume, Image icon,
+            List<AudioSource> sources, AudioSource music)
         {
             _onIcon = onIcon;
             _offIcon = offIcon;
@@ -46,14 +47,10 @@ namespace Menu
         
         public void Load(bool isAllowed)
         {
-            _isAllowed = isAllowed;
-            
-            if (PlayerPrefs.HasKey(nameof(PlayerCharacteristics.IsAllowedSound)) == true)
-            {
-                _isAllowed = Convert.ToBoolean(PlayerPrefs.GetString(nameof(PlayerCharacteristics.IsAllowedSound)));
-                PlayerPrefs.DeleteKey(nameof(PlayerCharacteristics.IsAllowedSound));
-            }
-            
+            _isAllowed = PlayerPrefs.HasKey(nameof(PlayerCharacteristics.IsAllowedSound))
+                    ? Convert.ToBoolean(PlayerPrefs.GetString(nameof(PlayerCharacteristics.IsAllowedSound)))
+                    : isAllowed;
+
             ChangeVolume();
         }
 
@@ -122,13 +119,12 @@ namespace Menu
                 AudioListener.volume = (float)ValueConstants.One;
                 _music.UnPause();
                 _icon.sprite = _onIcon;
+                return;
             }
-            else
-            {
-                AudioListener.volume = (float)ValueConstants.Zero;
-                _music.Pause();
-                _icon.sprite = _offIcon;
-            }
+            
+            AudioListener.volume = (float)ValueConstants.Zero;
+            _music.Pause();
+            _icon.sprite = _offIcon;
         }
 
         private void OnFocusChangedApp(bool isInApp)
