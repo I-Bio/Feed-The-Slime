@@ -1,37 +1,45 @@
-﻿using UnityEngine;
-
-namespace Boosters
+﻿namespace Boosters
 {
-    public class BoosterPresenter : IPresenter, IBoosterVisitor
+    public class BoosterPresenter : IBoosterVisitor
     {
-        private readonly ISettable<ICalculableScore> _scoreHolder;
-        private readonly ISettable<IMovable> _speedHolder;
-        private readonly BoosterService _service;
-        private readonly BoosterVisualizer _visualizer;
+        private readonly ISettable<ICalculableScore> ScoreHolder;
+        private readonly ISettable<IMovable> SpeedHolder;
+        private readonly BoosterService Service;
+        private readonly BoosterVisualizer Visualizer;
 
-        public BoosterPresenter(ISettable<ICalculableScore> scoreHolder, ISettable<IMovable> speedHolder, BoosterService service,
-            BoosterVisualizer visualizer)
+        public BoosterPresenter(ISettable<ICalculableScore> scoreHolder, ISettable<IMovable> speedHolder,
+            BoosterService service, BoosterVisualizer visualizer)
         {
-            _scoreHolder = scoreHolder;
-            _speedHolder = speedHolder;
-            _service = service;
-            _visualizer = visualizer;
+            ScoreHolder = scoreHolder;
+            SpeedHolder = speedHolder;
+            Service = service;
+            Visualizer = visualizer;
         }
 
         public void Enable()
         {
-            _service.Injected += OnBoosterStateChanged;
-            _service.Ejected += OnBoosterStateChanged;
-
-            _visualizer.Updated += OnUpdated;
+            Service.Injected += OnBoosterStateChanged;
+            Service.Ejected += OnBoosterStateChanged;
+            Visualizer.Updated += OnUpdated;
         }
 
         public void Disable()
         {
-            _service.Injected -= OnBoosterStateChanged;
-            _service.Ejected -= OnBoosterStateChanged;
+            Service.Injected -= OnBoosterStateChanged;
+            Service.Ejected -= OnBoosterStateChanged;
+            Visualizer.Updated -= OnUpdated;
+        }
 
-            _visualizer.Updated -= OnUpdated;
+        public void Visit(IMovable movable)
+        {
+            SpeedHolder.SetBoost(movable);
+            Visualizer.Visit(movable);
+        }
+
+        public void Visit(ICalculableScore calculableScore)
+        {
+            ScoreHolder.SetBoost(calculableScore);
+            Visualizer.Visit(calculableScore);
         }
         
         private void OnBoosterStateChanged(IStat boost)
@@ -41,19 +49,7 @@ namespace Boosters
 
         private void OnUpdated(float delay)
         {
-            _service.Update(delay);
-        }
-
-        public void Visit(IMovable movable)
-        {
-            _speedHolder.SetBoost(movable);
-            _visualizer.Visit(movable);
-        }
-
-        public void Visit(ICalculableScore calculableScore)
-        {
-            _scoreHolder.SetBoost(calculableScore);
-            _visualizer.Visit(calculableScore);
+            Service.Update(delay);
         }
     }
 }
