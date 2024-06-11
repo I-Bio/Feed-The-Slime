@@ -9,26 +9,28 @@ namespace Boosters
 {
     public class BoosterVisualizer : ObjectPool, IBoosterVisitor
     {
-        private readonly List<KeyValuePair<SpawnableObject, IStat>> _boosters = new();
+        private readonly List<KeyValuePair<SpawnableObject, IStat>> Boosters = new();
         
         private float _delay;
-        private Transform _holder;
+        private WaitForSeconds _wait;
         private Dictionary<Type, Action> _effects;
+        private IIconFactory _factory;
 
         public event Action<float> Updated;
 
-        public void Initialize(float delay, Dictionary<Type, Action> effects, Transform holder, BoostIcon icon)
+        public void Initialize(float delay, BoostIcon icon, IIconFactory factory, Dictionary<Type, Action> effects)
         {
             Initialize(icon);
-            _holder = holder;
             _delay = delay;
+            _wait = new WaitForSeconds(_delay);
             _effects = effects;
+            _factory = factory;
             StartCoroutine(UpdateRoutine());
         }
 
         public void Visit(IMovable movable)
         {
-            if (_boosters.Count == 0 || _boosters.Where(pair => pair.Value is IMovable == true).ToList().Count == 0)
+            if (Boosters.Count == 0 || Boosters.Where(pair => pair.Value is IMovable).ToList().Count == 0)
             {
                 if (_effects.TryGetValue(typeof(IMovable), out Action onGotSpeed) == false)
                     throw new NullReferenceException(nameof(IMovable));
@@ -43,7 +45,7 @@ namespace Boosters
 
         public void Visit(ICalculableScore calculableScore)
         {
-            if (_boosters.Count == 0 || _boosters.Where(pair => pair.Value is ICalculableScore == true).ToList().Count == 0)
+            if (Boosters.Count == 0 || Boosters.Where(pair => pair.Value is ICalculableScore).ToList().Count == 0)
             {
                 if (_effects.TryGetValue(typeof(ICalculableScore), out Action onGotScore) == false)
                     throw new NullReferenceException(nameof(ICalculableScore));
@@ -56,29 +58,23 @@ namespace Boosters
             Hide<ICalculableScore>();
         }
 
-        private void SpawnIcon(IStat boost)
+        private void SpawnIcon(IStat stat)
         {
-            _boosters.Add(
-                new KeyValuePair<SpawnableObject, IStat>(
-                    Pull<BoostIcon>(_holder)
-                        .Initialize(boost.LifeTime, boost.Icon).Use(), boost));
+            Boosters.Add(_factory.Create(stat));
         }
 
         private void Hide<T>()
         {
-            KeyValuePair<SpawnableObject, IStat> boost = _boosters.First(pair => pair.Value is T);
+            KeyValuePair<SpawnableObject, IStat> boost = Boosters.First(pair => pair.Value is T);
             Push(boost.Key);
-            _boosters.Remove(boost);
+            Boosters.Remove(boost);
         }
 
         private IEnumerator UpdateRoutine()
         {
-            bool isWorking = true;
-            var wait = new WaitForSeconds(_delay);
-
-            while (isWorking == true)
+            while (true)
             {
-                yield return wait;
+                yield return _wait;
                 Updated?.Invoke(_delay);
             }
         }
