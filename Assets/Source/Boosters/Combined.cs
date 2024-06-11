@@ -2,14 +2,13 @@
 {
     public class Combined<T> : IInsertable<T> where T : class
     {
-        private T Next;
-        private T Previous;
+        private T _previous;
         
-        protected T Stat => Next;
-        
+        public T Next { get; private set; }
+
         public void Insert(T stat)
         {
-            Previous = stat;
+            _previous = stat;
             
             if (Next != null)
             {
@@ -17,13 +16,13 @@
                 insertable?.Insert(Next);
             }
             
-            Next = Previous;
+            Next = _previous;
         }
         
         public void Clear()
         {
             Next = null;
-            Previous = null;
+            _previous = null;
         }
     }
 }
