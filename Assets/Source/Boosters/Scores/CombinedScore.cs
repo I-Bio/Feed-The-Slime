@@ -4,7 +4,7 @@
     {
         public float CalculateScore(float score)
         {
-            return Stat.CalculateScore(score);
+            return Next.CalculateScore(score);
         }
     }
 }

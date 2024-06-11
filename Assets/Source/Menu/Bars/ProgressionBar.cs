@@ -8,7 +8,6 @@ namespace Menu
 {
     public class ProgressionBar<T> : LeanLocalizedBehaviour, IProgressionBar
     {
-        
         [SerializeField] private Button _buyButton;
         [SerializeField] private TextMeshProUGUI _price;
         [SerializeField] private TextMeshProUGUI _currentCount;

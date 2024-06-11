@@ -1,5 +1,5 @@
 ﻿using System;
-using Agava.YandexGames;
+using Players;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -38,7 +38,8 @@ namespace Menu
                 load.onClick.RemoveListener(Load);
         }
 
-        public void Initialize(Revival revival, WindowSwitcher switcher, Stopper stopper, AutoSaveRequester requester, int rewardCount)
+        public void Initialize(Revival revival, WindowSwitcher switcher, Stopper stopper,
+            AutoSaveRequester requester, int rewardCount)
         {
             _revival = revival;
             _switcher = switcher;
@@ -80,7 +81,7 @@ namespace Menu
                 _switcher.ChangeWindow(Windows.Lose);
         }
 
-        public void Load()
+        private void Load()
         {
             _rewardCount = Mathf.CeilToInt(_rewardCount * _stageScale);
             GoingCollect?.Invoke(_rewardCount, _didPass, () => { SceneManager.LoadScene((int)SceneNames.Game); });
@@ -115,9 +116,7 @@ namespace Menu
         private void UpdateReward()
         {
             _stageScale = _stage == SatietyStage.Exhaustion ? _minPercent : (int)_stage / _maxStage;
-            Debug.Log($"UPDATE REWARD\n VARIABLES:  Stage: {_stage}, StageScale_Current: {_stageScale}, " +
-                      $"stageScale_Mean: {(int)_stage / _maxStage}, Reward_Mean: {_rewardCount}, " +
-                      $"Reward_Current: {_rewardCount * _stageScale} & ceil {Mathf.CeilToInt(_rewardCount * _stageScale)}");
+
             foreach (TextMeshProUGUI reward in _rewards)
                 reward.SetText(Mathf.CeilToInt(_rewardCount * _stageScale).ToString());
         }

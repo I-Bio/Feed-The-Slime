@@ -11,15 +11,15 @@ namespace Guide
     [RequireComponent(typeof(Screen))]
     public class Guide : MonoBehaviour, IGame, IGuide
     {
-        private Screen _screen;
-        private Stopper _stopper;
-
-        private int _pointer;
         private Button[] _nextButtons;
         private Button[] _releaseButtons;
         private Button[] _loadButtons;
+
         private Button _pause;
+        private Screen _screen;
+        private Stopper _stopper;
         private ObjectFiller _filler;
+        private int _pointer;
 
         private void OnDestroy()
         {
@@ -36,7 +36,8 @@ namespace Guide
         }
 
         public void Initialize(Button[] nextButtons, Button[] releaseButtons, Button[] loadButtons, Button pause,
-            ObjectFiller filler, Sprite onIcon, Sprite offIcon, Button volume, Image icon, List<AudioSource> sources, AudioSource music)
+            ObjectFiller filler, Sprite onIcon, Sprite offIcon, Button volume, Image icon, List<AudioSource> sources,
+            AudioSource music)
         {
             _nextButtons = nextButtons;
             _releaseButtons = releaseButtons;
@@ -84,16 +85,16 @@ namespace Guide
             _screen.SetWindow((int)window);
         }
 
-        public void Load()
+        public void Release()
+        {
+            ChangeWindow(GuideWindows.Main);
+        }
+
+        private void Load()
         {
             PlayerPrefs.SetString(nameof(CharacteristicConstants.DidPassGuide),
                 nameof(CharacteristicConstants.DidPassGuide));
             _filler.FillUp(() => SceneManager.LoadScene((int)SceneNames.Game));
-        }
-
-        public void Release()
-        {
-            ChangeWindow(GuideWindows.Main);
         }
 
         private void Next()

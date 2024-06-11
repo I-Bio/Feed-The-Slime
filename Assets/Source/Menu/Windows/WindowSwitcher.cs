@@ -16,7 +16,6 @@ namespace Menu
         private Button _volume;
         private Button[] _closeButtons;
         private Screen _screen;
-        private Stopper _stopper;
 
         public event Action LeaderboardOpened;
 
@@ -35,7 +34,6 @@ namespace Menu
         public void Initialize(Stopper stopper, Button upgrade, Button leader, Button authorize, Button pause,
             Button resume, Button[] closeButtons)
         {
-            _stopper = stopper;
             _upgrade = upgrade;
             _leader = leader;
             _authorize = authorize;
@@ -98,37 +96,20 @@ namespace Menu
 
         private void ShowLeader()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
             if (PlayerAccount.IsAuthorized)
             {
-                PlayerAccount.RequestPersonalProfileDataPermission(() =>
-                {
-                    LeaderboardOpened?.Invoke();
-                },
-                _ => LeaderboardOpened?.Invoke());
-                _screen.SetWindow((int)Windows.Leader);
-                return;
-            }
-#endif
-#if UNITY_EDITOR
-            if (PlayerPrefs.HasKey(nameof(Authorize)))
-            {
+                PlayerAccount.RequestPersonalProfileDataPermission();
                 LeaderboardOpened?.Invoke();
                 _screen.SetWindow((int)Windows.Leader);
                 return;
             }
-#endif
+
             _screen.SetWindow((int)Windows.Authorize);
         }
 
         private void Authorize()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
             PlayerAccount.Authorize();
-#endif
-#if UNITY_EDITOR
-            PlayerPrefs.SetString(nameof(Authorize), nameof(Authorize));
-#endif
             ShowMain();
         }
     }

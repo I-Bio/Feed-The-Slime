@@ -6,8 +6,8 @@ namespace Players
     public class StageBar : MonoBehaviour
     {
         [SerializeField] private Slider[] _sliders;
-        [SerializeField] private Color _pass;
         [SerializeField] private Image[] _stages;
+        [SerializeField] private Color _pass;
 
         private int _pointer = -1;
         private int _maxScore;

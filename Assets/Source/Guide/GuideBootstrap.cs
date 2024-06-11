@@ -41,7 +41,7 @@ namespace Guide
         [SerializeField] private Vector3 _offSet;
         [SerializeField] private float _spawnDelay = 5f;
         
-        [Space, Header(nameof(BoosterStatFactory))]
+        [Space, Header(nameof(BoosterFactory))]
         [SerializeField] private Sprite _speedIcon;
         [SerializeField] private Sprite _scoreIcon;
         [SerializeField] private float _maxLifeTime = 10f;
@@ -101,9 +101,11 @@ namespace Guide
 
             _input.Initialize();
             _player.Initialize(movable, calculableScore, (float)ValueConstants.Zero, _guide, _revival,
-                _theme.Initialize(hidden, visitor, out List<ISelectable> selectables), selectables, null);
-            _boosterSpawner.Initialize(new BoosterStatFactory(_scaleValues, _additionalValues,
-                _speedIcon, _scoreIcon, _maxLifeTime, _minLifeTime), _pointsHolder, _offSet, _spawnDelay, _template);
+                _theme.Initialize(hidden, visitor, out List<ISelectable> selectables),
+                selectables, null);
+            _boosterSpawner.Initialize(new BoosterFactory(_scaleValues, _additionalValues,
+                _speedIcon, _scoreIcon, _maxLifeTime, _minLifeTime, _pointsHolder, _offSet, _boosterSpawner.Pull<Booster>),
+                _spawnDelay, _template);
         }
         
         private void InitializeGuide()
@@ -115,13 +117,13 @@ namespace Guide
             
             _beacon.Initialize(_guide);
             _trigger.Initialize(_camera, _close, _player.transform, _enemy,
-                () => { _guide.ChangeWindow(GuideWindows.Enemy); },
-                () => { _guide.Release(); });
+                () => _guide.ChangeWindow(GuideWindows.Enemy), _guide.Release);
             _exampleFood.Initialize((float)ValueConstants.Zero, _selectValue, transform);
             _fadeCaster.Initialize(_fadeMask, _player.transform, _camera.transform, _castDelay, _hitsCapacity);
             _filler.Initialize();
             _exampleFood.SetSelection();
-            _guide.Initialize(_nextButtons, _releaseButtons, _loadButtons, _pause, _filler, _onIcon, _offIcon, _volume, _icon, _sources, _music);
+            _guide.Initialize(_nextButtons, _releaseButtons, _loadButtons, _pause, _filler, _onIcon, _offIcon,
+                _volume, _icon, _sources, _music);
         }
     }
 }

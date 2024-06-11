@@ -5,7 +5,6 @@ namespace Players
     public class PlayerAnimation : MonoBehaviour
     {
         private Animator _animator;
-        
         private string _eat;
         private string _idle;
         private string _hide;

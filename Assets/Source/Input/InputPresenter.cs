@@ -1,10 +1,10 @@
-﻿using Menu;
+﻿using Players;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Input
 {
-    public class InputPresenter : IPresenter
+    public class InputPresenter
     {
         private readonly PlayerInput Model;
         private readonly Joystick Joystick;
@@ -56,9 +56,6 @@ namespace Input
         
         private void OnMoved(InputAction.CallbackContext context)
         {
-            if (Joystick.IsEnabled == false)
-                return;
-            
             Player.ReadInput(context.ReadValue<Vector2>());
         }
 

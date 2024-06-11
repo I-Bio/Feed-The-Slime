@@ -1,5 +1,4 @@
 ﻿using System;
-using Spawners;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -76,6 +75,7 @@ namespace Menu
             _reward.Initialize(_gemTemplate);
             _filler.Initialize();
             _requester.Initialize(_delay);
+            
             _presenter.Enable();
         }
     }

@@ -10,7 +10,7 @@ namespace Boosters
         
         public BoostIcon Initialize(float coolDown, Sprite sprite)
         {
-            CoolDown = coolDown;
+            Initialize(coolDown);
             _image.sprite = sprite;
             return this;
         }

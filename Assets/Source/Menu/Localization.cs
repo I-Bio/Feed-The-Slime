@@ -22,10 +22,6 @@ namespace Menu
         
         private void ChangeLanguage()
         {
-#if UNITY_EDITOR
-            _localization.SetCurrentLanguage(RussianCode);
-#endif
-#if UNITY_WEBGL && !UNITY_EDITOR
             string languageCode = YandexGamesSdk.Environment.i18n.lang;
 
             switch (languageCode)
@@ -42,7 +38,6 @@ namespace Menu
                     _localization.SetCurrentLanguage(TurkishCode);
                     break;
             }
-#endif
         }
     }
 }

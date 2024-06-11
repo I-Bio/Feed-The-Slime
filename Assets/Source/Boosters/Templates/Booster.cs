@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Spawners;
+﻿using Spawners;
 using TMPro;
 using UnityEngine;
 
@@ -12,11 +11,12 @@ namespace Boosters
         
         private IStat _boost;
 
-        public void Initialize(IStat boost)
+        public Booster Initialize(IStat boost)
         {
             _boost = boost;
             _text.SetText(boost.ToString());
             _renderer.sprite = _boost.Icon;
+            return this;
         }
 
         public void Use()

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Players
 {
-    public class PlayerPresenter : IPresenter
+    public class PlayerPresenter
     {
         private readonly Player Model;
         private readonly PlayerCollisionDetector CollisionDetector;
@@ -28,7 +28,8 @@ namespace Players
         public PlayerPresenter(Player model, PlayerCollisionDetector collisionDetector, PlayerScanner scanner,
             SizeScaler sizeScaler, LevelBar levelBar, StageBar stageBar, IUsable boosterService,
             PlayerAnimation animation, AbilityCaster caster, IMover mover, EffectReproducer effectReproducer,
-            SoundReproducer soundReproducer, EatableSpawner spawner, IGame game, IRevival revival, Action<float> progressChangedCallback)
+            SoundReproducer soundReproducer, EatableSpawner spawner, IGame game,
+            IRevival revival, Action<float> progressChangedCallback)
         {
             Model = model;
             CollisionDetector = collisionDetector;

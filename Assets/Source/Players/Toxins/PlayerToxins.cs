@@ -4,24 +4,24 @@ namespace Players
 {
     public class PlayerToxins
     {
-        private readonly int _maxValue;
-        private readonly int _minValue;
+        private readonly int MaxValue;
+        private readonly int MinValue;
         
         private int _currentValue;
 
         public event Action GoingDie;
-        public event Action<int> ToxinsChanged;
+        public event Action<int> Changed;
 
         public PlayerToxins(int maxValue, int minValue)
         {
-            _maxValue = maxValue;
-            _minValue = minValue;
-            _currentValue = _minValue;
+            MaxValue = maxValue;
+            MinValue = minValue;
+            _currentValue = MinValue;
         }
 
         public void Increase()
         {
-            if (_currentValue >= _maxValue)
+            if (_currentValue >= MaxValue)
                 return;
             
             _currentValue++;
@@ -30,7 +30,7 @@ namespace Players
 
         public void Decrease()
         {
-            if (_currentValue <= _minValue)
+            if (_currentValue <= MinValue)
                 return;
             
             _currentValue--;
@@ -45,14 +45,14 @@ namespace Players
 
         private void CompareAccumulation()
         {
-            ToxinsChanged?.Invoke(_currentValue);
+            Changed?.Invoke(_currentValue);
             
-            if (_currentValue < _maxValue)
+            if (_currentValue < MaxValue)
                 return;
             
             GoingDie?.Invoke();
-            _currentValue = _minValue;
-            ToxinsChanged?.Invoke(_currentValue);
+            _currentValue = MinValue;
+            Changed?.Invoke(_currentValue);
         }
     }
 }

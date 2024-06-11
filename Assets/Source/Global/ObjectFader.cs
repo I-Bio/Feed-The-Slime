@@ -11,76 +11,76 @@ public class ObjectFader : MonoBehaviour
     private const string PropertyColor = "_Color";
     private const string AlphaBlend = "_ALPHABLEND_ON";
 
-    private Material[] _materials;
+    [SerializeField] private float _alpha = 0.33f;
+    [SerializeField] private float _delay = 0.03f;
 
-    [SerializeField] private float _fadedAlpha = 0.33f;
-    [SerializeField] private float _fadeDelay = 0.03f;
+    private Material[] _materials;
 
     private Renderer _renderer;
     private float _initialAlpha;
     private Coroutine _fadeInRoutine;
     private Coroutine _fadeOutRoutine;
+    private WaitForSeconds _wait;
 
     public void Initialize()
     {
         _renderer = GetComponent<Renderer>();
         _materials = _renderer.materials;
         _initialAlpha = _materials[0].color.a;
+        _wait = new WaitForSeconds(_delay);
     }
 
-    public void FadeIn()
+    public void Appear()
     {
         if (_fadeInRoutine != null)
             StopCoroutine(_fadeInRoutine);
 
-        _fadeInRoutine = StartCoroutine(FadeObjectIn());
+        _fadeInRoutine = StartCoroutine(AppearRoutine());
     }
 
-    public void FadeOut()
+    public void Disappear()
     {
         if (_fadeOutRoutine != null)
             StopCoroutine(_fadeOutRoutine);
 
-        _fadeOutRoutine = StartCoroutine(FadeObjectOut());
+        _fadeOutRoutine = StartCoroutine(DisappearRoutine());
     }
 
-    private IEnumerator FadeObjectIn()
+    private IEnumerator AppearRoutine()
     {
-        WaitForSeconds wait = new WaitForSeconds(_fadeDelay);
-
         if (_materials.First().HasProperty(PropertyColor) == true)
         {
             while (_materials.First().color.a < _initialAlpha)
             {
                 ChangeMaterialColor(_initialAlpha);
-                yield return wait;
+                yield return _wait;
             }
         }
 
         foreach (var material in _materials)
         {
             material.DisableKeyword(AlphaBlend);
-            ChangeMaterialProperties(material, BlendMode.One, BlendMode.Zero, ValueConstants.One, RenderQueue.Geometry);
+            ChangeMaterialProperties(material, BlendMode.One, BlendMode.Zero,
+                ValueConstants.One, RenderQueue.Geometry);
         }
     }
 
-    private IEnumerator FadeObjectOut()
+    private IEnumerator DisappearRoutine()
     {
-        WaitForSeconds wait = new WaitForSeconds(_fadeDelay);
-
         foreach (var material in _materials)
         {
-            ChangeMaterialProperties(material, BlendMode.SrcAlpha, BlendMode.OneMinusSrcAlpha, ValueConstants.Zero, RenderQueue.Transparent);
+            ChangeMaterialProperties(material, BlendMode.SrcAlpha, BlendMode.OneMinusSrcAlpha,
+                ValueConstants.Zero, RenderQueue.Transparent);
             material.EnableKeyword(AlphaBlend);
         }
 
         if (_materials.First().HasProperty(PropertyColor) == false)
             yield break;
 
-        while (_materials.First().color.a > _fadedAlpha)
+        while (_materials.First().color.a > _alpha)
         {
-            ChangeMaterialColor(_fadedAlpha);
-            yield return wait;
+            ChangeMaterialColor(_alpha);
+            yield return _wait;
         }
     }
 

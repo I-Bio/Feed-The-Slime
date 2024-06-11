@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Foods;
 using Players;
 using UnityEngine;
@@ -33,12 +32,6 @@ namespace Enemies
         private FinalStateMachine _model;
         private EnemyPresenter _presenter;
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, _followDistance);
-        }
-
         private void OnDestroy()
         {
             _presenter?.Disable();
@@ -51,20 +44,19 @@ namespace Enemies
             _animation = GetComponent<EnemyAnimation>();
 
             _model = new FinalStateMachine();
-            IFactory<Dictionary<EnemyStates, FinalStateMachineState>> factory =
-                new EnemyStatesFactory(_type, _model, player, _transform, _animation, _foodPart.Stage, _followDistance,
-                    _transform.position, _idleOffset, _agent, _sound, visitor, _particle, _swarm, _thinkDelay);
+            IFactory<Dictionary<EnemyStates, FinalStateMachineState>> factory = 
+                new EnemyStatesFactory(_type, _model, player, _transform, _animation, _foodPart.Stage,
+                    _followDistance, _transform.position, _idleOffset, _agent, _sound, visitor, _particle, _swarm);
             _presenter = new EnemyPresenter(_model, _thinker);
             _model.AddStates(factory.Create());
             
             _thinker.Initialize(_thinkDelay);
             _animation.Initialize(_animator, () => _model.SetState(EnemyStates.Idle));
             _detector.Initialize(_foodPart.Stage, visitor);
-            Contactable contactable = _foodPart.Initialize(float.NaN, visitor, out selectable,
-                () => Destroy(gameObject));
+            Contactable contactable = 
+                _foodPart.Initialize(float.NaN, visitor, out selectable, () => Destroy(gameObject));
 
             _presenter.Enable();
-
             return new List<Contactable>{_detector, contactable};
         }
     }

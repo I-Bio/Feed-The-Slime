@@ -9,7 +9,7 @@ namespace Players
         private Rigidbody _rigidbody;
         private IMovable _movable;
         private StatCombiner<IMovable> _combiner;
-        private MoverScalerFactory _factory;
+        private IMovableFactory _factory;
         private Transform _rotationPoint;
         private Vector2 _input;
         private Vector3 _forward;
@@ -26,7 +26,7 @@ namespace Players
             RotateAlongMove();
         }
 
-        public void Initialize(IMovable movable, MoverScalerFactory factory, Transform rotationPoint, Vector3 forward)
+        public void Initialize(IMovable movable, IMovableFactory factory, Transform rotationPoint, Vector3 forward)
         {
             _rigidbody = GetComponent<Rigidbody>();
             _forward = forward;
@@ -88,8 +88,9 @@ namespace Players
             if (_input == Vector2.zero)
                 return;
 
-            Vector3 direction = new Vector3(_input.x, 0f, _input.y);
-            _rotationPoint.eulerAngles = new Vector3(0f, Vector3.SignedAngle(_forward, direction, Vector3.up), 0f);
+            Vector3 direction = new Vector3(_input.x, (float)ValueConstants.Zero, _input.y);
+            _rotationPoint.eulerAngles = new Vector3((float)ValueConstants.Zero,
+                    Vector3.SignedAngle(_forward, direction, Vector3.up), (float)ValueConstants.Zero);
         }
     }
 }

@@ -8,19 +8,18 @@ namespace Foods
     public class EdiblePart : Contactable, IEatable
     {
         private const float EatingDuration = 0.08f;
-        
-        private float _scorePerEat;
+
         private bool _isAllowed;
         private bool _isEaten;
         private IPlayerVisitor _player;
         private Collider _collider;
         private Transform _transform;
 
-        public float Score => _scorePerEat;
+        public float Score { get; private set; }
 
         public void Initialize(float scorePerEat, IPlayerVisitor player, Transform transform)
         {
-            _scorePerEat = scorePerEat;
+            Score = scorePerEat;
             _player = player;
             _transform = transform;
             _collider = GetComponent<Collider>();
@@ -56,7 +55,7 @@ namespace Foods
             _collider.enabled = false;
             _transform.DOMove(position, EatingDuration).OnComplete(() =>
             {
-                _player.Visit(this, _scorePerEat);
+                _player.Visit(this, Score);
                 OnEatingCompletion();
             });
         }

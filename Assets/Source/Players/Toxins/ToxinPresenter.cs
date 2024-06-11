@@ -1,6 +1,6 @@
 ﻿namespace Players
 {
-    public class ToxinPresenter : IPresenter
+    public class ToxinPresenter
     {
         private readonly PlayerToxins Model;
         private readonly ToxinBar Bar;
@@ -19,7 +19,7 @@
 
         public void Enable()
         {
-            Model.ToxinsChanged += OnToxinsChanged;
+            Model.Changed += OnChanged;
             Model.GoingDie += OnGoingDie;
             
             Bar.Hid += OnHid;
@@ -31,7 +31,7 @@
 
         public void Disable()
         {
-            Model.ToxinsChanged -= OnToxinsChanged;
+            Model.Changed -= OnChanged;
             Model.GoingDie -= OnGoingDie;
 
             Bar.Hid -= OnHid;
@@ -41,7 +41,7 @@
             Revival.Revived -= OnRevived;
         }
 
-        private void OnToxinsChanged(int value)
+        private void OnChanged(int value)
         {
             Bar.ChangeValue(value);
         }

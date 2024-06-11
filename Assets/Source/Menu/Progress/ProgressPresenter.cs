@@ -1,11 +1,10 @@
 ﻿using System;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace Menu
 {
-    public class ProgressPresenter : IPresenter
+    public class ProgressPresenter
     {
         private readonly Progress Model;
         private readonly IProgressionBar[] Bars;
@@ -115,17 +114,14 @@ namespace Menu
 
         private void OnLevelsIncreased(int value)
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
             Leaderboard.SetPlayerScore(value);
             Leaderboard.Fill();
-#endif
             Level.SetText(value.ToString());
         }
 
         private void OnSaveRequested()
         {
             Model.Save();
-            Debug.Log($"Auto Save");
         }
 
         private void OnGoingCollect(int rewardCount, bool didPass, Action callBack)

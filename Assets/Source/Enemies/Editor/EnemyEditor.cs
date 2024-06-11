@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEditor;
-using UnityEngine;
 
 namespace Enemies
 {
@@ -14,7 +13,6 @@ namespace Enemies
         private SerializedProperty _detector;
         private SerializedProperty _foodPart;
         
-        [Space, Header("Enemy Type")] 
         private SerializedProperty _type;
         private SerializedProperty _agent;
         private SerializedProperty _sound;

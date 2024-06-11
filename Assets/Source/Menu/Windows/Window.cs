@@ -19,8 +19,6 @@ namespace Menu
         private Stopper _stopper;
         private GameObject _gameObject;
 
-        public bool IsActive => _group.interactable;
-
         public void Initialize(Stopper stopper)
         {
             _group = GetComponent<CanvasGroup>();
@@ -52,7 +50,12 @@ namespace Menu
 
         public void Close()
         {
-            TurnOff();
+            if (_group == null)
+                return;
+            
+            _group.alpha = OffAlpha;
+            _group.interactable = false;
+            _group.blocksRaycasts = false;
             
             foreach(GameObject disabling in _enablingObjects)
                 if (disabling != null)
@@ -63,16 +66,6 @@ namespace Menu
             
             if (_isReleasing == true)
                 _stopper.Release();
-        }
-
-        public void TurnOff()
-        {
-            if (_group == null)
-                return;
-            
-            _group.alpha = OffAlpha;
-            _group.interactable = false;
-            _group.blocksRaycasts = false;
         }
     }
 }

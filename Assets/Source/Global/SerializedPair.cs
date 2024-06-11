@@ -20,7 +20,7 @@ public struct SerializedPair<TK, TV>
 
     public static bool operator !=(SerializedPair<TK, TV> first, SerializedPair<TK, TV> second) 
     {
-        return !first.Equals(second);
+        return first.Equals(second) == false;
     }
     
     public bool Equals(SerializedPair<TK, TV> other)

@@ -1,6 +1,6 @@
 ﻿namespace Enemies
 {
-    public class EnemyPresenter : IPresenter
+    public class EnemyPresenter
     {
         private readonly FinalStateMachine Model;
         private readonly EnemyThinker Thinker;
@@ -15,14 +15,14 @@
         {
             Thinker.GoingThink += OnGoingThink;
             
-            Thinker.StartThink();
+            Thinker.StartTick();
         }
 
         public void Disable()
         {
             Thinker.GoingThink -= OnGoingThink;
             
-            Thinker.StopThink();
+            Thinker.StopTick();
             Model.Exit();
         }
         

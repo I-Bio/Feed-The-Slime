@@ -12,6 +12,7 @@ public class FadeCaster : MonoBehaviour
     private Transform _player;
     private Transform _camera;
     private float _delay = 0.01f;
+    private WaitForSeconds _wait;
 
     public void Initialize(LayerMask layerMask, Transform player, Transform camera, float delay, int hitsCapacity)
     {
@@ -20,14 +21,13 @@ public class FadeCaster : MonoBehaviour
         _camera = camera;
         _delay = delay;
         _hits = new RaycastHit[hitsCapacity];
-        
-        StartCoroutine(CheckForObjects());
+        _wait = new WaitForSeconds(_delay);
+
+        StartCoroutine(AppearRoutine());
     }
 
-    private IEnumerator CheckForObjects()
+    private IEnumerator AppearRoutine()
     {
-        var wait = new WaitForSeconds(_delay);
-
         while (true)
         {
             Vector3 cameraPosition = _camera.position;
@@ -40,42 +40,42 @@ public class FadeCaster : MonoBehaviour
             {
                 for (int i = 0; i < hits; i++)
                 {
-                    ObjectFader fadingObject = GetFadingFromHit(_hits[i]);
+                    ObjectFader fadingObject = GetFader(_hits[i]);
 
                     if (fadingObject == null || FadedObjects.Contains(fadingObject) == true)
                         continue;
                     
                     FadedObjects.Add(fadingObject);
-                    fadingObject.FadeOut();
+                    fadingObject.Disappear();
                 }
             }
 
-            FadeObjectsNoLongerBeingHit();
+            AppearNoHittingObjects();
 
             ClearHits();
 
-            yield return wait;
+            yield return _wait;
         }
     }
 
-    private void FadeObjectsNoLongerBeingHit()
+    private void AppearNoHittingObjects()
     {
         for (int i = 0; i < FadedObjects.Count; i++)
         {
-            bool objectIsBeingHit = _hits.Select(GetFadingFromHit)
+            bool objectIsBeingHit = _hits.Select(GetFader)
                 .Any(fadingObject => fadingObject != null && fadingObject == FadedObjects[i]);
 
             if (objectIsBeingHit == true) 
                 continue;
             
             if (FadedObjects[i] != null)
-                FadedObjects[i].FadeIn();
+                FadedObjects[i].Appear();
             
             FadedObjects.RemoveAt(i);
         }
     }
 
-    private ObjectFader GetFadingFromHit(RaycastHit hit)
+    private ObjectFader GetFader(RaycastHit hit)
     {
         return hit.collider != null ? hit.collider.GetComponent<ObjectFader>() : null;
     }

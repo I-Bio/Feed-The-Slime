@@ -12,7 +12,7 @@ namespace Players
         private int _pointsCount;
         private float _castStrength;
         private Vector3 _castOffset;
-        private EatableSpawner _spawner;
+        private IFactory<Projectile> _factory;
         private AbilityButton _spitButton;
 
         public bool IsHidden { get; private set; }
@@ -24,7 +24,7 @@ namespace Players
         public event Action SpitCasted;
 
         public void Initialize(Transform transform, SatietyStage stage, int pointsCount, float castStrength,
-            Vector3 castOffset, EatableSpawner spawner, AbilityButton spitButton, Projectile projectile)
+            Vector3 castOffset, IFactory<Projectile> factory, AbilityButton spitButton, Projectile projectile)
         {
             Initialize(projectile);
             _transform = transform;
@@ -32,7 +32,7 @@ namespace Players
             _pointsCount = pointsCount;
             _castStrength = castStrength;
             _castOffset = castOffset;
-            _spawner = spawner;
+            _factory = factory;
             _spitButton = spitButton;
             _spitButton.Initialize();
             _line = GetComponent<LineRenderer>();
@@ -78,9 +78,8 @@ namespace Players
                 return;
 
             _line.enabled = false;
-            _spitButton.Use();
-            Pull<Projectile>(_transform.position + _castOffset)
-                .Initialize(_castStrength * _transform.forward, _spawner);
+            _spitButton.Activate();
+            _factory.Create();
             SpitCasted?.Invoke();
         }
     }

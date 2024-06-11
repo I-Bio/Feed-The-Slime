@@ -93,9 +93,6 @@ namespace Menu
                 ? PlayerPrefs.GetFloat(nameof(PlayerCharacteristics.ProgressScore))
                 : (float)ValueConstants.Zero;
             _characteristics.ProgressScore = Mathf.Max(_characteristics.ProgressScore, prefsScore);
-            _characteristics.IsAllowedSound = PlayerPrefs.HasKey(nameof(PlayerCharacteristics.IsAllowedSound))
-                ? Convert.ToBoolean(PlayerPrefs.GetString(nameof(PlayerCharacteristics.IsAllowedSound)))
-                : _characteristics.IsAllowedSound;
 
             if (_characteristics.DidPassGuide == true)
                 return;

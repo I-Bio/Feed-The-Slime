@@ -4,13 +4,13 @@ namespace Foods
 {
     public class Food
     {
-        private readonly SatietyStage _accessStage;
+        private readonly SatietyStage AccessStage;
 
         private bool _isAllowed;
-        
+
         public Food(SatietyStage accessStage)
         {
-            _accessStage = accessStage;
+            AccessStage = accessStage;
         }
 
         public event Action Highlighted;
@@ -18,14 +18,14 @@ namespace Foods
 
         public void CompareStage(SatietyStage stage)
         {
-            if (stage < _accessStage)
+            if (stage < AccessStage)
                 return;
-            
+
             Highlighted?.Invoke();
-            
+
             if (_isAllowed == true)
                 return;
-            
+
             _isAllowed = true;
             Allowed?.Invoke();
         }

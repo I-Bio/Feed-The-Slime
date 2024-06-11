@@ -1,47 +1,47 @@
 ﻿namespace Foods
 {
-    public class FoodPresenter : IPresenter
+    public class FoodPresenter
     {
-        private readonly Food _model;
-        private readonly EdiblePart _ediblePart;
-        private readonly ObjectHighlighter _highlighter;
-        
+        private readonly Food Model;
+        private readonly EdiblePart EdiblePart;
+        private readonly ObjectHighlighter Highlighter;
+
         public FoodPresenter(Food model, EdiblePart ediblePart, ObjectHighlighter highlighter)
         {
-            _model = model;
-            _ediblePart = ediblePart;
-            _highlighter = highlighter;
+            Model = model;
+            EdiblePart = ediblePart;
+            Highlighter = highlighter;
         }
 
         public void Enable()
         {
-            _model.Highlighted += OnHighlighted;
-            _model.Allowed += OnAllowed;
+            Model.Highlighted += OnHighlighted;
+            Model.Allowed += OnAllowed;
 
-            _highlighter.GoingSelect += OnGoingSelect;
+            Highlighter.GoingSelect += OnGoingSelect;
         }
 
         public void Disable()
         {
-            _model.Highlighted -= OnHighlighted;
-            _model.Allowed -= OnAllowed;
-            
-            _highlighter.GoingSelect -= OnGoingSelect;
+            Model.Highlighted -= OnHighlighted;
+            Model.Allowed -= OnAllowed;
+
+            Highlighter.GoingSelect -= OnGoingSelect;
         }
 
         private void OnHighlighted()
         {
-            _highlighter.SetSelection();
+            Highlighter.SetSelection();
         }
 
         private void OnAllowed()
         {
-            _ediblePart.Allow();
+            EdiblePart.Allow();
         }
 
         private void OnGoingSelect(SatietyStage stage)
         {
-            _model.CompareStage(stage);
+            Model.CompareStage(stage);
         }
     }
 }

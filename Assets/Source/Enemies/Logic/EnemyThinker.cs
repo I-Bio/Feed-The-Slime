@@ -8,33 +8,31 @@ namespace Enemies
     {
         private float _delay;
         private Coroutine _routine;
+        private WaitForSeconds _wait;
 
         public event Action GoingThink;
 
         public void Initialize(float delay)
         {
-            _delay = delay;
+            _wait = new WaitForSeconds(delay);
         }
 
-        public void StartThink()
+        public void StartTick()
         {
-            _routine = StartCoroutine(ThinkRoutine());
+            _routine = StartCoroutine(TickRoutine());
         }
 
-        public void StopThink()
+        public void StopTick()
         {
             if (_routine != null)
                 StopCoroutine(_routine);
         }
 
-        private IEnumerator ThinkRoutine()
+        private IEnumerator TickRoutine()
         {
-            bool isWorking = true;
-            var wait = new WaitForSeconds(_delay);
-
-            while (isWorking)
+            while (true)
             {
-                yield return wait;
+                yield return _wait;
                 GoingThink?.Invoke();
             }
         }

@@ -98,7 +98,8 @@ namespace Players
             Action<float> progressChangedCallback)
         {
             PrepareComponents();
-            InitializePlayer(movable, calculableScore, startScore, game, revival, contactableObjects, selectables, progressChangedCallback);
+            InitializePlayer(movable, calculableScore, startScore, game, revival, contactableObjects,
+                selectables, progressChangedCallback);
             InitializeBoosters();
             InitializeToxins(revival);
             
@@ -139,10 +140,12 @@ namespace Players
             _levelBar.Initialize(_levelConfig.StartScore, _levelConfig.StartMaxScore);
             _stageBar.Initialize(_levelConfig.StartMaxScore, _levelConfig.LevelsPerStage, _levelConfig.ScoreScaler);
             _sizeScaler.Initialize(_transform, _virtualCamera, _levelConfig.ScaleFactor, _levelConfig.CameraScale);
-            _mover.Initialize(movable, new MoverScalerFactory(movable, _levelConfig.CameraScale), _rotationPoint, _transform.forward);
+            _mover.Initialize(movable, new MoverScalerFactory(movable, _levelConfig.CameraScale),
+                _rotationPoint, _transform.forward);
             _animation.Initialize(_animator, _eat, _idle, _hide);
-            _abilityCaster.Initialize(_rotationPoint, _levelConfig.StartStage, _pointsCount, _castStrength, _castOffset,
-                _spawner, _spitButton, _projectile);
+            _abilityCaster.Initialize(_transform, _levelConfig.StartStage, _pointsCount, _castStrength, _castOffset,
+                new ProjectileFactory(_castStrength, _castOffset, _transform, _spawner, _abilityCaster.Pull<Projectile>),
+                _spitButton, _projectile);
             _effectReproducer.Initialize(_effects);
             _soundReproducer.Initialize(_sources);
             _spawner.Initialize(_dissolved, _collisionDetector);
@@ -154,11 +157,12 @@ namespace Players
         {
             _boosterPresenter = new BoosterPresenter(_model, _mover, _service, _boosterVisualizer);
             
-            _boosterVisualizer.Initialize(_updateDelay, new Dictionary<Type, Action>
-            {
-                {typeof(IMovable), () => {_effectReproducer.Play(EffectType.SpeedBoost);}},
-                {typeof(ICalculableScore), () => {_effectReproducer.Play(EffectType.ScoreBoost);}},
-            }, _holder, _icon);
+            _boosterVisualizer.Initialize(_updateDelay, _icon, new IconFactory(_holder, _boosterVisualizer.Pull<BoostIcon>),
+                new Dictionary<Type, Action>
+                {
+                    {typeof(IMovable), () => _effectReproducer.Play(EffectType.SpeedBoost) },
+                    {typeof(ICalculableScore), () => _effectReproducer.Play(EffectType.ScoreBoost) },
+                });
         }
         
         private void InitializeToxins(IRevival revival)

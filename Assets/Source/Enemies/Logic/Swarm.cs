@@ -8,7 +8,7 @@ namespace Enemies
     {
         private NavMeshAgent _agent;
         
-        public void Initialize(float delay)
+        public void Initialize()
         {
             _agent = GetComponent<NavMeshAgent>();
         }

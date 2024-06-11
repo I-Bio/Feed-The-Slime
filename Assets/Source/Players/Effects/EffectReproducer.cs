@@ -19,7 +19,7 @@ namespace Players
         public void PlayAt(EffectType effect, Vector3 position)
         {
             _effects[(int)effect].transform.position = position;
-            _effects[(int)effect].Play();
+            Play(effect);
         }
     }
 }

@@ -25,9 +25,12 @@ namespace Boosters
         public void ChangeBoost(T stat)
         {
             if (Stats.Find(stat) != null)
+            {
                 Stats.Remove(stat);
-            else
-                Add(stat);
+                return;
+            }
+ 
+            Add(stat);
         }
 
         public T GetRecombined()

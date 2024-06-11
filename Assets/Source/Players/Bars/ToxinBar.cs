@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +11,6 @@ namespace Players
 
         private float _maxValue;
         private int _minValue;
-        private Coroutine _routine;
 
         public event Action Hid;
         
@@ -43,7 +41,6 @@ namespace Players
         private void Hide()
         {
             _holder.SetActive(false);
-            
             Hid?.Invoke();
         }
     }

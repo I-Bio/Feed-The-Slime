@@ -6,14 +6,14 @@ namespace Menu
 {
     public class AutoSaveRequester : MonoBehaviour
     {
-        private float _delay;
+        private WaitForSeconds _wait;
         private Coroutine _routine;
 
         public event Action SaveRequested;
         
         public void Initialize(float delay)
         {
-            _delay = delay;
+            _wait = new WaitForSeconds(delay);
         }
 
         public void StartRequests()
@@ -29,12 +29,9 @@ namespace Menu
 
         private IEnumerator RequestRoutine()
         {
-            var wait = new WaitForSeconds(_delay);
-            bool isWorking = true;
-
-            while (isWorking == true)
+            while (true)
             {
-                yield return wait;
+                yield return _wait;
                 SaveRequested?.Invoke();
             }
         }

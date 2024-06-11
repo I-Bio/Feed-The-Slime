@@ -6,7 +6,7 @@ namespace Enemies
     public class EnemyAnimation : MonoBehaviour
     {
         private Animator _animator;
-        private Action OnAnimationPlayedCallback;
+        private Action _onPlayedCallback;
 
         public void Initialize(Animator animator, Action onInitializeCallback)
         {
@@ -15,16 +15,16 @@ namespace Enemies
             _animator.ResetTrigger(EnemyAnimations.Idle.ToString());
         }
 
-        public void Play(EnemyAnimations animation, Action onAnimationPlayedCallback = null)
+        public void Play(EnemyAnimations animation, Action onPlayedCallback = null)
         {
-            OnAnimationPlayedCallback = onAnimationPlayedCallback;
+            _onPlayedCallback = onPlayedCallback;
             _animator.SetTrigger(animation.ToString());
         }
 
         public void InvokeCallback()
         {
-            OnAnimationPlayedCallback?.Invoke();
-            OnAnimationPlayedCallback = null;
+            _onPlayedCallback?.Invoke();
+            _onPlayedCallback = null;
         }
     }
 }

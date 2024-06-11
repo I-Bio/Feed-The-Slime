@@ -7,7 +7,7 @@ namespace Foods
     [RequireComponent(typeof(Outline))]
     public class ObjectHighlighter : MonoBehaviour, ISelectable
     {
-        protected Outline Outline;
+        public Outline Outline;
         
         private Transform _transform;
         private float _deselectValue;

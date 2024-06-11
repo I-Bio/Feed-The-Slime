@@ -6,15 +6,14 @@ namespace Players
 {
     public class Ticker : MonoBehaviour
     {
-        private float _delay;
-
+        private WaitForSeconds _wait;
         private Coroutine _routine;
         
         public event Action Ticked;
 
         public void Initialize(float delay = 1f)
         {
-            _delay = delay;
+            _wait = new WaitForSeconds(delay);
         }
         
         public void StartTick()
@@ -30,12 +29,9 @@ namespace Players
 
         private IEnumerator TickRoutine()
         {
-            bool isWorking = true;
-            var wait = new WaitForSeconds(_delay);
-            
-            while (isWorking == true)
+            while (true)
             {
-                yield return wait;
+                yield return _wait;
                 Ticked?.Invoke();
             }
         }

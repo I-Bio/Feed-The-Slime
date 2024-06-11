@@ -4,7 +4,7 @@
     {
         public float GetSpeed()
         {
-            return Stat.GetSpeed();
+            return Next.GetSpeed();
         }
     }
 }

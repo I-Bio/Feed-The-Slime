@@ -14,14 +14,9 @@ namespace Players
         private bool _didInitialize;
 
         private void FixedUpdate() => Scan();
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, _distance);
-        }
-
-        public void Initialize(List<ISelectable> selectables, SatietyStage stage, Transform transform, float distance, float scaleFactor)
+        
+        public void Initialize(List<ISelectable> selectables, SatietyStage stage, Transform transform,
+            float distance, float scaleFactor)
         {
             _selectables = selectables;
             _stage = stage;
@@ -60,9 +55,12 @@ namespace Players
                 }
                 
                 if (Vector3.Distance(_transform.position, selectable.Position) <= _distance)
+                {
                     selectable.Select(_stage);
-                else
-                    selectable.Deselect();
+                    continue;
+                }
+                
+                selectable.Deselect();
             }
         }
     }
