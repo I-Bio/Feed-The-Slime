@@ -7,28 +7,26 @@ namespace Players
     [RequireComponent(typeof(Rigidbody))]
     public class Projectile : SpawnableObject
     {
-        private EatableSpawner _spawner;
+        private IEatableFactory _factory;
         private Rigidbody _rigidbody;
 
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.collider.TryGetComponent(out EdiblePart food))
-            {
-                float score = food.Score;
-                food.OnEatingCompletion();
-                Vector3 position = collision.transform.position;
-                _spawner.Spawn(new Vector3(position.x, (float)ValueConstants.Zero, position.z), score);
-            }
-            
+                _factory.Create(collision.transform.position, food);
+
             _rigidbody.velocity = Vector3.zero;
             Push();
         }
 
-        public void Initialize(Vector3 velocity, EatableSpawner spawner)
+        public Projectile Initialize(Vector3 velocity, IEatableFactory factory)
         {
-            _spawner = spawner;
-            _rigidbody = GetComponent<Rigidbody>();
+            if (_rigidbody == null)
+                _rigidbody = GetComponent<Rigidbody>();
+            
+            _factory = factory;
             _rigidbody.velocity = velocity;
+            return this;
         }
     }
 }
