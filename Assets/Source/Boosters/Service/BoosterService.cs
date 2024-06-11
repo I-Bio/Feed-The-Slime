@@ -6,8 +6,8 @@ namespace Boosters
 {
     public class BoosterService : IBoosterVisitor, IUsable
     {
-        private readonly List<SerializedPair<IStat, float>> _currentBoosters = new();
-        private readonly List<SerializedPair<IStat, float>> _toDeleteBoosters = new();
+        private readonly List<SerializedPair<IStat, float>> CurrentBoosters = new();
+        private readonly List<SerializedPair<IStat, float>> ToDeleteBoosters = new();
 
         private bool _isAllowBoost;
 
@@ -16,23 +16,23 @@ namespace Boosters
 
         public void Update(float delay)
         {
-            for (int i = 0; i < _currentBoosters.Count; i++)
+            for (int i = 0; i < CurrentBoosters.Count; i++)
             {
-                var unpacked = _currentBoosters[i];
+                SerializedPair<IStat, float> unpacked = CurrentBoosters[i];
                 unpacked.Value -= delay;
-                _currentBoosters[i] = unpacked;
+                CurrentBoosters[i] = unpacked;
                 
-                if (_currentBoosters[i].Value <= 0f)
-                    _toDeleteBoosters.Add(_currentBoosters[i]);
+                if (CurrentBoosters[i].Value <= 0f)
+                    ToDeleteBoosters.Add(CurrentBoosters[i]);
             }
 
-            foreach (SerializedPair<IStat, float> pair in _toDeleteBoosters)
+            foreach (SerializedPair<IStat, float> pair in ToDeleteBoosters)
             {
                 Ejected?.Invoke(pair.Key);
-                _currentBoosters.Remove(pair);
+                CurrentBoosters.Remove(pair);
             }
             
-            _toDeleteBoosters.Clear();
+            ToDeleteBoosters.Clear();
         }
 
         public bool TryInsert(IBooster booster)
@@ -47,14 +47,14 @@ namespace Boosters
             _isAllowBoost = false;
             
             booster.Use();
-            _currentBoosters.Add(new SerializedPair<IStat, float>(boost, boost.LifeTime));
+            CurrentBoosters.Add(new SerializedPair<IStat, float>(boost, boost.LifeTime));
             Injected?.Invoke(boost);
             return true;
         }
 
         public void Visit(IMovable movable)
         {
-            if (_currentBoosters.Any(pair => pair.Key is IMovable == true))
+            if (CurrentBoosters.Any(pair => pair.Key is IMovable == true))
                 return;
 
             _isAllowBoost = true;
@@ -62,7 +62,7 @@ namespace Boosters
 
         public void Visit(ICalculableScore calculableScore)
         {
-            if (_currentBoosters.Any(pair => pair.Key is ICalculableScore == true))
+            if (CurrentBoosters.Any(pair => pair.Key is ICalculableScore == true))
                 return;
 
             _isAllowBoost = true;
