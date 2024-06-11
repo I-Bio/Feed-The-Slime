@@ -16,7 +16,7 @@ namespace QuickOutline
     [DisallowMultipleComponent]
     public class Outline : MonoBehaviour
     {
-        private static HashSet<Mesh> registeredMeshes = new HashSet<Mesh>();
+        private readonly HashSet<Mesh> RegisteredMeshes = new();
 
         public enum Mode
         {
@@ -26,16 +26,7 @@ namespace QuickOutline
             OutlineAndSilhouette,
             SilhouetteOnly
         }
-
-        public Mode OutlineMode
-        {
-            get => outlineMode;
-            set
-            {
-                outlineMode = value;
-                UpdateMaterialProperties();;
-            }
-        }
+        
 
         public Color OutlineColor
         {
@@ -103,29 +94,11 @@ namespace QuickOutline
             }
         }
 
-        private void Bake()
-        {
-            var bakedMeshes = new HashSet<Mesh>();
-
-            foreach (var meshFilter in GetComponentsInChildren<MeshFilter>())
-            {
-                if (!bakedMeshes.Add(meshFilter.sharedMesh))
-                {
-                    continue;
-                }
-
-                var smoothNormals = SmoothNormals(meshFilter.sharedMesh);
-
-                bakeKeys.Add(meshFilter.sharedMesh);
-                bakeValues.Add(new ListVector3() { data = smoothNormals });
-            }
-        }
-
         private void LoadSmoothNormals()
         {
             foreach (var meshFilter in GetComponentsInChildren<MeshFilter>())
             {
-                if (!registeredMeshes.Add(meshFilter.sharedMesh))
+                if (!RegisteredMeshes.Add(meshFilter.sharedMesh))
                 {
                     continue;
                 }
@@ -145,7 +118,7 @@ namespace QuickOutline
 
             foreach (var skinnedMeshRenderer in GetComponentsInChildren<SkinnedMeshRenderer>())
             {
-                if (!registeredMeshes.Add(skinnedMeshRenderer.sharedMesh))
+                if (!RegisteredMeshes.Add(skinnedMeshRenderer.sharedMesh))
                 {
                     continue;
                 }
