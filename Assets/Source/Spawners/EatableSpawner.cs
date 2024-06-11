@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Spawners
 {
-    public class EatableSpawner : ObjectPool
+    public class EatableSpawner : ObjectPool, IEatableFactory
     {
         private IPlayerVisitor _player;
 
@@ -17,8 +17,11 @@ namespace Spawners
             _player = player;
         }
         
-        public void Spawn(Vector3 position, float score)
+        public void Create(Vector3 contactPosition, EdiblePart food)
         {
+            float score = food.Score;
+            food.OnEatingCompletion();
+            Vector3 position = new Vector3(contactPosition.x, (float)ValueConstants.Zero, contactPosition.z);
             Spawned?.Invoke(Pull<FoodSetup>(position).Initialize(score, _player, out ISelectable selectable), selectable);
         }
     }
