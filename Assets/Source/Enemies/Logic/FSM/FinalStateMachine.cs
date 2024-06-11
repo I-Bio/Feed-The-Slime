@@ -4,17 +4,17 @@ namespace Enemies
 {
     public class FinalStateMachine
     {
-        private Dictionary<EnemyStates, FinalStateMachineState> States;
+        private Dictionary<EnemyStates, FinalStateMachineState> _states;
         private FinalStateMachineState _current;
 
         public void AddStates(Dictionary<EnemyStates, FinalStateMachineState> states)
         {
-            States = states;
+            _states = states;
         }
         
         public void SetState(EnemyStates stateName)
         {
-            if (States.TryGetValue(stateName, out FinalStateMachineState state) == false)
+            if (_states.TryGetValue(stateName, out FinalStateMachineState state) == false)
                 return;
             
             _current?.Exit();

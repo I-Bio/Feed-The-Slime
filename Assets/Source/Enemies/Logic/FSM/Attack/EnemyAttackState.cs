@@ -5,8 +5,8 @@ namespace Enemies
 {
     public abstract class EnemyAttackState : EnemyInteractState
     {
-        protected readonly AudioSource Sound;
-        protected readonly IPlayerVisitor Visitor;
+        public readonly AudioSource Sound;
+        public readonly IPlayerVisitor Visitor;
         
         public EnemyAttackState(FinalStateMachine machine, IHidden player, Transform transform,
             EnemyAnimation animation, SatietyStage stage, float followDistance, Vector3 startPosition, float idleOffset,

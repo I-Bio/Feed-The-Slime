@@ -23,11 +23,10 @@ namespace Enemies
         private readonly ParticleSystem Particle;
         private readonly Swarm Swarm;
         private readonly IPlayerVisitor Visitor;
-        private readonly float ThinkDelay;
 
         public EnemyStatesFactory(EnemyTypes type, FinalStateMachine machine, IHidden player, Transform transform,
             EnemyAnimation animation, SatietyStage stage, float followDistance, Vector3 startPosition, float idleOffset,
-            NavMeshAgent agent, AudioSource sound, IPlayerVisitor visitor, ParticleSystem particle, Swarm swarm, float thinkDelay)
+            NavMeshAgent agent, AudioSource sound, IPlayerVisitor visitor, ParticleSystem particle, Swarm swarm)
         {
             Type = type;
             Machine = machine;
@@ -43,7 +42,6 @@ namespace Enemies
             Particle = particle;
             Swarm = swarm;
             Visitor = visitor;
-            ThinkDelay = thinkDelay;
         }
 
         public Dictionary<EnemyStates, FinalStateMachineState> Create()
@@ -104,7 +102,7 @@ namespace Enemies
 
         private Dictionary<EnemyStates, FinalStateMachineState> CreateSwarm()
         {
-            Swarm.Initialize(ThinkDelay);
+            Swarm.Initialize();
             return new Dictionary<EnemyStates, FinalStateMachineState>
             {
                 {

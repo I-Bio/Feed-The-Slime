@@ -7,8 +7,8 @@ namespace Enemies.Hide
         private readonly ParticleSystem Particle;
         
         public EnemyHideState(FinalStateMachine machine, IHidden player, Transform transform,
-            EnemyAnimation animation, SatietyStage stage, float followDistance, Vector3 startPosition, float idleOffset,
-            ParticleSystem particle) :
+            EnemyAnimation animation, SatietyStage stage, float followDistance, Vector3 startPosition,
+            float idleOffset, ParticleSystem particle) :
             base(machine, player, transform, animation, stage, followDistance, startPosition, idleOffset)
         {
             Particle = particle;

@@ -4,15 +4,15 @@ namespace Enemies
 {
     public class EnemyState : FinalStateMachineState
     {
-        protected readonly IHidden Player;
-        protected readonly Transform Transform;
-        protected readonly EnemyAnimation Animation;
-        protected readonly SatietyStage Stage;
-        protected readonly float FollowDistance;
-        protected readonly Vector3 StartPosition;
-        protected readonly float IdleOffset;
+        public readonly IHidden Player;
+        public readonly Transform Transform;
+        public readonly EnemyAnimation Animation;
+        public readonly SatietyStage Stage;
+        public readonly float FollowDistance;
+        public readonly Vector3 StartPosition;
+        public readonly float IdleOffset;
         
-        protected Vector3 Destination;
+        public Vector3 Destination;
 
         public EnemyState(FinalStateMachine machine, IHidden player, Transform transform, EnemyAnimation animation, SatietyStage stage,
             float followDistance, Vector3 startPosition, float idleOffset) : base(machine)

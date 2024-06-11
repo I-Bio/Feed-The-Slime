@@ -2,7 +2,7 @@
 {
     public class FinalStateMachineState
     {
-        protected readonly FinalStateMachine Machine;
+        public readonly FinalStateMachine Machine;
 
         public FinalStateMachineState(FinalStateMachine machine)
         {
