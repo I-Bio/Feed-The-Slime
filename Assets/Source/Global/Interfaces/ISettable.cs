@@ -1,4 +1,4 @@
-﻿public interface ISettable<T>
+﻿public interface ISettable<in T>
 {
     public void SetBoost(T boost);
 }
