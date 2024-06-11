@@ -12,26 +12,25 @@ namespace Players
         [SerializeField] private float _coolDownUpdateStep;
         [SerializeField] private Button _button;
         [SerializeField] private TextMeshProUGUI _text;
-
-        [SerializeField] protected float CoolDown;
+        [SerializeField] private float _coolDown;
 
         private LocalizedText _localized;
+        private WaitForSeconds _wait;
         
         public bool CanUse { get; private set; } = true;
-
-        private void OnDestroy()
-        {
-            _localized.Updated -= OnUpdated;
-        }
-
-        public void Initialize()
+        
+        public void Initialize(float coolDown = float.NaN)
         {
             _localized = GetComponent<LocalizedText>();
-            _localized.Updated += OnUpdated;
             _text.SetText(_localized.Label);
+            
+            _wait ??= new WaitForSeconds(_coolDownUpdateStep);
+
+            if (float.IsNaN(coolDown) == false)
+                _coolDown = coolDown;
         }
 
-        public AbilityButton Use()
+        public AbilityButton Activate()
         {
             StartCoroutine(CoolDownRoutine());
             return this;
@@ -42,27 +41,18 @@ namespace Players
             CanUse = false;
             _button.interactable = false;
             
-            var wait = new WaitForSeconds(_coolDownUpdateStep);
             float time = 0f;
             
-            while (time <= CoolDown)
+            while (time <= _coolDown)
             {
-                yield return wait;
+                yield return _wait;
                 time += _coolDownUpdateStep;
-                _text.SetText(Mathf.FloorToInt(CoolDown - time).ToString());
+                _text.SetText(Mathf.FloorToInt(_coolDown - time).ToString());
             }
             
             _text.SetText(_localized.Label);
             CanUse = true;
             _button.interactable = true;
-        }
-
-        private void OnUpdated()
-        {
-            if (CanUse == false)
-                return;
-            
-            _text.SetText(_localized.Label);
         }
     }
 }
