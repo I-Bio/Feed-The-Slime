@@ -13,7 +13,6 @@ namespace Players
         private Transform _rotationPoint;
         private Vector2 _input;
         private Vector3 _forward;
-        private float _scaleFactor;
         private bool _canMove;
         private bool _didInitialize;
 
@@ -64,7 +63,7 @@ namespace Players
         {
             if (stage == SatietyStage.Exhaustion)
                 return;
-            
+
             _combiner.AddAfterFirst(_factory.Create(stage));
             _movable = _combiner.GetRecombined();
         }
@@ -90,7 +89,7 @@ namespace Players
 
             Vector3 direction = new Vector3(_input.x, (float)ValueConstants.Zero, _input.y);
             _rotationPoint.eulerAngles = new Vector3((float)ValueConstants.Zero,
-                    Vector3.SignedAngle(_forward, direction, Vector3.up), (float)ValueConstants.Zero);
+                Vector3.SignedAngle(_forward, direction, Vector3.up), (float)ValueConstants.Zero);
         }
     }
 }

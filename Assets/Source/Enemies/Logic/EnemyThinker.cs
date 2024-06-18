@@ -6,7 +6,6 @@ namespace Enemies
 {
     public class EnemyThinker : MonoBehaviour
     {
-        private float _delay;
         private Coroutine _routine;
         private WaitForSeconds _wait;
 
