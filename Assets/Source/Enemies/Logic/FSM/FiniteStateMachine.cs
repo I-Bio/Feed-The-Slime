@@ -2,19 +2,19 @@
 
 namespace Enemies
 {
-    public class FinalStateMachine
+    public class FiniteStateMachine
     {
-        private Dictionary<EnemyStates, FinalStateMachineState> _states;
-        private FinalStateMachineState _current;
+        private Dictionary<EnemyStates, FiniteStateMachineState> _states;
+        private FiniteStateMachineState _current;
 
-        public void AddStates(Dictionary<EnemyStates, FinalStateMachineState> states)
+        public void AddStates(Dictionary<EnemyStates, FiniteStateMachineState> states)
         {
             _states = states;
         }
         
         public void SetState(EnemyStates stateName)
         {
-            if (_states.TryGetValue(stateName, out FinalStateMachineState state) == false)
+            if (_states.TryGetValue(stateName, out FiniteStateMachineState state) == false)
                 return;
             
             _current?.Exit();

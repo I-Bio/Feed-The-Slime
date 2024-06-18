@@ -7,10 +7,10 @@ using UnityEngine.AI;
 
 namespace Enemies
 {
-    public class EnemyStatesFactory : IFactory<Dictionary<EnemyStates, FinalStateMachineState>>
+    public class EnemyStatesFactory : IFactory<Dictionary<EnemyStates, FiniteStateMachineState>>
     {
         private readonly EnemyTypes Type;
-        private readonly FinalStateMachine Machine;
+        private readonly FiniteStateMachine Machine;
         private readonly IHidden Player;
         private readonly Transform Transform;
         private readonly EnemyAnimation Animation;
@@ -24,7 +24,7 @@ namespace Enemies
         private readonly Swarm Swarm;
         private readonly IPlayerVisitor Visitor;
 
-        public EnemyStatesFactory(EnemyTypes type, FinalStateMachine machine, IHidden player, Transform transform,
+        public EnemyStatesFactory(EnemyTypes type, FiniteStateMachine machine, IHidden player, Transform transform,
             EnemyAnimation animation, SatietyStage stage, float followDistance, Vector3 startPosition, float idleOffset,
             NavMeshAgent agent, AudioSource sound, IPlayerVisitor visitor, ParticleSystem particle, Swarm swarm)
         {
@@ -44,7 +44,7 @@ namespace Enemies
             Visitor = visitor;
         }
 
-        public Dictionary<EnemyStates, FinalStateMachineState> Create()
+        public Dictionary<EnemyStates, FiniteStateMachineState> Create()
         {
             return Type switch
             {
@@ -56,9 +56,9 @@ namespace Enemies
             };
         }
 
-        private Dictionary<EnemyStates, FinalStateMachineState> CreateMover()
+        private Dictionary<EnemyStates, FiniteStateMachineState> CreateMover()
         {
-            return new Dictionary<EnemyStates, FinalStateMachineState>
+            return new Dictionary<EnemyStates, FiniteStateMachineState>
             {
                 {
                     EnemyStates.Idle,
@@ -78,9 +78,9 @@ namespace Enemies
             };
         }
 
-        private Dictionary<EnemyStates, FinalStateMachineState> CreateToxin()
+        private Dictionary<EnemyStates, FiniteStateMachineState> CreateToxin()
         {
-            return new Dictionary<EnemyStates, FinalStateMachineState>
+            return new Dictionary<EnemyStates, FiniteStateMachineState>
             {
                 {
                     EnemyStates.Idle,
@@ -100,10 +100,10 @@ namespace Enemies
             };
         }
 
-        private Dictionary<EnemyStates, FinalStateMachineState> CreateSwarm()
+        private Dictionary<EnemyStates, FiniteStateMachineState> CreateSwarm()
         {
             Swarm.Initialize();
-            return new Dictionary<EnemyStates, FinalStateMachineState>
+            return new Dictionary<EnemyStates, FiniteStateMachineState>
             {
                 {
                     EnemyStates.Idle,
@@ -123,9 +123,9 @@ namespace Enemies
             };
         }
         
-        private Dictionary<EnemyStates, FinalStateMachineState> CreateHider()
+        private Dictionary<EnemyStates, FiniteStateMachineState> CreateHider()
         {
-            return new Dictionary<EnemyStates, FinalStateMachineState>
+            return new Dictionary<EnemyStates, FiniteStateMachineState>
             {
                 {
                     EnemyStates.Idle,

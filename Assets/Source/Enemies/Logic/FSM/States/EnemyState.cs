@@ -2,7 +2,7 @@
 
 namespace Enemies
 {
-    public class EnemyState : FinalStateMachineState
+    public class EnemyState : FiniteStateMachineState
     {
         public readonly IHidden Player;
         public readonly Transform Transform;
@@ -14,7 +14,7 @@ namespace Enemies
         
         public Vector3 Destination;
 
-        public EnemyState(FinalStateMachine machine, IHidden player, Transform transform, EnemyAnimation animation, SatietyStage stage,
+        public EnemyState(FiniteStateMachine machine, IHidden player, Transform transform, EnemyAnimation animation, SatietyStage stage,
             float followDistance, Vector3 startPosition, float idleOffset) : base(machine)
         {
             Player = player;

@@ -8,7 +8,7 @@ namespace Enemies
         public readonly AudioSource Sound;
         public readonly IPlayerVisitor Visitor;
         
-        public EnemyAttackState(FinalStateMachine machine, IHidden player, Transform transform,
+        public EnemyAttackState(FiniteStateMachine machine, IHidden player, Transform transform,
             EnemyAnimation animation, SatietyStage stage, float followDistance, Vector3 startPosition, float idleOffset,
             AudioSource sound, IPlayerVisitor visitor) : 
             base(machine, player, transform, animation, stage, followDistance, startPosition, idleOffset)

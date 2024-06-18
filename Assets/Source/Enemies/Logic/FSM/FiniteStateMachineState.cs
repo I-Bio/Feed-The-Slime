@@ -1,10 +1,10 @@
 ﻿namespace Enemies
 {
-    public class FinalStateMachineState
+    public class FiniteStateMachineState
     {
-        public readonly FinalStateMachine Machine;
+        public readonly FiniteStateMachine Machine;
 
-        public FinalStateMachineState(FinalStateMachine machine)
+        public FiniteStateMachineState(FiniteStateMachine machine)
         {
             Machine = machine;
         }

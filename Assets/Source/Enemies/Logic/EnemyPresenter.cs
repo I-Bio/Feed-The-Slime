@@ -2,10 +2,10 @@
 {
     public class EnemyPresenter
     {
-        private readonly FinalStateMachine Model;
+        private readonly FiniteStateMachine Model;
         private readonly EnemyThinker Thinker;
 
-        public EnemyPresenter(FinalStateMachine model, EnemyThinker thinker)
+        public EnemyPresenter(FiniteStateMachine model, EnemyThinker thinker)
         {
             Model = model;
             Thinker = thinker;

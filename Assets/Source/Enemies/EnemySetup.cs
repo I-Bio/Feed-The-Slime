@@ -29,7 +29,7 @@ namespace Enemies
         private EnemyAnimation _animation;
         private Transform _transform;
         
-        private FinalStateMachine _model;
+        private FiniteStateMachine _model;
         private EnemyPresenter _presenter;
 
         private void OnDestroy()
@@ -43,8 +43,8 @@ namespace Enemies
             _thinker = GetComponent<EnemyThinker>();
             _animation = GetComponent<EnemyAnimation>();
 
-            _model = new FinalStateMachine();
-            IFactory<Dictionary<EnemyStates, FinalStateMachineState>> factory = 
+            _model = new FiniteStateMachine();
+            IFactory<Dictionary<EnemyStates, FiniteStateMachineState>> factory = 
                 new EnemyStatesFactory(_type, _model, player, _transform, _animation, _foodPart.Stage,
                     _followDistance, _transform.position, _idleOffset, _agent, _sound, visitor, _particle, _swarm);
             _presenter = new EnemyPresenter(_model, _thinker);
