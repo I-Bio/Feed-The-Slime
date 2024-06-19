@@ -2,17 +2,28 @@
 {
     public class FiniteStateMachineState
     {
-        public readonly FiniteStateMachine Machine;
+        private readonly FiniteStateMachine Machine;
 
         public FiniteStateMachineState(FiniteStateMachine machine)
         {
             Machine = machine;
         }
 
-        public virtual void Enter() {}
+        public void SetState(EnemyStates state)
+        {
+            Machine.SetState(state);
+        }
 
-        public virtual void Exit() {}
+        public virtual void Enter()
+        {
+        }
 
-        public virtual void Update() {}
+        public virtual void Exit()
+        {
+        }
+
+        public virtual void Update()
+        {
+        }
     }
 }

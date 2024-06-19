@@ -11,12 +11,12 @@ namespace Enemies
         {
             _states = states;
         }
-        
+
         public void SetState(EnemyStates stateName)
         {
             if (_states.TryGetValue(stateName, out FiniteStateMachineState state) == false)
                 return;
-            
+
             _current?.Exit();
             _current = state;
             _current.Enter();

@@ -6,34 +6,41 @@ namespace Enemies
     public class EnemySwarmState : EnemyAttackState
     {
         private readonly Swarm Swarm;
-        
-        public EnemySwarmState(FiniteStateMachine machine, IHidden player, Transform transform,
-            EnemyAnimation animation, SatietyStage stage, float followDistance, Vector3 startPosition, float idleOffset,
-            AudioSource sound, IPlayerVisitor visitor, Swarm swarm) :
-            base(machine, player, transform, animation, stage, followDistance, startPosition, idleOffset, sound, visitor)
+
+        public EnemySwarmState(
+            FiniteStateMachine machine,
+            IHidden player,
+            Transform transform,
+            EnemyAnimation animation,
+            SatietyStage stage,
+            float followDistance,
+            Vector3 startPosition,
+            float idleOffset,
+            AudioSource sound,
+            IPlayerVisitor visitor,
+            Swarm swarm)
+            : base(machine, player, transform, animation, stage, followDistance, startPosition, idleOffset, sound, visitor)
         {
             Swarm = swarm;
         }
-        
+
         public override void Enter()
         {
             Swarm.Show();
-            Sound.Play();
-            Animation.Play(EnemyAnimations.Interact);
+            StartAttack();
             OnInteract();
         }
 
         public override void Exit()
         {
-            Visitor.Visit(null as EnemyEmpty);
+            StopAttack();
             Swarm.Hide();
-            Sound.Stop();
         }
-        
+
         public override void OnInteract()
         {
-            Swarm.Move(Player.Position);
-            Visitor.Visit(this);
+            Swarm.Move(PlayerPosition);
+            Attack();
         }
     }
 }

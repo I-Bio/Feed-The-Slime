@@ -4,31 +4,40 @@ namespace Enemies
 {
     public abstract class EnemyInteractState : EnemyState
     {
-        public EnemyInteractState(FiniteStateMachine machine, IHidden player, Transform transform,
-            EnemyAnimation animation, SatietyStage stage, float followDistance, Vector3 startPosition, float idleOffset)
-            : base(machine, player, transform, animation, stage, followDistance, startPosition, idleOffset) {}
-        
+        public EnemyInteractState(
+            FiniteStateMachine machine,
+            IHidden player,
+            Transform transform,
+            EnemyAnimation animation,
+            SatietyStage stage,
+            float followDistance,
+            Vector3 startPosition,
+            float idleOffset)
+            : base(machine, player, transform, animation, stage, followDistance, startPosition, idleOffset)
+        {
+        }
+
         public override void Update()
         {
-            Destination = Player.IsHidden == false && Vector3.Distance(Transform.position, Player.Position) <= FollowDistance
-                ? Player.Position
-                : StartPosition;
-            
-            if (Player.Stage >= Stage)
+            SetDestination(CanInteract() == true ? PlayerPosition : StartPosition);
+
+            if (IsSmallerStage() == true)
             {
-                Machine.SetState(EnemyStates.Avoid);
+                SetState(EnemyStates.Avoid);
                 return;
             }
 
-            if (Destination == StartPosition && Vector3.Distance(Transform.position, StartPosition) < IdleOffset)
+            if (DidReturn() == true)
             {
-                Machine.SetState(EnemyStates.Idle);
+                SetState(EnemyStates.Idle);
                 return;
             }
 
             OnInteract();
         }
-        
-        public virtual void OnInteract() {}
+
+        public virtual void OnInteract()
+        {
+        }
     }
 }
