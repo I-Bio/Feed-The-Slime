@@ -4,7 +4,6 @@ namespace Boosters
 {
     public abstract class Stat : IStat
     {
-        public readonly float Value;
         private readonly string Sign;
 
         public Stat(float value, float lifeTime, Sprite icon, string sign)
@@ -15,8 +14,12 @@ namespace Boosters
             Sign = sign;
         }
 
+        public float Value { get; }
+
         public float LifeTime { get; }
+
         public Sprite Icon { get; }
+
         public abstract void Accept(IBoosterVisitor visitor);
 
         public override string ToString()
