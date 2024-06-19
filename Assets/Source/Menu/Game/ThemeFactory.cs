@@ -16,10 +16,15 @@ namespace Menu
         private readonly IPlayerVisitor Visitor;
         private readonly int DifficultId;
         private readonly Action<AudioSource> OnAudioFoundCallback;
-        
-        public ThemeFactory(SerializedPair<int, ThemePreparer[]>[] zoneTemplates,
-            SerializedPair<int, CenterPreparer[]>[] centerTemplates, Renderer ground, IHidden hidden,
-            IPlayerVisitor visitor, int completedLevels, Action<AudioSource> onAudioFoundCallback)
+
+        public ThemeFactory(
+            SerializedPair<int, ThemePreparer[]>[] zoneTemplates,
+            SerializedPair<int, CenterPreparer[]>[] centerTemplates,
+            Renderer ground,
+            IHidden hidden,
+            IPlayerVisitor visitor,
+            int completedLevels,
+            Action<AudioSource> onAudioFoundCallback)
         {
             ZoneTemplates = zoneTemplates;
             CenterTemplates = centerTemplates;
@@ -28,7 +33,7 @@ namespace Menu
             Visitor = visitor;
             OnAudioFoundCallback = onAudioFoundCallback;
             DifficultId = 0;
-            
+
             for (int i = 0; i < ZoneTemplates.Length; i++)
             {
                 if (ZoneTemplates[i].Key > completedLevels)
@@ -37,7 +42,7 @@ namespace Menu
                 DifficultId = i;
             }
         }
-        
+
         public List<Contactable> CreateCenter(Transform point, out List<ISelectable> selectables)
         {
             return Object.Instantiate(CenterTemplates[DifficultId].Value.GetRandom(), point)

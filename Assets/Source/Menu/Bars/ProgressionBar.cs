@@ -16,7 +16,7 @@ namespace Menu
         [SerializeField] private PurchaseNames _name;
         [SerializeField] private Image _slider;
         [SerializeField] private SerializedPair<int, T>[] _purchases;
-        
+
         private int _stage;
         private bool _isMax;
 
@@ -39,17 +39,19 @@ namespace Menu
             int id = 0;
 
             for (int i = 1; i <= _purchases.Length; i++)
+            {
                 if (_purchases[i - 1].Value.Equals(value))
                     id = i;
-            
+            }
+
             Load(id);
         }
-        
+
         public void CompareCrystals(int crystalsCount)
         {
             if (_isMax == true)
                 return;
-            
+
             if (crystalsCount >= _purchases[_stage].Key)
             {
                 if (_buyButton.interactable == true)
@@ -58,21 +60,21 @@ namespace Menu
                 _buyButton.interactable = true;
                 return;
             }
-            
+
             if (_buyButton.interactable == false)
                 return;
 
             _buyButton.interactable = false;
         }
-        
+
         public override void UpdateTranslation(LeanTranslation translation)
         {
             if (translation == null)
                 return;
-            
+
             if (translation.Data is string == false)
                 return;
-            
+
             _maxText = translation.Data as string;
             Display();
         }
@@ -101,9 +103,9 @@ namespace Menu
 
         private void DeactivateBuyButton()
         {
-            if (_purchases.Length != _stage) 
+            if (_purchases.Length != _stage)
                 return;
-            
+
             _isMax = true;
             _buyButton.interactable = false;
         }

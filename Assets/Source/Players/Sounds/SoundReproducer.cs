@@ -10,7 +10,7 @@ namespace Players
         {
             _sources = sources;
         }
-        
+
         public void PlayClip(SoundType sound)
         {
             _sources[(int)sound].Play();

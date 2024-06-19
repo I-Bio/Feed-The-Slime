@@ -15,7 +15,7 @@ namespace Enemies
             _animator.ResetTrigger(EnemyAnimations.Idle.ToString());
         }
 
-        public void Play(EnemyAnimations animation, Action onPlayedCallback = null)
+        public void Play(EnemyAnimations animation, Action onPlayedCallback)
         {
             _onPlayedCallback = onPlayedCallback;
             _animator.SetTrigger(animation.ToString());

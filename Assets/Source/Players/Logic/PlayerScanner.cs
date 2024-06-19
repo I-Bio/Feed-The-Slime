@@ -14,9 +14,13 @@ namespace Players
         private bool _didInitialize;
 
         private void FixedUpdate() => Scan();
-        
-        public void Initialize(List<ISelectable> selectables, SatietyStage stage, Transform transform,
-            float distance, float scaleFactor)
+
+        public void Initialize(
+            List<ISelectable> selectables,
+            SatietyStage stage,
+            Transform transform,
+            float distance,
+            float scaleFactor)
         {
             _selectables = selectables;
             _stage = stage;
@@ -30,14 +34,16 @@ namespace Players
         public void SetStage(SatietyStage stage)
         {
             _stage = stage;
-            _distance = _stage != SatietyStage.Exhaustion ? _startDistance * (_scaleFactor * (int)stage) : _startDistance;
+            _distance = _stage != SatietyStage.Exhaustion
+                ? _startDistance * (_scaleFactor * (int)stage)
+                : _startDistance;
         }
 
         public void AddSelectable(ISelectable selectable)
         {
             if (_selectables.Contains(selectable))
                 return;
-            
+
             _selectables.Add(selectable);
         }
 
@@ -45,7 +51,7 @@ namespace Players
         {
             if (_didInitialize == false)
                 return;
-            
+
             foreach (ISelectable selectable in _selectables)
             {
                 if (selectable.Equals(null))
@@ -53,13 +59,13 @@ namespace Players
                     _selectables.Remove(null);
                     continue;
                 }
-                
+
                 if (Vector3.Distance(_transform.position, selectable.Position) <= _distance)
                 {
                     selectable.Select(_stage);
                     continue;
                 }
-                
+
                 selectable.Deselect();
             }
         }

@@ -6,8 +6,13 @@ namespace Boosters
     {
         private ICalculableScore _calculable;
 
-        public AdditionalScore(ICalculableScore calculable, float additionValue, float lifeTime = 0f,
-            Sprite icon = null, string sign = "") : base(additionValue, lifeTime, icon, sign)
+        public AdditionalScore(
+            ICalculableScore calculable,
+            float additionValue,
+            float lifeTime = 0f,
+            Sprite icon = null,
+            string sign = "")
+            : base(additionValue, lifeTime, icon, sign)
         {
             _calculable = calculable;
         }

@@ -13,19 +13,20 @@ public struct SerializedPair<TK, TV>
         Value = value;
     }
 
-    public static bool operator ==(SerializedPair<TK, TV> first, SerializedPair<TK, TV> second) 
+    public static bool operator ==(SerializedPair<TK, TV> first, SerializedPair<TK, TV> second)
     {
         return first.Equals(second);
     }
 
-    public static bool operator !=(SerializedPair<TK, TV> first, SerializedPair<TK, TV> second) 
+    public static bool operator !=(SerializedPair<TK, TV> first, SerializedPair<TK, TV> second)
     {
         return first.Equals(second) == false;
     }
-    
+
     public bool Equals(SerializedPair<TK, TV> other)
     {
-        return EqualityComparer<TK>.Default.Equals(Key, other.Key) && EqualityComparer<TV>.Default.Equals(Value, other.Value);
+        return EqualityComparer<TK>.Default.Equals(Key, other.Key) &&
+               EqualityComparer<TV>.Default.Equals(Value, other.Value);
     }
 
     public override bool Equals(object @object)

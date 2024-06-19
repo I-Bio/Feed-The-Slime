@@ -18,22 +18,18 @@ namespace Spawners
             return this;
         }
 
-        public T Pull<T>(Vector3 position) where T: SpawnableObject
+        public T Pull<T>(Vector3 position)
+            where T : SpawnableObject
         {
             _transform.position = position;
             return Pull<T>();
         }
 
-        public T Pull<T>(Transform parent) where T : SpawnableObject
+        public T Pull<T>(Transform parent)
+            where T : SpawnableObject
         {
             _transform.SetParent(parent);
             return Pull<T>();
-        }
-        
-        public T Pull<T>() where T: SpawnableObject
-        {
-            SetActive(true);
-            return this as T;
         }
 
         public void Push()
@@ -44,6 +40,13 @@ namespace Spawners
         public void SetActive(bool value)
         {
             _gameObject.SetActive(value);
+        }
+
+        private T Pull<T>()
+            where T : SpawnableObject
+        {
+            SetActive(true);
+            return this as T;
         }
     }
 }

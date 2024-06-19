@@ -25,11 +25,23 @@ namespace Players
         private readonly IRevival Revival;
         private readonly Action<float> ProgressChangedCallback;
 
-        public PlayerPresenter(Player model, PlayerCollisionDetector collisionDetector, PlayerScanner scanner,
-            SizeScaler sizeScaler, LevelBar levelBar, StageBar stageBar, IUsable boosterService,
-            PlayerAnimation animation, AbilityCaster caster, IMover mover, EffectReproducer effectReproducer,
-            SoundReproducer soundReproducer, EatableSpawner spawner, IGame game,
-            IRevival revival, Action<float> progressChangedCallback)
+        public PlayerPresenter(
+            Player model,
+            PlayerCollisionDetector collisionDetector,
+            PlayerScanner scanner,
+            SizeScaler sizeScaler,
+            LevelBar levelBar,
+            StageBar stageBar,
+            IUsable boosterService,
+            PlayerAnimation animation,
+            AbilityCaster caster,
+            IMover mover,
+            EffectReproducer effectReproducer,
+            SoundReproducer soundReproducer,
+            EatableSpawner spawner,
+            IGame game,
+            IRevival revival,
+            Action<float> progressChangedCallback)
         {
             Model = model;
             CollisionDetector = collisionDetector;
@@ -65,7 +77,7 @@ namespace Players
             Caster.SpitCasted += OnSpitCasted;
             Spawner.Spawned += OnSpawned;
             Revival.Revived += OnRevived;
-            
+
             Model.Load();
         }
 
@@ -94,7 +106,7 @@ namespace Players
 
             for (int i = 0; i < (int)stage; i++)
                 StageBar.Increase();
-            
+
             StageBar.ChangeValue(score);
             Caster.SetStage(stage);
             Scanner.SetStage(stage);
@@ -103,7 +115,7 @@ namespace Players
             SizeScaler.Scale(stage);
             Mover.Scale(stage);
         }
-        
+
         private void OnScoreChanged(float score, int maxScore)
         {
             SoundReproducer.PlayClip(SoundType.ScoreGain);
@@ -156,7 +168,7 @@ namespace Players
 
         private void OnBoosterEntered(IBooster booster)
         {
-            if(BoosterService.TryInsert(booster) == true)
+            if (BoosterService.TryInsert(booster) == true)
                 SoundReproducer.PlayClip(SoundType.Boost);
         }
 

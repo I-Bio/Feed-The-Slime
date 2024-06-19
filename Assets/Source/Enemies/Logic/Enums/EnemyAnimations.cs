@@ -4,6 +4,6 @@
     {
         Idle,
         Interact,
-        Action
+        Action,
     }
 }

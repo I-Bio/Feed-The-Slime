@@ -11,14 +11,17 @@ namespace Menu
         {
             Stopper = stopper;
         }
+
         public void ShowInter()
         {
-            InterstitialAd.Show(() => Stopper.FocusPause(true),
+            InterstitialAd.Show(
+                () => Stopper.FocusPause(true),
                 _ => Stopper.FocusRelease(true));
         }
+
         public void ShowReward(Action onReward, Action onClose)
         {
-            VideoAd.Show((() => Stopper.FocusPause(true)), onReward, onClose);
+            VideoAd.Show(() => Stopper.FocusPause(true), onReward, onClose);
         }
     }
 }

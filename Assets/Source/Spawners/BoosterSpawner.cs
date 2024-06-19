@@ -33,7 +33,7 @@ namespace Spawners
         {
             StartCoroutine(SpawnRoutine());
         }
-        
+
         private IEnumerator SpawnRoutine()
         {
             yield return _wait;

@@ -15,7 +15,7 @@ namespace Guide
 
         private Action _onStartedCallback;
         private Action _onCompletedCallback;
-        
+
         private void OnTriggerEnter(Collider other)
         {
             if (_didPlay == true)
@@ -24,8 +24,13 @@ namespace Guide
             ShowEnemy();
         }
 
-        public void Initialize(CinemachineVirtualCamera camera, Button close, Transform player, Transform enemy,
-            Action onStartedCallback, Action onCompletedCallback)
+        public void Initialize(
+            CinemachineVirtualCamera camera,
+            Button close,
+            Transform player,
+            Transform enemy,
+            Action onStartedCallback,
+            Action onCompletedCallback)
         {
             _camera = camera;
             _close = close;
@@ -33,7 +38,7 @@ namespace Guide
             _enemy = enemy;
             _onStartedCallback = onStartedCallback;
             _onCompletedCallback = onCompletedCallback;
-            
+
             _close.onClick.AddListener(Complete);
         }
 

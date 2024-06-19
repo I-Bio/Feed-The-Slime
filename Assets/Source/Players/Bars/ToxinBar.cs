@@ -13,19 +13,19 @@ namespace Players
         private int _minValue;
 
         public event Action Hid;
-        
+
         public void Initialize(float maxValue, int minValue)
         {
             _maxValue = maxValue;
             _minValue = minValue;
-            
+
             ChangeValue(_minValue);
         }
 
         public void ChangeValue(int value)
         {
             _slider.value = value / _maxValue;
-            
+
             if (value > _minValue && _holder.activeSelf == false)
                 Show();
 

@@ -9,7 +9,7 @@ namespace Boosters
     {
         private const string Plus = "+";
         private const string Multiplication = "*";
-        
+
         private readonly float[] ScaleValues;
         private readonly float[] AdditionalValues;
         private readonly BoosterType[] BoosterTypes;
@@ -23,9 +23,16 @@ namespace Boosters
         private readonly Vector3 Offset;
         private readonly Func<Vector3, Booster> Pulling;
 
-        public BoosterFactory(float[] scaleValues, float[] additionalValues,
-            Sprite speedIcon, Sprite scoreIcon, float maxLifeTime, float minLifeTime,
-            Transform pointsHolder, Vector3 offset, Func<Vector3, Booster> pullingBooster)
+        public BoosterFactory(
+            float[] scaleValues,
+            float[] additionalValues,
+            Sprite speedIcon,
+            Sprite scoreIcon,
+            float maxLifeTime,
+            float minLifeTime,
+            Transform pointsHolder,
+            Vector3 offset,
+            Func<Vector3, Booster> pullingBooster)
         {
             ScaleValues = scaleValues;
             AdditionalValues = additionalValues;
@@ -51,27 +58,41 @@ namespace Boosters
             return BoosterTypes.GetRandom() switch
             {
                 BoosterType.SpeedAdder =>
-                    new AdditionalSpeed(new Speed((float)ValueConstants.One, (float)ValueConstants.Zero, SpeedIcon),
+                    new AdditionalSpeed(
+                        new Speed((float)ValueConstants.One, (float)ValueConstants.Zero, SpeedIcon),
                         AdditionalValues.GetRandom(),
-                        Random.Range(MinLifeTime, MaxLifeTime), SpeedIcon, Plus),
+                        Random.Range(MinLifeTime, MaxLifeTime),
+                        SpeedIcon,
+                        Plus),
 
                 BoosterType.SpeedScaler =>
-                    new MultipleSpeed(new Speed((float)ValueConstants.One, (float)ValueConstants.Zero, SpeedIcon),
+                    new MultipleSpeed(
+                        new Speed((float)ValueConstants.One, (float)ValueConstants.Zero, SpeedIcon),
                         ScaleValues.GetRandom(),
-                        Random.Range(MinLifeTime, MaxLifeTime), SpeedIcon, Multiplication),
+                        Random.Range(MinLifeTime, MaxLifeTime),
+                        SpeedIcon,
+                        Multiplication),
 
                 BoosterType.ScoreAdder =>
-                    new AdditionalScore(new Score((float)ValueConstants.One), AdditionalValues.GetRandom(),
-                        Random.Range(MinLifeTime, MaxLifeTime), ScoreIcon, Plus),
+                    new AdditionalScore(
+                        new Score((float)ValueConstants.One),
+                        AdditionalValues.GetRandom(),
+                        Random.Range(MinLifeTime, MaxLifeTime),
+                        ScoreIcon,
+                        Plus),
 
                 BoosterType.ScoreScaler =>
-                    new MultipleScore(new Score((float)ValueConstants.One), ScaleValues.GetRandom(),
-                        Random.Range(MinLifeTime, MaxLifeTime), ScoreIcon, Multiplication),
+                    new MultipleScore(
+                        new Score((float)ValueConstants.One),
+                        ScaleValues.GetRandom(),
+                        Random.Range(MinLifeTime, MaxLifeTime),
+                        ScoreIcon,
+                        Multiplication),
 
-                _ => throw new NullReferenceException(nameof(BoosterType))
+                _ => throw new NullReferenceException(nameof(BoosterType)),
             };
         }
-        
+
         private void CollectPoints(Transform pointsHolder)
         {
             for (int i = 0; i < pointsHolder.childCount; i++)

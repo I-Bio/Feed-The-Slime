@@ -2,5 +2,5 @@
 {
     Load,
     Game,
-    Guide
+    Guide,
 }

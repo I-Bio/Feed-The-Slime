@@ -14,25 +14,25 @@ namespace Players
 
         private string _localized;
         private int _lastPoint;
-        
+
         public override void UpdateTranslation(LeanTranslation translation)
         {
             if (translation == null)
                 return;
-            
+
             if (translation.Data is string == false)
                 return;
-            
+
             _localized = translation.Data as string;
             SetLevel(_lastPoint);
         }
-        
+
         public void Initialize(float score, int maxScore)
         {
             ChangeScore(score, maxScore);
             SetLevel((int)score);
         }
-        
+
         public void SetLevel(int levelPoint)
         {
             _level.SetText($"{_localized} {levelPoint}");

@@ -23,10 +23,21 @@ namespace Menu
         private readonly Advert Advert;
         private readonly SDKReadyCaller Caller;
 
-        public ProgressPresenter(Progress model, IProgressionBar[] bars, Button play, TextMeshProUGUI level,
-            TextMeshProUGUI crystals, RewardReproducer reward, WindowSwitcher switcher, ObjectFiller filler,
-            AutoSaveRequester requester, YandexLeaderboard leaderboard, LevelBootstrap bootstrap, Stopper stopper,
-            IRewardCollector endGame, PlayerCharacteristics characteristics)
+        public ProgressPresenter(
+            Progress model,
+            IProgressionBar[] bars,
+            Button play,
+            TextMeshProUGUI level,
+            TextMeshProUGUI crystals,
+            RewardReproducer reward,
+            WindowSwitcher switcher,
+            ObjectFiller filler,
+            AutoSaveRequester requester,
+            YandexLeaderboard leaderboard,
+            LevelBootstrap bootstrap,
+            Stopper stopper,
+            IRewardCollector endGame,
+            PlayerCharacteristics characteristics)
         {
             Model = model;
             Bars = bars;
@@ -81,11 +92,11 @@ namespace Menu
             Switcher.LeaderboardOpened -= OnLeaderboardOpened;
             Play.onClick.RemoveListener(OnGameLaunched);
         }
-        
+
         private void OnLoaded(IReadOnlyCharacteristics characteristics)
         {
             Model.Load(characteristics);
-            
+
             if (characteristics.IsAllowedShowInter)
                 Advert.ShowInter();
 
@@ -131,10 +142,10 @@ namespace Menu
                 Model.IncreaseLevels();
                 Model.ChangeScore((float)ValueConstants.Zero);
             }
-            
+
             Model.AccumulateAdvert();
             Model.ChangeCrystals(rewardCount);
-            Reward.Reproduce(rewardCount,() => Filler.FillUp(callBack));
+            Reward.Reproduce(rewardCount, () => Filler.FillUp(callBack));
         }
 
         private void OnGoingSave(IReadOnlyCharacteristics characteristics)
@@ -184,7 +195,7 @@ namespace Menu
         {
             Model.PrepareReward();
         }
-        
+
         private void OnLeaderboardOpened()
         {
             Model.UpdateLeaderboardScore(OnLevelsIncreased);

@@ -12,13 +12,13 @@ namespace Enemies
         private SerializedProperty _idleOffset;
         private SerializedProperty _detector;
         private SerializedProperty _foodPart;
-        
+
         private SerializedProperty _type;
         private SerializedProperty _agent;
         private SerializedProperty _sound;
         private SerializedProperty _particle;
         private SerializedProperty _swarm;
-        
+
         private void OnEnable()
         {
             _followDistance = serializedObject.FindProperty(nameof(_followDistance));
@@ -27,7 +27,7 @@ namespace Enemies
             _idleOffset = serializedObject.FindProperty(nameof(_idleOffset));
             _detector = serializedObject.FindProperty(nameof(_detector));
             _foodPart = serializedObject.FindProperty(nameof(_foodPart));
-            
+
             _type = serializedObject.FindProperty(nameof(_type));
             _agent = serializedObject.FindProperty(nameof(_agent));
             _sound = serializedObject.FindProperty(nameof(_sound));
@@ -60,11 +60,11 @@ namespace Enemies
                 case EnemyTypes.Mover:
                     ShowMoverOptions();
                     break;
-                
+
                 case EnemyTypes.Toxin:
                     ShowToxinOptions();
                     break;
-                
+
                 case EnemyTypes.Swarm:
                     ShowSwarmOptions();
                     break;
@@ -72,12 +72,12 @@ namespace Enemies
                 case EnemyTypes.Hider:
                     ShowHiderOptions();
                     break;
-                    
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
-        
+
         private void ShowMoverOptions()
         {
             _sound.objectReferenceValue = null;
@@ -85,7 +85,7 @@ namespace Enemies
             _swarm.objectReferenceValue = null;
             EditorGUILayout.PropertyField(_agent);
         }
-        
+
         private void ShowToxinOptions()
         {
             _agent.objectReferenceValue = null;
@@ -93,7 +93,7 @@ namespace Enemies
             EditorGUILayout.PropertyField(_sound);
             EditorGUILayout.PropertyField(_particle);
         }
-        
+
         private void ShowSwarmOptions()
         {
             _particle.objectReferenceValue = null;

@@ -17,7 +17,12 @@ namespace Players
         private int _maxLevel;
         private int _currentLevel;
 
-        public Player(ICalculableScore calculableScore, SatietyStage stage, float scoreScaler, float startScore, float maxScore,
+        public Player(
+            ICalculableScore calculableScore,
+            SatietyStage stage,
+            float scoreScaler,
+            float startScore,
+            float maxScore,
             int levelsPerStage)
         {
             Combiner = new StatCombiner<ICalculableScore>(new CombinedScore());
@@ -32,21 +37,25 @@ namespace Players
         }
 
         public event Action<SatietyStage, int, float, int> Loaded;
+
         public event Action<float, int> ScoreChanged;
+
         public event Action<SatietyStage> SizeIncreased;
+
         public event Action<int> LevelIncreased;
+
         public event Action Winning;
-        
+
         public void Load()
         {
             if (_score <= (float)ValueConstants.Zero)
                 return;
 
             float max = _maxScore;
-            
+
             for (int i = 1; i < LevelsPerStage; i++)
                 max = Mathf.FloorToInt(_maxScore * ScoreScaler);
-            
+
             if (_score >= max)
             {
                 _score = 0f;
@@ -66,13 +75,13 @@ namespace Players
 
                 if (score < maxScore && Mathf.Approximately(score, maxScore) == false)
                     continue;
-                
+
                 maxScore = Mathf.FloorToInt(maxScore * ScoreScaler);
                 level++;
 
                 if (level < maxLevel)
                     continue;
-                
+
                 maxLevel += LevelsPerStage;
                 stage++;
             }
@@ -83,7 +92,7 @@ namespace Players
             _stage = stage;
             Loaded?.Invoke(_stage, _currentLevel, _score, (int)_maxScore);
         }
-        
+
         public void SetBoost(ICalculableScore boost)
         {
             Combiner.ChangeBoost(boost);
@@ -116,7 +125,7 @@ namespace Players
             _maxLevel += LevelsPerStage;
             _stage++;
             SizeIncreased?.Invoke(_stage);
-           
+
             if (Enum.GetValues(typeof(SatietyStage)).Length - 1 <= (int)_stage)
                 Winning?.Invoke();
         }

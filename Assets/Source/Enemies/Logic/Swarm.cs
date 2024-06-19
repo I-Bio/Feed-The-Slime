@@ -7,7 +7,7 @@ namespace Enemies
     public class Swarm : MonoBehaviour
     {
         private NavMeshAgent _agent;
-        
+
         public void Initialize()
         {
             _agent = GetComponent<NavMeshAgent>();

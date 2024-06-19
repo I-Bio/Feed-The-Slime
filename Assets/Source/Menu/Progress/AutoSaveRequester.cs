@@ -10,7 +10,7 @@ namespace Menu
         private Coroutine _routine;
 
         public event Action SaveRequested;
-        
+
         public void Initialize(float delay)
         {
             _wait = new WaitForSeconds(delay);

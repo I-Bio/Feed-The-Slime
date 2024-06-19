@@ -18,7 +18,7 @@ namespace Menu
         [SerializeField] private LevelBootstrap _bootstrap;
         [SerializeField] private Game _endGame;
 
-        [Space, Header("Sound")] 
+        [Space] [Header("Sound")]
         [SerializeField] private Sprite _onIcon;
         [SerializeField] private Sprite _offIcon;
         [SerializeField] private Button _volume;
@@ -35,7 +35,7 @@ namespace Menu
             _yandexLeaderboard = GetComponent<YandexLeaderboard>();
             _leaderboard = GetComponent<LeaderboardView>();
             _stopper = GetComponent<Stopper>();
-            
+
             _yandexLeaderboard.Initialize(_leaderboard, _leaderboardName, _anonymous, _container, _template);
             _stopper.Initialize(_onIcon, _offIcon, _volume, _icon, _sources, _music);
             _progress.Initialize(_yandexLeaderboard, _bootstrap, _stopper, _endGame);

@@ -9,7 +9,7 @@ namespace Menu
         {
             if (PlayerPrefs.HasKey(nameof(YandexGamesSdk.GameReady)))
                 return;
-            
+
             YandexGamesSdk.GameReady();
         }
     }

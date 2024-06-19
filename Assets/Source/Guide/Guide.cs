@@ -35,8 +35,17 @@ namespace Guide
             _pause.onClick.RemoveListener(Pause);
         }
 
-        public void Initialize(Button[] nextButtons, Button[] releaseButtons, Button[] loadButtons, Button pause,
-            ObjectFiller filler, Sprite onIcon, Sprite offIcon, Button volume, Image icon, List<AudioSource> sources,
+        public void Initialize(
+            Button[] nextButtons,
+            Button[] releaseButtons,
+            Button[] loadButtons,
+            Button pause,
+            ObjectFiller filler,
+            Sprite onIcon,
+            Sprite offIcon,
+            Button volume,
+            Image icon,
+            List<AudioSource> sources,
             AudioSource music)
         {
             _nextButtons = nextButtons;
@@ -68,7 +77,9 @@ namespace Guide
             new SDKReadyCaller().CallGameReady();
         }
 
-        public void SetStage(SatietyStage stage) {}
+        public void SetStage(SatietyStage stage)
+        {
+        }
 
         public void Win()
         {
@@ -92,7 +103,8 @@ namespace Guide
 
         private void Load()
         {
-            PlayerPrefs.SetString(nameof(CharacteristicConstants.DidPassGuide),
+            PlayerPrefs.SetString(
+                nameof(CharacteristicConstants.DidPassGuide),
                 nameof(CharacteristicConstants.DidPassGuide));
             _filler.FillUp(() => SceneManager.LoadScene((int)SceneNames.Game));
         }

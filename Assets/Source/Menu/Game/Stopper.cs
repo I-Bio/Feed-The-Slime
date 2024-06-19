@@ -20,17 +20,22 @@ namespace Menu
         private AudioSource _music;
 
         public event Action<bool> SoundChanged;
-        
+
         private void OnDestroy()
         {
             Application.focusChanged -= OnFocusChangedApp;
             WebApplication.InBackgroundChangeEvent -= OnFocusChangedWeb;
-            
+
             _volume.onClick.RemoveListener(ChangeSound);
         }
 
-        public void Initialize(Sprite onIcon, Sprite offIcon, Button volume, Image icon,
-            List<AudioSource> sources, AudioSource music)
+        public void Initialize(
+            Sprite onIcon,
+            Sprite offIcon,
+            Button volume,
+            Image icon,
+            List<AudioSource> sources,
+            AudioSource music)
         {
             _onIcon = onIcon;
             _offIcon = offIcon;
@@ -44,12 +49,12 @@ namespace Menu
 
             _volume.onClick.AddListener(ChangeSound);
         }
-        
+
         public void Load(bool isAllowed)
         {
             _isAllowed = PlayerPrefs.HasKey(nameof(PlayerCharacteristics.IsAllowedSound))
-                    ? Convert.ToBoolean(PlayerPrefs.GetString(nameof(PlayerCharacteristics.IsAllowedSound)))
-                    : isAllowed;
+                ? Convert.ToBoolean(PlayerPrefs.GetString(nameof(PlayerCharacteristics.IsAllowedSound)))
+                : isAllowed;
 
             ChangeVolume();
         }
@@ -76,12 +81,12 @@ namespace Menu
             foreach (var source in _sources.Where(source => source))
                 source.UnPause();
         }
-        
+
         public void FocusPause(bool isForce = false)
         {
             if (isForce == true)
                 _isForcePause = true;
-            
+
             Time.timeScale = (float)ValueConstants.Zero;
             AudioListener.pause = true;
         }
@@ -90,15 +95,15 @@ namespace Menu
         {
             if (isForce == true)
                 _isForcePause = false;
-            
+
             if (_isForcePause == true)
                 return;
-            
+
             AudioListener.pause = false;
-            
+
             if (_isGamePause == true)
                 return;
-            
+
             Time.timeScale = (float)ValueConstants.One;
         }
 
@@ -107,7 +112,7 @@ namespace Menu
             _isAllowed = !_isAllowed;
             ChangeVolume();
             SoundChanged?.Invoke(_isAllowed);
-            
+
             PlayerPrefs.SetString(nameof(PlayerCharacteristics.IsAllowedSound), _isAllowed.ToString());
             PlayerPrefs.Save();
         }
@@ -121,7 +126,7 @@ namespace Menu
                 _icon.sprite = _onIcon;
                 return;
             }
-            
+
             AudioListener.volume = (float)ValueConstants.Zero;
             _music.Pause();
             _icon.sprite = _offIcon;

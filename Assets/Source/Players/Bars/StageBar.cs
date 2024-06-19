@@ -19,7 +19,7 @@ namespace Players
             _maxScore = startMax;
             _levelsPerStage = levelsPerStage;
             _scaler = scaler;
-            
+
             Recalculate();
             _levelsPerStage++;
         }
@@ -28,7 +28,7 @@ namespace Players
         {
             if (_pointer >= _sliders.Length)
                 return;
-            
+
             _sliders[_pointer].value = score / _maxScore;
         }
 
@@ -42,7 +42,7 @@ namespace Players
         {
             for (int i = 1; i < _levelsPerStage; i++)
                 _maxScore = Mathf.FloorToInt(_maxScore * _scaler);
-            
+
             _pointer++;
             _stages[_pointer].color = _pass;
         }

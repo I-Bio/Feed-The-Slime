@@ -8,11 +8,14 @@ namespace Spawners
     {
         [SerializeField] private Material _material;
 
-        public List<Contactable> Initialize(IHidden player, IPlayerVisitor visitor,
-            out List<ISelectable> selectables, Renderer ground)
+        public List<Contactable> Initialize(
+            IHidden player,
+            IPlayerVisitor visitor,
+            out List<ISelectable> selectables,
+            Renderer ground)
         {
             ground.material = _material;
-            return base.Initialize(player, visitor, out selectables);
+            return Initialize(player, visitor, out selectables);
         }
     }
 }

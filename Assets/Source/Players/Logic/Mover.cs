@@ -88,8 +88,10 @@ namespace Players
                 return;
 
             Vector3 direction = new Vector3(_input.x, (float)ValueConstants.Zero, _input.y);
-            _rotationPoint.eulerAngles = new Vector3((float)ValueConstants.Zero,
-                Vector3.SignedAngle(_forward, direction, Vector3.up), (float)ValueConstants.Zero);
+            _rotationPoint.eulerAngles = new Vector3(
+                (float)ValueConstants.Zero,
+                Vector3.SignedAngle(_forward, direction, Vector3.up),
+                (float)ValueConstants.Zero);
         }
     }
 }

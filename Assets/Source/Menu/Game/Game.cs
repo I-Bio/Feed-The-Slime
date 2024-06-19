@@ -38,8 +38,12 @@ namespace Menu
                 load.onClick.RemoveListener(Load);
         }
 
-        public void Initialize(Revival revival, WindowSwitcher switcher, Stopper stopper,
-            AutoSaveRequester requester, int rewardCount)
+        public void Initialize(
+            Revival revival,
+            WindowSwitcher switcher,
+            Stopper stopper,
+            AutoSaveRequester requester,
+            int rewardCount)
         {
             _revival = revival;
             _switcher = switcher;
@@ -76,7 +80,7 @@ namespace Menu
         public void Lose()
         {
             _requester.StopRequests();
-            
+
             if (_revival.TryRevive() == false)
                 _switcher.ChangeWindow(Windows.Lose);
         }
@@ -84,12 +88,13 @@ namespace Menu
         private void Load()
         {
             _rewardCount = Mathf.CeilToInt(_rewardCount * _stageScale);
-            GoingCollect?.Invoke(_rewardCount, _didPass, () => { SceneManager.LoadScene((int)SceneNames.Game); });
+            GoingCollect?.Invoke(_rewardCount, _didPass, () => SceneManager.LoadScene((int)SceneNames.Game));
         }
 
         private void OnWinAdvert()
         {
-            _advert.ShowReward(onReward: () =>
+            _advert.ShowReward(
+                onReward: () =>
                 {
                     _winAdvert.gameObject.SetActive(false);
                     _rewardCount = Mathf.CeilToInt(_rewardCount * _double);
@@ -101,7 +106,7 @@ namespace Menu
         private void OnLoseAdvert()
         {
             _revival.Revive();
-            
+
             _advert.ShowReward(
                 onReward: () =>
                 {

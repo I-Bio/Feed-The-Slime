@@ -23,9 +23,9 @@ namespace Players
             _holder = holder;
             _holderText = holderText;
 
-            if (_maxLifeCount <= (int)ValueConstants.One) 
+            if (_maxLifeCount <= (int)ValueConstants.One)
                 return;
-        
+
             _holder.SetActive(true);
             _holderText.SetText((_maxLifeCount - _currentLifeCount).ToString());
         }
@@ -37,10 +37,10 @@ namespace Players
 
             _holderText.SetText((_maxLifeCount - _currentLifeCount).ToString());
             _currentLifeCount++;
-        
+
             if (_holder.activeSelf == true && _currentLifeCount >= _maxLifeCount)
                 _holder.SetActive(false);
-            
+
             Revive();
             return true;
         }

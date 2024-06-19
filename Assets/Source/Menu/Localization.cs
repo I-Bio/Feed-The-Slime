@@ -19,7 +19,7 @@ namespace Menu
         {
             ChangeLanguage();
         }
-        
+
         private void ChangeLanguage()
         {
             string languageCode = YandexGamesSdk.Environment.i18n.lang;
@@ -29,11 +29,11 @@ namespace Menu
                 case English:
                     _localization.SetCurrentLanguage(EnglishCode);
                     break;
-                
+
                 case Russian:
                     _localization.SetCurrentLanguage(RussianCode);
                     break;
-                
+
                 case Turkish:
                     _localization.SetCurrentLanguage(TurkishCode);
                     break;

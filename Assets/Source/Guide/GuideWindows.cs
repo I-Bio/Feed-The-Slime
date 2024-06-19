@@ -11,6 +11,6 @@
         Lose,
         Enemy,
         Pause,
-        Main
+        Main,
     }
 }

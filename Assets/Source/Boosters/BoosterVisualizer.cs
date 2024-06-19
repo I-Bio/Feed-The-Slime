@@ -9,8 +9,8 @@ namespace Boosters
 {
     public class BoosterVisualizer : ObjectPool, IBoosterVisitor
     {
-        private readonly List<KeyValuePair<SpawnableObject, IStat>> Boosters = new();
-        
+        private readonly List<KeyValuePair<SpawnableObject, IStat>> Boosters = new ();
+
         private float _delay;
         private WaitForSeconds _wait;
         private Dictionary<Type, Action> _effects;
@@ -34,7 +34,7 @@ namespace Boosters
             {
                 if (_effects.TryGetValue(typeof(IMovable), out Action onGotSpeed) == false)
                     throw new NullReferenceException(nameof(IMovable));
-                
+
                 onGotSpeed.Invoke();
                 SpawnIcon(movable as IStat);
                 return;
@@ -49,7 +49,7 @@ namespace Boosters
             {
                 if (_effects.TryGetValue(typeof(ICalculableScore), out Action onGotScore) == false)
                     throw new NullReferenceException(nameof(ICalculableScore));
-                
+
                 onGotScore.Invoke();
                 SpawnIcon(calculableScore as IStat);
                 return;

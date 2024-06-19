@@ -19,18 +19,21 @@ namespace Foods
 
         private Food _model;
         private FoodPresenter _presenter;
-        
+
         private Action _onDestroyCallback;
 
         public SatietyStage Stage => _stage;
-        
+
         private void OnDestroy()
         {
             _presenter?.Disable();
             _onDestroyCallback?.Invoke();
         }
-        
-        public Contactable Initialize(float scorePerEat, IPlayerVisitor player, out ISelectable selectable,
+
+        public Contactable Initialize(
+            float scorePerEat,
+            IPlayerVisitor player,
+            out ISelectable selectable,
             Action onDestroyCallback = null)
         {
             _ediblePart = GetComponent<EdiblePart>();
@@ -44,7 +47,7 @@ namespace Foods
 
             if (TryGetComponent(out ObjectFader fadingObject) == true)
                 fadingObject.Initialize();
-            
+
             _highlighter.Initialize(_deselectValue, _selectValue, transform);
             _presenter.Enable();
 

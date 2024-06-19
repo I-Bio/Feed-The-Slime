@@ -21,7 +21,7 @@ namespace Enemies
         {
             if (bounds.Intersects(_collider.bounds) == false)
                 return false;
-            
+
             _player.Visit(null, _stage);
             return true;
         }

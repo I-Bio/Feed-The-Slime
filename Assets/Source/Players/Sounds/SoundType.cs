@@ -7,6 +7,6 @@
         LevelUp,
         StageUp,
         Hide,
-        Boost
+        Boost,
     }
 }

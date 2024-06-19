@@ -9,7 +9,7 @@ namespace Menu
         private Button _accept;
         private Button _decline;
         private IReturnSwitcher _switcher;
-        
+
         private void OnDestroy()
         {
             _open.onClick.RemoveListener(_switcher.OpenWarning);

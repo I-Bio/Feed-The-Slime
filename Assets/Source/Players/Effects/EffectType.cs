@@ -7,6 +7,6 @@
         StageUp,
         Hide,
         Heal,
-        WaterDrop
+        WaterDrop,
     }
 }

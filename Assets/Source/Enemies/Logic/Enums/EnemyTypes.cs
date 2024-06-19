@@ -5,6 +5,6 @@
         Mover,
         Toxin,
         Swarm,
-        Hider
+        Hider,
     }
 }

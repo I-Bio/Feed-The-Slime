@@ -5,6 +5,6 @@
         Speed,
         Score,
         Life,
-        Spit
+        Spit,
     }
 }

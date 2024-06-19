@@ -5,6 +5,6 @@
         SpeedAdder,
         SpeedScaler,
         ScoreAdder,
-        ScoreScaler
+        ScoreScaler,
     }
 }

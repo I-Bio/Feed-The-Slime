@@ -10,7 +10,7 @@ namespace Players
         {
             _effects = effects;
         }
-        
+
         public void Play(EffectType effect)
         {
             _effects[(int)effect].Play();

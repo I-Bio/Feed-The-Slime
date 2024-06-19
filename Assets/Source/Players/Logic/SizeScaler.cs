@@ -14,7 +14,11 @@ namespace Players
         private Vector3 _startScale;
         private Vector3 _startOffset;
 
-        public void Initialize(Transform player, CinemachineVirtualCamera virtualCamera, float scaleFactor, float cameraScale)
+        public void Initialize(
+            Transform player,
+            CinemachineVirtualCamera virtualCamera,
+            float scaleFactor,
+            float cameraScale)
         {
             _player = player;
             _camera = virtualCamera.transform;
@@ -29,7 +33,7 @@ namespace Players
         {
             if (stage == SatietyStage.Exhaustion)
                 return;
-            
+
             _player.localScale = _startScale * (_scaleFactor * (int)stage);
             Vector3 newOffset = _startOffset * (_cameraScale * (int)stage);
             onScaledCallback?.Invoke(_camera.position - _virtualCamera.m_FollowOffset + newOffset);

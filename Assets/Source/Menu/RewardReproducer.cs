@@ -33,7 +33,7 @@ namespace Menu
         {
             if (_isPlaying == true)
                 return;
-            
+
             _isPlaying = true;
             _gems = new RewardGem[count];
             _callBack = callBack;

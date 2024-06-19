@@ -48,12 +48,12 @@ namespace Input
 
             Model.Disable();
         }
-        
+
         private void OnMoveStarted(InputAction.CallbackContext context)
         {
             Joystick.Activate(context.control.device != Keyboard.current);
         }
-        
+
         private void OnMoved(InputAction.CallbackContext context)
         {
             Player.ReadInput(context.ReadValue<Vector2>());
@@ -67,10 +67,10 @@ namespace Input
         private void OnTouched(InputAction.CallbackContext context)
         {
             Vector2 position = Model.Player.ScreenPosition.ReadValue<Vector2>();
-            
+
             if (position == Vector2.zero)
                 return;
-            
+
             Joystick.CalculatePosition(position);
         }
 
@@ -83,17 +83,17 @@ namespace Input
         {
             Caster.Hide();
         }
-        
+
         private void OnShowed(InputAction.CallbackContext context)
         {
             Caster.Show();
         }
-        
+
         private void OnCastStarted(InputAction.CallbackContext context)
         {
             Caster.DrawCastTrajectory();
         }
-        
+
         private void OnCastPerformed(InputAction.CallbackContext context)
         {
             Caster.CastSpit();

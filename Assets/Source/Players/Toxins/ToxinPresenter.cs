@@ -7,7 +7,7 @@
         private readonly Ticker Ticker;
         private readonly IPlayerVisitor Visitor;
         private readonly IRevival Revival;
-        
+
         public ToxinPresenter(PlayerToxins model, ToxinBar bar, Ticker ticker, IPlayerVisitor visitor, IRevival revival)
         {
             Model = model;
@@ -21,7 +21,7 @@
         {
             Model.Changed += OnChanged;
             Model.GoingDie += OnGoingDie;
-            
+
             Bar.Hid += OnHid;
             Ticker.Ticked += OnTicked;
             Visitor.ToxinContacted += OnToxinContacted;
@@ -45,7 +45,7 @@
         {
             Bar.ChangeValue(value);
         }
-        
+
         private void OnGoingDie()
         {
             Visitor.Visit(null, SatietyStage.Overeat);
@@ -55,12 +55,12 @@
         {
             Ticker.Stop();
         }
-        
+
         private void OnTicked()
         {
             Model.Decrease();
         }
-        
+
         private void OnToxinContacted()
         {
             Model.Increase();

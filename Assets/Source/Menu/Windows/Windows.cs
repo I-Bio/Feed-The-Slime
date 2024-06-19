@@ -11,6 +11,6 @@
         Win,
         Play,
         ExitWarning,
-        Exit
+        Exit,
     }
 }

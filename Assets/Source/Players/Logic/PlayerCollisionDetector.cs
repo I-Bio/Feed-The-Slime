@@ -14,18 +14,22 @@ namespace Players
         private bool _didInitialize;
 
         public event Action<float> ScoreGained;
+
         public event Action<IBooster> BoosterEntered;
+
         public event Action EnemyContacted;
+
         public event Action ToxinContacted;
+
         public event Action ContactStopped;
 
         private void FixedUpdate() => Detect();
-        
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out IBooster booster) == false)
                 return;
-            
+
             BoosterEntered?.Invoke(booster);
         }
 
@@ -36,12 +40,12 @@ namespace Players
             _stage = stage;
             _didInitialize = true;
         }
-        
+
         public void Visit(EnemyKiller killer, SatietyStage stage)
         {
             if (stage <= _stage)
                 return;
-            
+
             EnemyContacted?.Invoke();
         }
 
@@ -72,12 +76,12 @@ namespace Players
 
             _contactableObjects.Add(contactable);
         }
-        
+
         private void Detect()
         {
             if (_didInitialize == false)
                 return;
-            
+
             foreach (Contactable contactable in _contactableObjects)
             {
                 if (contactable == null)
@@ -85,7 +89,7 @@ namespace Players
                     _contactableObjects.Remove(null);
                     continue;
                 }
-                
+
                 contactable.TryContact(_collider.bounds);
             }
         }

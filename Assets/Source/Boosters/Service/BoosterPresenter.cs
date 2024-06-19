@@ -7,8 +7,11 @@
         private readonly BoosterService Service;
         private readonly BoosterVisualizer Visualizer;
 
-        public BoosterPresenter(ISettable<ICalculableScore> scoreHolder, ISettable<IMovable> speedHolder,
-            BoosterService service, BoosterVisualizer visualizer)
+        public BoosterPresenter(
+            ISettable<ICalculableScore> scoreHolder,
+            ISettable<IMovable> speedHolder,
+            BoosterService service,
+            BoosterVisualizer visualizer)
         {
             ScoreHolder = scoreHolder;
             SpeedHolder = speedHolder;
@@ -41,7 +44,7 @@
             ScoreHolder.SetBoost(calculableScore);
             Visualizer.Visit(calculableScore);
         }
-        
+
         private void OnBoosterStateChanged(IStat boost)
         {
             boost.Accept(this);

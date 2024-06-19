@@ -28,7 +28,7 @@ namespace Foods
             _isAllowed = false;
             OnInitialize();
         }
-        
+
         public override bool TryContact(Bounds bounds)
         {
             if (bounds.Intersects(_collider.bounds) == false)
@@ -49,22 +49,25 @@ namespace Foods
         {
             _isAllowed = true;
         }
-        
-        public void OnEat(Vector3 position)
+
+        public virtual void OnInitialize()
         {
-            _collider.enabled = false;
-            _transform.DOMove(position, EatingDuration).OnComplete(() =>
-            {
-                _player.Visit(this, Score);
-                OnEatingCompletion();
-            });
         }
 
-        public virtual void OnInitialize() {}
-        
         public virtual void OnEatingCompletion()
         {
             Destroy(gameObject);
+        }
+
+        private void OnEat(Vector3 position)
+        {
+            _collider.enabled = false;
+            _transform.DOMove(position, EatingDuration).OnComplete(
+                () =>
+                {
+                    _player.Visit(this, Score);
+                    OnEatingCompletion();
+                });
         }
     }
 }

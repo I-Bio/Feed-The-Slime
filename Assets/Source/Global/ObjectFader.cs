@@ -60,8 +60,12 @@ public class ObjectFader : MonoBehaviour
         foreach (var material in _materials)
         {
             material.DisableKeyword(AlphaBlend);
-            ChangeMaterialProperties(material, BlendMode.One, BlendMode.Zero,
-                ValueConstants.One, RenderQueue.Geometry);
+            ChangeMaterialProperties(
+                material,
+                BlendMode.One,
+                BlendMode.Zero,
+                ValueConstants.One,
+                RenderQueue.Geometry);
         }
     }
 
@@ -69,8 +73,12 @@ public class ObjectFader : MonoBehaviour
     {
         foreach (var material in _materials)
         {
-            ChangeMaterialProperties(material, BlendMode.SrcAlpha, BlendMode.OneMinusSrcAlpha,
-                ValueConstants.Zero, RenderQueue.Transparent);
+            ChangeMaterialProperties(
+                material,
+                BlendMode.SrcAlpha,
+                BlendMode.OneMinusSrcAlpha,
+                ValueConstants.Zero,
+                RenderQueue.Transparent);
             material.EnableKeyword(AlphaBlend);
         }
 
@@ -92,13 +100,16 @@ public class ObjectFader : MonoBehaviour
                 material.color.r,
                 material.color.g,
                 material.color.b,
-                alpha
-            );
+                alpha);
         }
     }
 
-    private void ChangeMaterialProperties(Material material, BlendMode srcBlend, BlendMode dstBlend,
-        ValueConstants zWrite, RenderQueue renderQueue)
+    private void ChangeMaterialProperties(
+        Material material,
+        BlendMode srcBlend,
+        BlendMode dstBlend,
+        ValueConstants zWrite,
+        RenderQueue renderQueue)
     {
         material.SetInt(SrcBlend, (int)srcBlend);
         material.SetInt(DstBlend, (int)dstBlend);

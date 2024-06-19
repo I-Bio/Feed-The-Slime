@@ -8,7 +8,7 @@ namespace Boosters
     {
         [SerializeField] private TextMeshPro _text;
         [SerializeField] private SpriteRenderer _renderer;
-        
+
         private IStat _boost;
 
         public Booster Initialize(IStat boost)
@@ -23,10 +23,10 @@ namespace Boosters
         {
             Push();
         }
-        
+
         public IStat GetBoost()
         {
-            return _boost; 
+            return _boost;
         }
     }
 }

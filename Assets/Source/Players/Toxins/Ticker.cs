@@ -8,14 +8,14 @@ namespace Players
     {
         private WaitForSeconds _wait;
         private Coroutine _routine;
-        
+
         public event Action Ticked;
 
         public void Initialize(float delay = 1f)
         {
             _wait = new WaitForSeconds(delay);
         }
-        
+
         public void StartTick()
         {
             _routine = StartCoroutine(TickRoutine());

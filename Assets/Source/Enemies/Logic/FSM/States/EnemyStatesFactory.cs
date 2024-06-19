@@ -24,9 +24,21 @@ namespace Enemies
         private readonly Swarm Swarm;
         private readonly IPlayerVisitor Visitor;
 
-        public EnemyStatesFactory(EnemyTypes type, FiniteStateMachine machine, IHidden player, Transform transform,
-            EnemyAnimation animation, SatietyStage stage, float followDistance, Vector3 startPosition, float idleOffset,
-            NavMeshAgent agent, AudioSource sound, IPlayerVisitor visitor, ParticleSystem particle, Swarm swarm)
+        public EnemyStatesFactory(
+            EnemyTypes type,
+            FiniteStateMachine machine,
+            IHidden player,
+            Transform transform,
+            EnemyAnimation animation,
+            SatietyStage stage,
+            float followDistance,
+            Vector3 startPosition,
+            float idleOffset,
+            NavMeshAgent agent,
+            AudioSource sound,
+            IPlayerVisitor visitor,
+            ParticleSystem particle,
+            Swarm swarm)
         {
             Type = type;
             Machine = machine;
@@ -52,7 +64,7 @@ namespace Enemies
                 EnemyTypes.Toxin => CreateToxin(),
                 EnemyTypes.Swarm => CreateSwarm(),
                 EnemyTypes.Hider => CreateHider(),
-                _ => throw new ArgumentOutOfRangeException(nameof(Type), Type, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(Type), Type, null),
             };
         }
 
@@ -62,19 +74,42 @@ namespace Enemies
             {
                 {
                     EnemyStates.Idle,
-                    new EnemyIdleState(Machine, Player, Transform, Animation, Stage, FollowDistance, StartPosition,
+                    new EnemyIdleState(
+                        Machine,
+                        Player,
+                        Transform,
+                        Animation,
+                        Stage,
+                        FollowDistance,
+                        StartPosition,
                         IdleOffset)
                 },
                 {
                     EnemyStates.Avoid,
-                    new EnemyEscapeState(Machine, Player, Transform, Animation, Stage, FollowDistance, StartPosition,
-                        IdleOffset, Agent)
+                    new EnemyEscapeState(
+                        Machine,
+                        Player,
+                        Transform,
+                        Animation,
+                        Stage,
+                        FollowDistance,
+                        StartPosition,
+                        IdleOffset,
+                        Agent)
                 },
                 {
                     EnemyStates.Interact,
-                    new EnemyFollowState(Machine, Player, Transform, Animation, Stage, FollowDistance, StartPosition,
-                        IdleOffset, Agent)
-                }
+                    new EnemyFollowState(
+                        Machine,
+                        Player,
+                        Transform,
+                        Animation,
+                        Stage,
+                        FollowDistance,
+                        StartPosition,
+                        IdleOffset,
+                        Agent)
+                },
             };
         }
 
@@ -84,19 +119,43 @@ namespace Enemies
             {
                 {
                     EnemyStates.Idle,
-                    new EnemyIdleState(Machine, Player, Transform, Animation, Stage, FollowDistance, StartPosition,
+                    new EnemyIdleState(
+                        Machine,
+                        Player,
+                        Transform,
+                        Animation,
+                        Stage,
+                        FollowDistance,
+                        StartPosition,
                         IdleOffset)
                 },
                 {
                     EnemyStates.Avoid,
-                    new EnemyStaticAvoidState(Machine, Player, Transform, Animation, Stage, FollowDistance,
-                        StartPosition, IdleOffset)
+                    new EnemyStaticAvoidState(
+                        Machine,
+                        Player,
+                        Transform,
+                        Animation,
+                        Stage,
+                        FollowDistance,
+                        StartPosition,
+                        IdleOffset)
                 },
                 {
                     EnemyStates.Interact,
-                    new EnemyToxinState(Machine, Player, Transform, Animation, Stage, FollowDistance, StartPosition,
-                        IdleOffset, Sound, Visitor, Particle)
-                }
+                    new EnemyToxinState(
+                        Machine,
+                        Player,
+                        Transform,
+                        Animation,
+                        Stage,
+                        FollowDistance,
+                        StartPosition,
+                        IdleOffset,
+                        Sound,
+                        Visitor,
+                        Particle)
+                },
             };
         }
 
@@ -107,46 +166,102 @@ namespace Enemies
             {
                 {
                     EnemyStates.Idle,
-                    new EnemyIdleState(Machine, Player, Transform, Animation, Stage, FollowDistance, StartPosition,
+                    new EnemyIdleState(
+                        Machine,
+                        Player,
+                        Transform,
+                        Animation,
+                        Stage,
+                        FollowDistance,
+                        StartPosition,
                         IdleOffset)
                 },
                 {
                     EnemyStates.Avoid,
-                    new EnemyStaticAvoidState(Machine, Player, Transform, Animation, Stage, FollowDistance,
-                        StartPosition, IdleOffset)
+                    new EnemyStaticAvoidState(
+                        Machine,
+                        Player,
+                        Transform,
+                        Animation,
+                        Stage,
+                        FollowDistance,
+                        StartPosition,
+                        IdleOffset)
                 },
                 {
                     EnemyStates.Interact,
-                    new EnemySwarmState(Machine, Player, Transform, Animation, Stage, FollowDistance, StartPosition,
-                        IdleOffset, Sound, Visitor, Swarm)
-                }
+                    new EnemySwarmState(
+                        Machine,
+                        Player,
+                        Transform,
+                        Animation,
+                        Stage,
+                        FollowDistance,
+                        StartPosition,
+                        IdleOffset,
+                        Sound,
+                        Visitor,
+                        Swarm)
+                },
             };
         }
-        
+
         private Dictionary<EnemyStates, FiniteStateMachineState> CreateHider()
         {
             return new Dictionary<EnemyStates, FiniteStateMachineState>
             {
                 {
                     EnemyStates.Idle,
-                    new EnemyHideState(Machine, Player, Transform, Animation, Stage, FollowDistance, StartPosition,
-                        IdleOffset, Particle)
+                    new EnemyHideState(
+                        Machine,
+                        Player,
+                        Transform,
+                        Animation,
+                        Stage,
+                        FollowDistance,
+                        StartPosition,
+                        IdleOffset,
+                        Particle)
                 },
                 {
                     EnemyStates.Avoid,
-                    new EnemyEscapeState(Machine, Player, Transform, Animation, Stage, FollowDistance, StartPosition,
-                        IdleOffset, Agent)
+                    new EnemyEscapeState(
+                        Machine,
+                        Player,
+                        Transform,
+                        Animation,
+                        Stage,
+                        FollowDistance,
+                        StartPosition,
+                        IdleOffset,
+                        Agent)
                 },
                 {
                     EnemyStates.Action,
-                    new EnemyShowState(Machine, Player, Transform, Animation, Stage, FollowDistance, StartPosition,
-                        IdleOffset, Particle)
+                    new EnemyShowState(
+                        Machine,
+                        Player,
+                        Transform,
+                        Animation,
+                        Stage,
+                        FollowDistance,
+                        StartPosition,
+                        IdleOffset,
+                        Particle)
                 },
                 {
                     EnemyStates.Interact,
-                    new EnemyFollowState(Machine, Player, Transform, Animation, Stage, FollowDistance, StartPosition,
-                        IdleOffset, Agent)
-                }
+                    new EnemyFollowState(
+                        Machine,
+                        Player,
+                        Transform,
+                        Animation,
+                        Stage,
+                        FollowDistance,
+                        StartPosition,
+                        IdleOffset,
+                        Agent)
+                },
             };
         }
     }

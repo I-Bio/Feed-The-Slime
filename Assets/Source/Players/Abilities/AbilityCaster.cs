@@ -15,16 +15,27 @@ namespace Players
         private IFactory<Projectile> _factory;
         private AbilityButton _spitButton;
 
-        public bool IsHidden { get; private set; }
-        public Vector3 Position => _transform.position;
-        public SatietyStage Stage { get; private set; }
-
         public event Action Hid;
+
         public event Action Showed;
+
         public event Action SpitCasted;
 
-        public void Initialize(Transform transform, SatietyStage stage, int pointsCount, float castStrength,
-            Vector3 castOffset, IFactory<Projectile> factory, AbilityButton spitButton, Projectile projectile)
+        public bool IsHidden { get; private set; }
+
+        public Vector3 Position => _transform.position;
+
+        public SatietyStage Stage { get; private set; }
+
+        public void Initialize(
+            Transform transform,
+            SatietyStage stage,
+            int pointsCount,
+            float castStrength,
+            Vector3 castOffset,
+            IFactory<Projectile> factory,
+            AbilityButton spitButton,
+            Projectile projectile)
         {
             Initialize(projectile);
             _transform = transform;

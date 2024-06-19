@@ -7,7 +7,7 @@ namespace Boosters
     public class BoostIcon : AbilityButton
     {
         [SerializeField] private Image _image;
-        
+
         public BoostIcon Initialize(float coolDown, Sprite sprite)
         {
             Initialize(coolDown);

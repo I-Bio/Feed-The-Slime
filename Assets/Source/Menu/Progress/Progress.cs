@@ -12,7 +12,9 @@ namespace Menu
 
         private PlayerCharacteristics _characteristics;
 
-        public Progress(PlayerCharacteristics startCharacteristics, SerializedPair<int, int>[] rewardSteps,
+        public Progress(
+            PlayerCharacteristics startCharacteristics,
+            SerializedPair<int, int>[] rewardSteps,
             int advertAccumulationStep)
         {
             _characteristics = startCharacteristics;
@@ -21,8 +23,11 @@ namespace Menu
         }
 
         public event Action<PlayerCharacteristics> GoingSave;
+
         public event Action<int> CrystalsChanged;
+
         public event Action<int> LevelsIncreased;
+
         public event Action<IReadOnlyCharacteristics, int> RewardPrepared;
 
         public void SetSpeed(object speed)
@@ -81,7 +86,7 @@ namespace Menu
             int rewardValue = RewardSteps.Last(pair => pair.Key <= _characteristics.CompletedLevels).Value;
             RewardPrepared?.Invoke(_characteristics, rewardValue);
         }
-        
+
         public void Load(IReadOnlyCharacteristics characteristics)
         {
             _characteristics = characteristics as PlayerCharacteristics;
@@ -102,10 +107,10 @@ namespace Menu
                 SceneManager.LoadScene((int)SceneNames.Guide);
                 return;
             }
-                
+
             _characteristics.DidPassGuide = true;
         }
-        
+
         public void Save()
         {
             GoingSave?.Invoke(_characteristics);

@@ -23,7 +23,7 @@ namespace Players
         {
             if (_rigidbody == null)
                 _rigidbody = GetComponent<Rigidbody>();
-            
+
             _factory = factory;
             _rigidbody.velocity = velocity;
             return this;

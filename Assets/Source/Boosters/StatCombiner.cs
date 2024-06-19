@@ -2,11 +2,12 @@
 
 namespace Boosters
 {
-    public class StatCombiner<T> where T : class
+    public class StatCombiner<T>
+        where T : class
     {
-        private readonly LinkedList<T> Stats = new();
+        private readonly LinkedList<T> Stats = new ();
         private readonly Combined<T> Combined;
-        
+
         public StatCombiner(Combined<T> combined)
         {
             Combined = combined;
@@ -29,17 +30,17 @@ namespace Boosters
                 Stats.Remove(stat);
                 return;
             }
- 
+
             Add(stat);
         }
 
         public T GetRecombined()
         {
             Combined.Clear();
-            
+
             foreach (T stat in Stats)
                 Combined.Insert(stat);
-            
+
             return Combined as T;
         }
     }

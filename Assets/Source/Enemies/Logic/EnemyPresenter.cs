@@ -14,18 +14,18 @@
         public void Enable()
         {
             Thinker.GoingThink += OnGoingThink;
-            
+
             Thinker.StartTick();
         }
 
         public void Disable()
         {
             Thinker.GoingThink -= OnGoingThink;
-            
+
             Thinker.StopTick();
             Model.Exit();
         }
-        
+
         private void OnGoingThink()
         {
             Model.Update();

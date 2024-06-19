@@ -6,13 +6,14 @@ namespace Boosters
 {
     public class BoosterService : IBoosterVisitor, IUsable
     {
-        private readonly List<SerializedPair<IStat, float>> CurrentBoosters = new();
-        private readonly List<SerializedPair<IStat, float>> ToDeleteBoosters = new();
+        private readonly List<SerializedPair<IStat, float>> CurrentBoosters = new ();
+        private readonly List<SerializedPair<IStat, float>> ToDeleteBoosters = new ();
 
         private bool _isAllowBoost;
 
-        public event Action<IStat> Ejected; 
-        public event Action<IStat> Injected; 
+        public event Action<IStat> Ejected;
+
+        public event Action<IStat> Injected;
 
         public void Update(float delay)
         {
@@ -21,7 +22,7 @@ namespace Boosters
                 SerializedPair<IStat, float> unpacked = CurrentBoosters[i];
                 unpacked.Value -= delay;
                 CurrentBoosters[i] = unpacked;
-                
+
                 if (CurrentBoosters[i].Value <= 0f)
                     ToDeleteBoosters.Add(CurrentBoosters[i]);
             }
@@ -31,21 +32,21 @@ namespace Boosters
                 Ejected?.Invoke(pair.Key);
                 CurrentBoosters.Remove(pair);
             }
-            
+
             ToDeleteBoosters.Clear();
         }
 
         public bool TryInsert(IBooster booster)
         {
             IStat boost = booster.GetBoost();
-            
+
             boost.Accept(this);
 
             if (_isAllowBoost == false)
                 return false;
-            
+
             _isAllowBoost = false;
-            
+
             booster.Use();
             CurrentBoosters.Add(new SerializedPair<IStat, float>(boost, boost.LifeTime));
             Injected?.Invoke(boost);

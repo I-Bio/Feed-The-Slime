@@ -14,6 +14,7 @@ namespace Foods
         }
 
         public event Action Highlighted;
+
         public event Action Allowed;
 
         public void CompareStage(SatietyStage stage)

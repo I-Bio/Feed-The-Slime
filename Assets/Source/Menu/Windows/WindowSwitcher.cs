@@ -26,13 +26,19 @@ namespace Menu
             _authorize.onClick.RemoveListener(Authorize);
             _pause.onClick.RemoveListener(PauseScreen);
             _resume.onClick.RemoveListener(ResumeScreen);
-            
+
             foreach (Button button in _closeButtons)
                 button.onClick.RemoveListener(ShowMain);
         }
-        
-        public void Initialize(Stopper stopper, Button upgrade, Button leader, Button authorize, Button pause,
-            Button resume, Button[] closeButtons)
+
+        public void Initialize(
+            Stopper stopper,
+            Button upgrade,
+            Button leader,
+            Button authorize,
+            Button pause,
+            Button resume,
+            Button[] closeButtons)
         {
             _upgrade = upgrade;
             _leader = leader;
@@ -40,10 +46,10 @@ namespace Menu
             _pause = pause;
             _resume = resume;
             _closeButtons = closeButtons;
-            
+
             _screen = GetComponent<Screen>();
             _screen.Initialize(stopper);
-            
+
             _upgrade.onClick.AddListener(ShowEvolution);
             _leader.onClick.AddListener(ShowLeader);
             _authorize.onClick.AddListener(Authorize);
@@ -68,7 +74,7 @@ namespace Menu
         {
             ChangeWindow(Windows.Main);
         }
-        
+
         public void OpenWarning()
         {
             ChangeWindow(Windows.ExitWarning);
@@ -88,7 +94,7 @@ namespace Menu
         {
             ChangeWindow(Windows.Upgrades);
         }
-        
+
         private void PauseScreen()
         {
             ChangeWindow(Windows.Pause);

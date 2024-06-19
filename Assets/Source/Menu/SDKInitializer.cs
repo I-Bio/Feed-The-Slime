@@ -21,7 +21,7 @@ namespace Menu
         {
             if (PlayerPrefs.HasKey(nameof(YandexGamesSdk.GameReady)))
                 PlayerPrefs.DeleteKey(nameof(YandexGamesSdk.GameReady));
-            
+
             SceneManager.LoadScene((int)SceneNames.Game);
         }
     }

@@ -5,6 +5,6 @@
         Idle,
         Avoid,
         Interact,
-        Action
+        Action,
     }
 }
