@@ -7,28 +7,27 @@ namespace Foods
     [RequireComponent(typeof(Outline))]
     public class ObjectHighlighter : MonoBehaviour, ISelectable
     {
-        public Outline Outline;
-        
+        private Outline _outline;
         private Transform _transform;
         private float _deselectValue;
         private float _selectValue;
         private bool _isSelect;
         private bool _didInitialize;
-        
+
         public event Action<SatietyStage> GoingSelect;
 
         public Vector3 Position => _transform.position;
-        
+
         public void Initialize(float deselectValue, float selectValue, Transform transform)
         {
             if (_didInitialize == true)
                 return;
 
-            Outline = GetComponent<Outline>();
+            _outline = GetComponent<Outline>();
             _deselectValue = deselectValue;
             _selectValue = selectValue;
             _transform = transform;
-            Outline.Initialize();
+            _outline.Initialize();
             _isSelect = true;
             Deselect();
             _didInitialize = true;
@@ -50,21 +49,31 @@ namespace Foods
         {
             if (_isSelect == true)
                 return;
-            
+
             _isSelect = true;
-            Outline.OutlineWidth = _selectValue;
+            _outline.OutlineWidth = _selectValue;
         }
 
         public void Deselect()
         {
             if (_isSelect == false)
                 return;
-            
+
             _isSelect = false;
-            Outline.OutlineWidth = _deselectValue;
+            _outline.OutlineWidth = _deselectValue;
         }
 
-        public virtual void OnSelecting() {}
-        public virtual void OnSetSelection() {}
+        public void SetColor(Color color)
+        {
+            _outline.OutlineColor = color;
+        }
+
+        public virtual void OnSelecting()
+        {
+        }
+
+        public virtual void OnSetSelection()
+        {
+        }
     }
 }
